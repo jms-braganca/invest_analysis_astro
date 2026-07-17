@@ -1,0 +1,404 @@
+/* ============================================================
+   private-fundos-dark.css — Tema dark Apple-like para a página
+   fundosipb.html (Itaú Private Bank). Sobrescreve as tokens do
+   theme.css / private-topbar.css / private-fundos.css.
+   Importar DEPOIS dos três anteriores.
+   ============================================================ */
+
+body.theme-dark-ipb {
+  /* Backgrounds em camadas — preto puro no fundo, surfaces sutilmente
+     elevadas. Inspirado em macOS Sonoma dark + iOS settings. */
+  --bg:        #000000;
+  --surface:   #141414;
+  --surface2:  #1c1c1e;
+  --surface3:  #232325;
+
+  --border:    rgba(255,255,255,0.08);
+  --border-s:  rgba(255,255,255,0.14);
+  --divider:   rgba(255,255,255,0.06);
+
+  --text:      #f5f5f7;
+  --muted:     #a1a1a6;
+  --muted2:    #6e6e73;
+
+  /* Status — versões dark com bg translúcido. */
+  --pos:       #30D158;
+  --pos-bg:    rgba(48,209,88,0.14);
+  --neg:       #FF453A;
+  --neg-bg:    rgba(255,69,58,0.14);
+  --warn:      #FF9F0A;
+  --warn-bg:   rgba(255,159,10,0.14);
+  --info:      #BF5AF2;
+  --info-bg:   rgba(191,90,242,0.14);
+
+  --itau-orange: #FF8A3D;   /* laranja com leve boost pra dark */
+
+  /* Sombras: em dark, "sombra" vira brilho/halo sutil de cima. */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.5);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.55);
+  --shadow-lg: 0 18px 48px rgba(0,0,0,0.65);
+
+  /* Tokens --private-* (consumidos por private-fundos.css). */
+  --private-bg:           #000000;
+  --private-surface:      #141414;
+  --private-text:         #f5f5f7;
+  --private-muted:        #a1a1a6;
+  --private-muted2:       #6e6e73;
+  --private-border:       rgba(255,255,255,0.10);
+  --private-divider:      rgba(255,255,255,0.06);
+  /* IMPORTANTE: --private-blue é consumido inline pelo paintRange (JS),
+     pelo toggle ON e por focus rings. No dark, viramos esse "azul" pra
+     laranja IPB pra unificar o sistema visual (mesmo tom do CTA "Sobre"
+     e do botão "Limpar filtros"). */
+  --private-blue:         #FF8A3D;
+  --private-blue-h:       #FFA15E;
+  --private-glass-bg:     rgba(20,20,20,0.72);
+  --private-glass-bg-h:   rgba(28,28,30,0.88);
+  --private-glass-border: rgba(255,255,255,0.10);
+  --private-shadow-sm:    0 1px 2px rgba(0,0,0,0.5);
+  --private-shadow-md:    0 8px 24px rgba(0,0,0,0.55);
+  --private-shadow-lg:    0 18px 48px rgba(0,0,0,0.65);
+}
+
+/* ── Body / globais ─────────────────────────────────────────── */
+body.theme-dark-ipb {
+  background: #000;
+  color: #f5f5f7;
+  color-scheme: dark;
+}
+
+body.theme-dark-ipb a { color: inherit; }
+body.theme-dark-ipb ::selection { background: rgba(255,138,61,0.35); color: #fff; }
+
+/* ── Topbar (private-topbar.css) ────────────────────────────── */
+body.theme-dark-ipb .private-topbar {
+  background: rgba(20,20,20,0.72);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border-bottom: .5px solid rgba(255,255,255,0.08);
+}
+body.theme-dark-ipb .atb-link,
+body.theme-dark-ipb .atb-link-mega { color: #f5f5f7; }
+body.theme-dark-ipb .atb-link:hover,
+body.theme-dark-ipb .atb-link-mega:hover { color: #fff; opacity: 1; }
+body.theme-dark-ipb .atb-link.is-active,
+body.theme-dark-ipb .atb-link-mega.is-active { color: #fff; }
+body.theme-dark-ipb .atb-cta {
+  background: #FF8A3D;
+  color: #1d1d1f;
+  border-color: transparent;
+}
+body.theme-dark-ipb .atb-cta:hover { background: #FFA15E; }
+body.theme-dark-ipb .atb-hamburger { color: #f5f5f7; }
+
+body.theme-dark-ipb .atb-mega-stage,
+body.theme-dark-ipb .atb-mega {
+  background: rgba(20,20,20,0.92);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark-ipb .atb-mega-eyebrow { color: #a1a1a6; }
+body.theme-dark-ipb .atb-mega-link {
+  color: #f5f5f7;
+  border-bottom-color: rgba(255,255,255,0.06);
+}
+body.theme-dark-ipb .atb-mega-link:hover { color: #FF8A3D; }
+
+body.theme-dark-ipb .atb-sub {
+  background: rgba(20,20,20,0.72);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border-top: .5px solid rgba(255,255,255,0.06);
+}
+body.theme-dark-ipb .atb-sub-page {
+  color: #a1a1a6;
+  background: transparent;
+}
+body.theme-dark-ipb .atb-sub-page:hover { color: #f5f5f7; }
+body.theme-dark-ipb .atb-sub-page.is-active {
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+}
+
+body.theme-dark-ipb .atb-kpi-group-label { color: #6e6e73; }
+body.theme-dark-ipb .atb-kpi-label { color: #a1a1a6; }
+body.theme-dark-ipb .atb-kpi-value { color: #f5f5f7; }
+body.theme-dark-ipb .atb-kpi-group { border-color: rgba(255,255,255,0.06); }
+
+body.theme-dark-ipb .atb-mobile-sub,
+body.theme-dark-ipb .atb-mobile-nav {
+  background: rgba(20,20,20,0.96);
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark-ipb .atb-mobile-sub-link { color: #f5f5f7; border-bottom-color: rgba(255,255,255,0.06); }
+
+/* ── Hero ───────────────────────────────────────────────────── */
+body.theme-dark-ipb.private-style .page-hero h1 { color: #f5f5f7; }
+body.theme-dark-ipb.private-style .page-hero h1 .muted { color: #6e6e73; }
+body.theme-dark-ipb.private-style .page-hero p { color: #a1a1a6; }
+body.theme-dark-ipb.private-style .page-hero .eyebrow { color: #FF8A3D; }
+
+/* Selo IPB embaixo do hero — substitui o switcher de instituições. */
+body.theme-dark-ipb .ipb-mark {
+  display: flex;
+  justify-content: center;
+  margin: 4px 0 32px;
+}
+body.theme-dark-ipb .ipb-mark-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 18px;
+  background: rgba(28,28,30,0.6);
+  border: .5px solid rgba(255,255,255,0.10);
+  border-radius: 999px;
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #a1a1a6;
+}
+body.theme-dark-ipb .ipb-mark-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #FF8A3D;
+  box-shadow: 0 0 0 4px rgba(255,138,61,0.16);
+}
+
+/* ── ap-page (busca / filtros / sliders / toggle) ───────────── */
+body.theme-dark-ipb .ap-section-title { color: #f5f5f7; }
+body.theme-dark-ipb .ap-section-title .muted { color: #6e6e73; }
+
+body.theme-dark-ipb .ap-search {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark-ipb .ap-search:focus-within {
+  border-color: rgba(255,138,61,0.6);
+  box-shadow: 0 0 0 4px rgba(255,138,61,0.16);
+}
+body.theme-dark-ipb .ap-search input {
+  background: transparent;
+  color: #f5f5f7;
+}
+body.theme-dark-ipb .ap-search input::placeholder { color: #6e6e73; }
+body.theme-dark-ipb .ap-search svg { color: #6e6e73; }
+body.theme-dark-ipb .ap-search-count { color: #a1a1a6; }
+body.theme-dark-ipb .ap-search-clear { color: #a1a1a6; }
+body.theme-dark-ipb .ap-search-clear:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+body.theme-dark-ipb .ap-filters-toggle {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  color: #f5f5f7;
+}
+body.theme-dark-ipb .ap-filters-toggle:hover {
+  background: #232325;
+  border-color: rgba(255,255,255,0.14);
+}
+body.theme-dark-ipb .ap-filters-toggle-label { color: #f5f5f7; }
+body.theme-dark-ipb .ap-filters-active-count { color: #a1a1a6; }
+body.theme-dark-ipb .ap-filters-icon { color: #a1a1a6; }
+body.theme-dark-ipb .ap-filters-caret { border-top-color: #6e6e73; }
+
+body.theme-dark-ipb .ap-filters-body {
+  background: transparent;   /* sem caixa em volta; cards internos têm seu próprio bg */
+}
+
+body.theme-dark-ipb .ap-segmented {
+  background: #232325;
+  border: .5px solid rgba(255,255,255,0.06);
+}
+body.theme-dark-ipb .ap-segmented button {
+  color: #a1a1a6;
+  background: transparent;
+}
+body.theme-dark-ipb .ap-segmented button:hover { color: #f5f5f7; }
+body.theme-dark-ipb .ap-segmented button.is-selected {
+  background: #1c1c1e;
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+body.theme-dark-ipb .ap-slider {
+  /* Card do slider — cinza escuro em vez do branco original. */
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: none;
+}
+body.theme-dark-ipb .ap-slider-label { color: #f5f5f7; }
+body.theme-dark-ipb .ap-slider-value { color: #FF8A3D; font-weight: 600; }
+body.theme-dark-ipb .ap-slider-ticks { color: #6e6e73; }
+/* Slider — o JS pinta inline via _paintRange. O monkey-patch em
+   app_fundosipb.js já usa cores dark (laranja + cinza), mas mantemos
+   um fallback estático aqui pra o estado inicial antes do JS rodar. */
+body.theme-dark-ipb .ap-slider input[type=range] {
+  background: #2c2c2e;
+}
+body.theme-dark-ipb .ap-slider input[type=range]::-webkit-slider-thumb {
+  background: #ffffff;
+  border: 2px solid #FF8A3D;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+body.theme-dark-ipb .ap-slider input[type=range]::-moz-range-thumb {
+  background: #ffffff;
+  border: 2px solid #FF8A3D;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+body.theme-dark-ipb .ap-select-pill {
+  background-color: #2c2c2e;
+  color: #f5f5f7;
+  border: .5px solid rgba(255,255,255,0.10);
+}
+body.theme-dark-ipb .ap-select-pill:hover { background-color: #3a3a3c; }
+
+body.theme-dark-ipb .ap-toggle {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark-ipb .ap-toggle:hover { background: #232325; border-color: rgba(255,255,255,0.14); }
+body.theme-dark-ipb .ap-toggle-label { color: #f5f5f7; }
+body.theme-dark-ipb .ap-toggle-sub { color: #a1a1a6; }
+
+/* Toggle switch (Apple-style): a "pista" e o "knob" são pseudo-elementos
+   na estrutura original. Precisamos sobrescrever pseudos diretamente,
+   não o .ap-toggle-switch. Off = cinza escuro; On = laranja IPB. */
+body.theme-dark-ipb .ap-toggle-switch::before {
+  background: #39393b;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+body.theme-dark-ipb .ap-toggle-switch:has(input:checked)::before {
+  background: #FF8A3D;
+}
+body.theme-dark-ipb .ap-toggle-switch::after {
+  background: #f5f5f7;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.6), 0 1px 1px rgba(0,0,0,0.4);
+}
+body.theme-dark-ipb .ap-toggle-switch:has(input:focus-visible)::before {
+  outline: 2px solid #FF8A3D;
+  outline-offset: 2px;
+}
+
+body.theme-dark-ipb .ap-reset { color: #FF8A3D; }
+body.theme-dark-ipb .ap-reset:hover { color: #FFA15E; }
+
+/* ── Class-rail (sidebar flutuante esquerda) ────────────────── */
+body.theme-dark-ipb .class-rail {
+  background: rgba(20,20,20,0.65);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border: .5px solid rgba(255,255,255,0.08);
+  box-shadow: 0 18px 48px rgba(0,0,0,0.65), 0 2px 6px rgba(0,0,0,0.4);
+}
+body.theme-dark-ipb .class-rail a { color: #a1a1a6; }
+body.theme-dark-ipb .class-rail a:hover { background: rgba(255,255,255,0.06); color: #f5f5f7; }
+body.theme-dark-ipb .class-rail a.active { background: #FF8A3D; color: #0a0a0a; }
+
+/* ── Class block (acordeão de classes) ──────────────────────── */
+body.theme-dark-ipb .ap-class-block { background: transparent; box-shadow: none; }
+body.theme-dark-ipb .ap-class-block .ap-class-head {
+  background: #1c1c1e;
+  border: .5px solid rgba(255,255,255,0.08);
+}
+body.theme-dark-ipb .ap-class-block .ap-class-head:hover { background: #232325; }
+body.theme-dark-ipb .ap-class-block.is-open .ap-class-head {
+  border-bottom-color: rgba(255,255,255,0.04);
+}
+body.theme-dark-ipb .ap-class-block .ap-class-title h3 { color: #f5f5f7; }
+body.theme-dark-ipb .ap-class-count {
+  background: #2c2c2e;
+  color: #a1a1a6;
+  border: .5px solid rgba(255,255,255,0.06);
+}
+body.theme-dark-ipb .ap-class-caret { border-top-color: #6e6e73; }
+
+/* Body do acordeão — era #fff. Crucial: o thead da tabela é transparente
+   e herda o bg DESTE container. */
+body.theme-dark-ipb .ap-class-body {
+  background: #1c1c1e;
+  border: .5px solid rgba(255,255,255,0.08);
+  border-top: none;
+}
+
+/* ── Tabelas ────────────────────────────────────────────────── */
+body.theme-dark-ipb .ap-table { background: transparent; }
+body.theme-dark-ipb .ap-table thead th,
+body.theme-dark-ipb .ap-class-body .ap-table thead th {
+  background: #232325;
+  color: #a1a1a6;
+  border-bottom: .5px solid rgba(255,255,255,0.10);
+}
+body.theme-dark-ipb .ap-table thead th.sortable:hover { color: #fff; }
+body.theme-dark-ipb .ap-table thead th .arrow { color: #6e6e73; }
+body.theme-dark-ipb .ap-table thead th .arrow.is-asc,
+body.theme-dark-ipb .ap-table thead th .arrow.is-desc { color: #FF8A3D; }
+
+body.theme-dark-ipb .ap-table tbody td { border-bottom: .5px solid rgba(255,255,255,0.05); color: #f5f5f7; }
+body.theme-dark-ipb .ap-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+body.theme-dark-ipb .ap-table tbody tr.is-selected { background: rgba(255,138,61,0.08); }
+body.theme-dark-ipb .ap-table tbody tr.is-selected:hover { background: rgba(255,138,61,0.12); }
+
+body.theme-dark-ipb .ap-fund-name { color: #f5f5f7; }
+body.theme-dark-ipb .ap-fund-cnpj { color: #6e6e73; }
+body.theme-dark-ipb .ap-fund-prazo { color: #a1a1a6; }
+body.theme-dark-ipb .ap-muted { color: #6e6e73; }
+
+body.theme-dark-ipb .ap-fund-status.open    { background: rgba(48,209,88,0.14);   color: #30D158; }
+body.theme-dark-ipb .ap-fund-status.closed  { background: rgba(255,69,58,0.14);   color: #FF453A; }
+body.theme-dark-ipb .ap-fund-status.paused  { background: rgba(255,159,10,0.14);  color: #FF9F0A; }
+body.theme-dark-ipb .ap-fund-status.warn    { background: rgba(255,159,10,0.14);  color: #FF9F0A; }
+
+body.theme-dark-ipb .ap-num.pos    { color: #30D158; }
+body.theme-dark-ipb .ap-num.neg    { color: #FF453A; }
+body.theme-dark-ipb .ap-num.neutral { color: #a1a1a6; }
+body.theme-dark-ipb .ap-num-period { color: #6e6e73; }
+
+body.theme-dark-ipb .ap-cdi-pill {
+  background: #232325;
+  color: #a1a1a6;
+  border: .5px solid rgba(255,255,255,0.06);
+}
+body.theme-dark-ipb .ap-cdi-pill.pos,
+body.theme-dark-ipb .ap-cdi-pill.high { background: rgba(48,209,88,0.16);  color: #30D158; border-color: rgba(48,209,88,0.22); }
+body.theme-dark-ipb .ap-cdi-pill.neg,
+body.theme-dark-ipb .ap-cdi-pill.low  { background: rgba(255,69,58,0.16);  color: #FF453A; border-color: rgba(255,69,58,0.22); }
+
+body.theme-dark-ipb .cap-pos { color: #30D158; }
+body.theme-dark-ipb .cap-neg { color: #FF453A; }
+
+/* Pill de instituição — escondida na página IPB (não há comparação entre
+   bancos, todos são do IPB). O JS já não renderiza, mas garantimos via CSS. */
+body.theme-dark-ipb .ap-inst-th,
+body.theme-dark-ipb .ap-inst-cell { display: none; }
+
+body.theme-dark-ipb .ap-fund-lamina {
+  background: #232325;
+  color: #a1a1a6;
+  border: .5px solid rgba(255,255,255,0.08);
+}
+body.theme-dark-ipb .ap-fund-lamina:hover { background: #2c2c2e; color: #fff; }
+body.theme-dark-ipb .ap-fund-lamina.is-vgbl { color: #BF5AF2; }
+body.theme-dark-ipb .ap-fund-lamina.is-pgbl { color: #0A84FF; }
+
+/* Checkbox de seleção — escondido na IPB (sem comparador). */
+body.theme-dark-ipb .ap-th-select,
+body.theme-dark-ipb .ap-td-select { display: none; }
+
+/* ── Footer ─────────────────────────────────────────────────── */
+body.theme-dark-ipb .private-footer {
+  background: transparent;
+  color: #6e6e73;
+  border-top: .5px solid rgba(255,255,255,0.06);
+}
+
+/* ── Loading / empty states ─────────────────────────────────── */
+body.theme-dark-ipb .dyn-loading { color: #6e6e73; }
+body.theme-dark-ipb .dyn-loading::after { border-color: #2c2c2e; border-top-color: #FF8A3D; }
+
+/* Scrollbar — Apple-style sutil */
+body.theme-dark-ipb ::-webkit-scrollbar { width: 10px; height: 10px; }
+body.theme-dark-ipb ::-webkit-scrollbar-track { background: transparent; }
+body.theme-dark-ipb ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.10); border-radius: 5px; }
+body.theme-dark-ipb ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.18); }

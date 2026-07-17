@@ -1,0 +1,142 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/private-calc.css';
+---
+<Layout
+  title="Limite FGC · Calculadoras · Invest Analysis"
+  footerCrumb="Calculadoras"
+>
+  <div slot="topbar-sub" class="atb-sub">
+    <div class="atb-sub-pages">
+      <a href="/calculadoras/troca-ativos.html" class="atb-sub-page">Troca de Ativos</a>
+      <a href="/calculadoras/limite-fgc.html" class="atb-sub-page is-active">Limite FGC</a>
+      <a href="/calculadoras/alocacao-fgc.html" class="atb-sub-page">Alocação FGC</a>
+      <a href="/calculadoras/rentabilidade.html" class="atb-sub-page">Rentabilidade</a>
+      <a href="/calculadoras/credito-vs-invest.html" class="atb-sub-page">Crédito vs. Investimentos</a>
+      <a href="/calculadoras/cet.html" class="atb-sub-page">CET</a>
+      <a href="/calculadoras/avista-vs-prazo.html" class="atb-sub-page">À Vista vs Parcelado</a>
+      <a href="/calculadoras/amortizacao.html" class="atb-sub-page">Amortização</a>
+    </div>
+    <div class="atb-kpis" aria-live="polite"><div class="atb-kpi-group is-active" data-kpi="cdi"><span class="atb-kpi-group-label">CDI</span><div class="atb-kpi"><span class="atb-kpi-label" data-month>Mai</span><span class="atb-kpi-value">0,48%</span></div><div class="atb-kpi is-secondary"><span class="atb-kpi-label">Ano</span><span class="atb-kpi-value">5,04%</span></div><div class="atb-kpi is-tertiary"><span class="atb-kpi-label">12m</span><span class="atb-kpi-value">14,83%</span></div></div><div class="atb-kpi-group" data-kpi="ibov"><span class="atb-kpi-group-label">Ibov</span><div class="atb-kpi"><span class="atb-kpi-label" data-month>Mai</span><span class="atb-kpi-value neg">-4,78%</span></div><div class="atb-kpi is-secondary"><span class="atb-kpi-label">Ano</span><span class="atb-kpi-value pos">+10,70%</span></div><div class="atb-kpi is-tertiary"><span class="atb-kpi-label">12m</span><span class="atb-kpi-value pos">+28,86%</span></div></div></div>
+  </div>
+
+
+<section class="page-hero" data-private-hero>
+  <p class="eyebrow">Calculadoras · Limite FGC</p>
+  <h1>Limite FGC. <span class="muted">Quanto investir hoje?</span></h1>
+  <p>Investimento de até R$&nbsp;250.000 garantido pelo FGC. Descubra o valor máximo a aplicar agora para atingir o limite no vencimento.</p>
+</section>
+
+<div class="ac-page">
+
+  <div class="ac-toolbar">
+    <nav class="ac-breadcrumb" aria-label="Navegação">
+      <a href="/index.html">Início</a>
+      <span class="ac-breadcrumb-sep">›</span>
+      <span class="ac-breadcrumb-current">Calculadoras</span>
+      <span class="ac-breadcrumb-sep">›</span>
+      <span class="ac-breadcrumb-current">Limite FGC</span>
+    </nav>
+    <button type="button" class="ac-clear-btn calc-clear-btn" title="Limpar todos os campos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      Limpar tudo
+    </button>
+  </div>
+
+  <!-- ── PREMISSAS MACRO ──────────────────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Premissas. <span class="muted-sub">Cenário macro.</span></h2>
+    </div>
+    <div class="ac-grid-2">
+      <div class="ac-field">
+        <label>CDI estimado a.a. <span class="unit">%</span></label>
+        <input type="text" inputmode="decimal" id="f-cdi" placeholder="0,00">
+      </div>
+      <div class="ac-field">
+        <label>IPCA estimado a.a. <span class="unit">%</span></label>
+        <input type="text" inputmode="decimal" id="f-ipca" placeholder="0,00">
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PARÂMETROS DO INVESTIMENTO ───────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Investimento. <span class="muted-sub">Configure o ativo.</span></h2>
+    </div>
+    <div class="ac-grid-2">
+      <div class="ac-field">
+        <label>Indexador</label>
+        <select id="f-idx">
+          <option value="Pré">Pré</option>
+          <option value="%CDI">%CDI</option>
+          <option value="CDI+" selected>CDI+</option>
+          <option value="IPCA+">IPCA+</option>
+        </select>
+      </div>
+      <div class="ac-field">
+        <label>Taxa contratada <span class="unit">%</span></label>
+        <input type="text" inputmode="decimal" id="f-taxa" placeholder="0,00">
+      </div>
+    </div>
+    <div class="ac-field" style="margin-top:6px">
+      <label>Vencimento</label>
+      <input type="date" id="f-venc">
+    </div>
+    <div class="ac-info-row" style="margin-top:14px;padding:14px 18px;background:#FBFBFD;border-radius:14px;border:0.5px solid var(--private-divider)">
+      <span class="lbl">Valor alvo no vencimento (limite FGC)</span>
+      <span class="val" style="font-size:15px">R$&nbsp;250.000,00</span>
+    </div>
+  </section>
+
+  <!-- ── RESULTADO HERO ──────────────────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-metric is-hero">
+      <span class="lbl">Invista hoje no máximo</span>
+      <span class="val blu" id="f-hoje">—</span>
+    </div>
+    <div class="ac-desc" style="text-align:center;margin-top:-6px" id="f-sub">Preencha os campos acima para calcular</div>
+
+    <div class="ac-grid-4 ac-grid-divided" style="margin-top:18px;border-top:0.5px solid var(--private-divider);padding-top:18px">
+      <div class="ac-metric">
+        <span class="lbl">Dias úteis</span>
+        <span class="val sm" id="f-du">—</span>
+      </div>
+      <div class="ac-metric">
+        <span class="lbl">Taxa anual equiv.</span>
+        <span class="val sm" id="f-ta">—</span>
+      </div>
+      <div class="ac-metric">
+        <span class="lbl">Rendimento projetado</span>
+        <span class="val sm" id="f-rend">—</span>
+      </div>
+      <div class="ac-metric">
+        <span class="lbl">Taxa diária útil</span>
+        <span class="val sm" id="f-td">—</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="ac-pdf-bar" id="fgc-pdf-bar">
+  <div class="left">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="12" y1="18" x2="12" y2="12"/>
+      <polyline points="9 15 12 12 15 15"/>
+    </svg>
+    <span class="title">Salvar simulação em PDF</span>
+  </div>
+  <button type="button" class="ac-pdf-btn" id="fgc-pdf-btn">Gerar PDF</button>
+</div>
+
+  <Fragment slot="scripts">
+    <script is:inline src="/scripts/data/feriados_anbima.js"></script>
+    <script is:inline src="/scripts/utils.js"></script>
+    <script is:inline src="/scripts/calc-common.js"></script>
+    <script is:inline src="/scripts/calc-fgc.js"></script>
+  </Fragment>
+</Layout>

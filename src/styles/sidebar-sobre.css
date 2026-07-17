@@ -1,0 +1,21 @@
+/* ============================================================
+   sidebar-sobre.css — Estilo do separador "Perfil" e área "Sobre"
+   Carregado depois de sidebar.css em todas as subpáginas
+   ============================================================ */
+
+.sb-section-label.sb-section-label-perfil {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.sb-link.area-sobre:hover {
+  background: var(--surface3);
+  color: var(--text);
+}
+
+.sb-link.active.area-sobre {
+  background: var(--surface2);
+  color: var(--text);
+  border-left-color: var(--text);
+}

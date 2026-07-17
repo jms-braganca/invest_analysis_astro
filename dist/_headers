@@ -1,0 +1,26 @@
+# Cloudflare Pages — políticas de cache dos dados JSON.
+# (Compressão br/gzip é automática no Cloudflare; aqui só controlamos cache.)
+#
+# Estratégia (ver Passo 2 de PROXIMOS_PASSOS_PERFORMANCE.md):
+#  • meta.json  → sempre revalidado. É a "versão"; precisa chegar fresco pra o
+#    data_pool.js detectar dados novos.
+#  • etfs.json  → revalidado. Pipeline separado (build_etfs.py); ainda NÃO é
+#    versionado por ?v= no cliente, então não pode ter cache imutável.
+#  • fundos_*/prev_*/cotas_* → o data_pool.js carimba a URL com ?v=<gerado_em>.
+#    Como a URL muda quando os dados mudam, pode cachear "para sempre" (imutável).
+#    Revisitas vêm do disco, sem ida à rede.
+
+/data/meta.json
+  Cache-Control: no-cache
+
+/data/etfs.json
+  Cache-Control: no-cache
+
+/data/fundos_*
+  Cache-Control: public, max-age=31536000, immutable
+
+/data/prev_*
+  Cache-Control: public, max-age=31536000, immutable
+
+/data/cotas_*
+  Cache-Control: public, max-age=31536000, immutable

@@ -1,0 +1,16 @@
+---
+// Head.astro — meta base + <title> + analytics. CSS global é importado no Layout.
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+---
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{title}</title>
+{description && <meta name="description" content={description} />}
+
+<!-- Cloudflare Web Analytics -->
+<script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "a12338ede7f9426e80e3969dc9188753"}'></script>
+<!-- End Cloudflare Web Analytics -->

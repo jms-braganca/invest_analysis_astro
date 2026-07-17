@@ -1,0 +1,1111 @@
+/* ============================================================
+   private-calc.css — Estilos Private theme compartilhados pelas
+   calculadoras (Troca de Ativos, Limite FGC, Rentabilidade,
+   Crédito vs Investimentos, PGBL, Aposentadoria).
+   Importado depois de theme.css + private-topbar.css.
+   ============================================================ */
+
+/* ── HERO da página (centralizado, igual fundos/prev) ──────── */
+body.private-style .page-hero {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 56px 22px 28px;
+  text-align: center;
+}
+body.private-style .page-hero .eyebrow {
+  font-size: 13px;
+  color: var(--private-blue);
+  font-weight: 500;
+  margin-bottom: 8px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+body.private-style .page-hero h1 {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  font-size: 48px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.07;
+  color: var(--private-text);
+  margin: 0 0 8px;
+}
+body.private-style .page-hero h1 .muted {
+  color: var(--private-muted);
+  font-weight: 600;
+}
+body.private-style .page-hero p {
+  font-size: 18px;
+  color: var(--private-muted);
+  max-width: 600px;
+  margin: 6px auto 0;
+  line-height: 1.4;
+}
+@media (max-width: 833px) {
+  body.private-style .page-hero { padding: 36px 18px 18px; }
+  body.private-style .page-hero h1 { font-size: 32px; }
+  body.private-style .page-hero p  { font-size: 15px; }
+}
+
+.ac-page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 22px 120px;
+}
+/* Variante mais larga para calcs com tabelas grandes (ex.: cronograma 13 cols) */
+.ac-page.ac-page-wide { max-width: 1440px; }
+
+/* Toolbar topo: breadcrumb + limpar */
+.ac-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 18px 0 22px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.ac-breadcrumb {
+  display: flex; gap: 8px; align-items: center;
+  font-size: 13px;
+  color: var(--private-muted);
+}
+.ac-breadcrumb a {
+  color: var(--private-blue);
+  text-decoration: none;
+}
+.ac-breadcrumb a:hover { opacity: 0.7; }
+.ac-breadcrumb-current { color: var(--private-text); font-weight: 500; }
+.ac-breadcrumb-sep { color: var(--private-muted2); }
+
+.ac-clear-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: transparent;
+  border: 0.5px solid var(--private-border);
+  border-radius: 999px;
+  color: var(--private-muted);
+  font-family: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: all .15s var(--private-ease);
+}
+.ac-clear-btn:hover { color: var(--private-text); border-color: rgba(0,0,0,0.18); }
+.ac-clear-btn svg { width: 12px; height: 12px; }
+
+/* Section card */
+.ac-section {
+  background: #fff;
+  border-radius: 24px;
+  border: 0.5px solid var(--private-border);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.03);
+  padding: 32px 36px 28px;
+  margin-bottom: 18px;
+}
+.ac-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;       /* centralizado */
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 8px;
+  text-align: center;
+}
+.ac-section-head h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  margin: 0;
+  color: var(--private-text);
+}
+.ac-section-head .muted-sub {
+  font-size: 14px;
+  color: var(--private-muted);
+  font-weight: 400;
+}
+
+.ac-desc {
+  font-size: 13px;
+  color: var(--private-muted);
+  margin: -8px 0 14px;
+}
+
+/* Grid layouts */
+.ac-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ac-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.ac-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+.ac-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+@media (max-width: 833px) {
+  .ac-pair { grid-template-columns: 1fr; }
+  .ac-grid-2, .ac-grid-3, .ac-grid-4 { grid-template-columns: 1fr; }
+}
+
+/* ── FORM FIELDS — Private theme "Stocks" ──────────────────── */
+/* Default: input grande, centralizado, número em destaque.
+   Use .ac-field-text pra campos de texto (ticker, emissor) — alinhamento à esquerda. */
+.ac-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+.ac-field label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--private-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  justify-content: center;
+}
+.ac-field label .unit {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--private-muted2);
+  letter-spacing: 0.04em;
+  padding: 1px 6px;
+  background: rgba(0,0,0,0.04);
+  border-radius: 999px;
+  text-transform: none;
+}
+.ac-field input[type="text"],
+.ac-field input[type="date"],
+.ac-field input[type="number"],
+.ac-field select {
+  width: 100%;
+  padding: 14px 14px;
+  background: #F5F5F7;
+  border: 0.5px solid transparent;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--private-text);
+  outline: none;
+  transition: all .15s var(--private-ease);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+.ac-field input::placeholder {
+  color: var(--private-muted2);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.ac-field input:focus,
+.ac-field select:focus {
+  background: #fff;
+  border-color: var(--private-blue);
+  box-shadow: 0 0 0 3px rgba(0,113,227,0.12);
+}
+.ac-field select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23636366' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><polyline points='3 5 6 8 9 5'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 10px 10px;
+  padding-right: 36px;
+  text-align: left;
+  text-align-last: center;
+}
+
+/* Variante TEXTO — ticker, emissor (à esquerda, fonte normal) */
+.ac-field-text { text-align: left; }
+.ac-field-text label { justify-content: flex-start; }
+.ac-field-text input[type="text"] {
+  text-align: left;
+  font-size: 15px;
+  font-weight: 400;
+  padding: 12px 14px;
+}
+
+/* Info row (label + value) */
+.ac-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 2px;
+  border-bottom: 0.5px solid var(--private-divider);
+}
+.ac-info-row:last-child { border-bottom: none; }
+.ac-info-row .lbl {
+  font-size: 12px;
+  color: var(--private-muted);
+}
+.ac-info-row .val {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--private-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Metric card (resultado) */
+.ac-metric {
+  background: transparent;
+  border-radius: 16px;
+  padding: 18px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 80px;
+  text-align: center;
+  align-items: center;
+  border: none;
+}
+.ac-metric .lbl {
+  font-size: 11px;
+  color: var(--private-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+.ac-metric .val {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--private-text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.018em;
+  line-height: 1.1;
+}
+.ac-metric .val.sm { font-size: 18px; }
+.ac-metric .val.pos { color: #009E5C; }
+.ac-metric .val.neg { color: #D7373F; }
+.ac-metric .val.blu { color: var(--private-blue); }
+
+/* Hero metric — ganho comparativo em destaque */
+.ac-metric.is-hero {
+  padding: 28px 20px 24px;
+  background: linear-gradient(180deg, rgba(0,158,92,0.04) 0%, rgba(0,158,92,0) 100%);
+  border-radius: 18px;
+}
+.ac-metric.is-hero .lbl {
+  font-size: 12px;
+  letter-spacing: 0.07em;
+  margin-bottom: 4px;
+}
+.ac-metric.is-hero .val {
+  font-size: 44px;
+  font-weight: 600;
+  letter-spacing: -0.024em;
+}
+/* Hero como prejuízo */
+.ac-metric.is-hero.is-neg {
+  background: linear-gradient(180deg, rgba(215,55,63,0.04) 0%, rgba(215,55,63,0) 100%);
+}
+
+/* Separadores entre metrics num grid */
+.ac-grid-2.ac-grid-divided > .ac-metric + .ac-metric,
+.ac-grid-3.ac-grid-divided > .ac-metric + .ac-metric {
+  border-left: 0.5px solid var(--private-divider);
+}
+@media (max-width: 833px) {
+  .ac-grid-2.ac-grid-divided > .ac-metric + .ac-metric,
+  .ac-grid-3.ac-grid-divided > .ac-metric + .ac-metric { border-left: none; border-top: 0.5px solid var(--private-divider); }
+}
+
+/* Break-even card */
+.ac-be {
+  background: #F5F5F7;
+  border-radius: 18px;
+  padding: 22px 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.ac-be .lbl {
+  font-size: 11px;
+  color: var(--private-muted);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ac-be .val {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--private-text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.018em;
+}
+.ac-be.is-current {
+  background: rgba(0,158,92,0.08);
+}
+.ac-be.is-current .lbl,
+.ac-be.is-current .val { color: #009E5C; }
+
+/* Floating PDF bar Private theme */
+.ac-pdf-bar {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(251,251,253,0.86);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+          backdrop-filter: saturate(180%) blur(24px);
+  border: 0.5px solid rgba(0,0,0,0.08);
+  border-radius: 999px;
+  padding: 6px 6px 6px 22px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  z-index: 60;
+  white-space: nowrap;
+}
+.ac-pdf-bar .left {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px;
+  color: var(--private-text);
+  font-weight: 500;
+}
+.ac-pdf-bar svg { width: 14px; height: 14px; }
+.ac-pdf-btn {
+  padding: 8px 18px;
+  background: var(--private-text);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s var(--private-ease), transform .15s var(--private-ease);
+}
+.ac-pdf-btn:hover { background: #000; transform: translateY(-1px); }
+
+@media (max-width: 540px) {
+  .ac-pdf-bar { left: 16px; right: 16px; transform: none; padding: 6px 6px 6px 18px; }
+  .ac-pdf-bar .left .title { display: none; }
+}
+
+/* ── Checkbox Private theme (label clicável) ─────────────────── */
+.ac-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--private-text);
+  user-select: none;
+  padding: 10px 4px;
+}
+.ac-check input { display: none; }
+.ac-check .box {
+  width: 18px; height: 18px;
+  border-radius: 6px;
+  border: 1.5px solid var(--private-border);
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all .15s var(--private-ease);
+}
+.ac-check input:checked + .box {
+  background: var(--private-blue);
+  border-color: var(--private-blue);
+}
+.ac-check .box svg { width: 11px; height: 11px; color: #fff; opacity: 0; transition: opacity .12s var(--private-ease); }
+.ac-check input:checked + .box svg { opacity: 1; }
+
+/* ── Tabela Private theme (Bruto / Líquido) ─────────────────── */
+.ac-tbl-wrap {
+  margin-top: 14px;
+  background: #FBFBFD;
+  border-radius: 16px;
+  padding: 4px 12px;
+  border: 0.5px solid var(--private-divider);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+/* Variante sem scroll: tabela densa que cabe inteira (ex.: cronograma 13 cols) */
+.ac-tbl-wrap.no-scroll { overflow-x: visible; padding: 4px 6px; }
+.ac-tbl-wrap.no-scroll .ac-tbl { table-layout: auto; }
+.ac-tbl-wrap.no-scroll .ac-tbl thead th {
+  padding: 12px 6px 8px;
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+}
+.ac-tbl-wrap.no-scroll .ac-tbl tbody td {
+  padding: 9px 6px;
+  font-size: 11.5px;
+}
+.ac-tbl-wrap.no-scroll .ac-tbl tbody td:first-child,
+.ac-tbl-wrap.no-scroll .ac-tbl thead th:first-child {
+  padding-left: 4px;
+  text-align: center;
+  width: 36px;
+}
+.ac-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.ac-tbl thead th {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--private-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 14px 16px 10px;
+  text-align: right;
+  border-bottom: 0.5px solid var(--private-divider);
+  white-space: nowrap;
+}
+.ac-tbl thead th:first-child { text-align: left; padding-left: 8px; }
+.ac-tbl tbody td {
+  padding: 14px 16px;
+  text-align: right;
+  font-size: 14px;
+  color: var(--private-text);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.ac-tbl tbody td:first-child {
+  text-align: left;
+  font-weight: 400;
+  color: var(--private-muted);
+  padding-left: 8px;
+}
+.ac-tbl tbody tr + tr td { border-top: 0.5px solid var(--private-divider); }
+.ac-tbl tbody tr:hover td:not(:first-child) { background: rgba(0,0,0,0.015); }
+
+/* ── MOBILE: tabela 3-cols (Métrica / Bruto / Líquido) vira cards
+   empilhados sem scroll horizontal. Aplicado só em wraps SEM `.no-scroll`
+   (a tabela de cronograma 13-cols mantém o tratamento próprio dela). */
+@media (max-width: 540px) {
+  .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) {
+    overflow: visible;
+    padding: 6px;
+    background: transparent;
+    border: none;
+  }
+  .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) .ac-tbl,
+  .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) .ac-tbl tbody {
+    display: block;
+    width: 100%;
+  }
+  .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) .ac-tbl thead { display: none; }
+  .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) .ac-tbl tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) .ac-tbl tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "label label"
+      "bruto liquido";
+    column-gap: 12px;
+    row-gap: 8px;
+    background: #fff;
+    border: 0.5px solid var(--private-divider);
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) .ac-tbl tbody tr + tr td {
+    border-top: none;            /* zera divisória entre rows da tabela */
+  }
+  .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) .ac-tbl tr td {
+    padding: 0 !important;
+    border: none !important;
+    white-space: normal;
+    background: transparent !important;
+  }
+  /* 1ª td = nome da métrica, full-width, com divisória embaixo */
+  .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) .ac-tbl tr td:nth-child(1) {
+    grid-area: label;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--private-text);
+    padding-bottom: 8px !important;
+    border-bottom: 0.5px solid var(--private-divider) !important;
+  }
+  /* 2ª td = Bruto, com label "BRUTO" em cima */
+  .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) .ac-tbl tr td:nth-child(2) {
+    grid-area: bruto;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) .ac-tbl tr td:nth-child(2)::before {
+    content: 'BRUTO';
+    display: block;
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--private-muted2);
+    letter-spacing: 0.06em;
+    margin-bottom: 3px;
+  }
+  /* 3ª td = Líquido, com label "LÍQUIDO" em cima e alinhado à direita */
+  .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) .ac-tbl tr td:nth-child(3) {
+    grid-area: liquido;
+    text-align: right;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) .ac-tbl tr td:nth-child(3)::before {
+    content: 'LÍQUIDO';
+    display: block;
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--private-muted2);
+    letter-spacing: 0.06em;
+    margin-bottom: 3px;
+  }
+
+}
+.ac-tbl .pos { color: #009E5C; }
+.ac-tbl .neg { color: #D7373F; }
+.ac-tbl .blu { color: var(--private-blue); }
+.ac-tbl .muted { color: var(--private-muted); }
+
+.ac-tbl-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--private-text);
+  margin-bottom: 6px;
+}
+.ac-tbl-title .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Disclaimers / alertas ────────────────────────────────── */
+/* Aplica visual Private theme nos dois prefixos: o `.ac-disc` que o HTML
+   inicial usa, e o `.cc-disc` que o calc-rent.js aplica dinamicamente
+   ao trocar a classe conforme o resultado (ok/ko/agio/des). */
+.ac-disc,
+.cc-disc {
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 12px;
+  font-weight: 500;
+  display: block;
+}
+
+/* Variantes — cores Private alinhadas com o sentido do alerta */
+.ac-disc.warn,
+.cc-disc.warn,
+.cc-disc.des           { background: rgba(184,89,14,0.08); color: #B8590E; }   /* laranja: aviso / deságio */
+.ac-disc.ok,
+.cc-disc.ok            { background: rgba(0,158,92,0.08);  color: #009E5C; }   /* verde: positivo */
+.ac-disc.info,
+.cc-disc.agio          { background: rgba(0,113,227,0.06); color: var(--private-blue); }   /* azul: ágio / info */
+.ac-disc.ko,
+.cc-disc.ko,
+.ac-disc.neg,
+.cc-disc.neg           { background: rgba(196,43,28,0.08);  color: #C42B1C; }   /* vermelho: negativo */
+
+/* ── Badge data tag (timestamp discreto) ──────────────────── */
+.ac-data-tag {
+  text-align: center;
+  font-size: 11px;
+  color: var(--private-muted2);
+  margin-top: 16px;
+}
+
+/* ── Warning grande (mera simulação) ──────────────────────── */
+.ac-warn-big {
+  background: #FFF8EB;
+  border: 0.5px solid rgba(184,89,14,0.18);
+  border-radius: 22px;
+  padding: 22px 24px;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+.ac-warn-big .ac-warn-icon {
+  width: 40px; height: 40px;
+  flex-shrink: 0;
+  color: #B8590E;
+}
+.ac-warn-big .ac-warn-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #B8590E;
+  margin: 0 0 6px;
+  letter-spacing: -0.005em;
+}
+.ac-warn-big .ac-warn-body {
+  font-size: 13px;
+  color: var(--private-text);
+  line-height: 1.55;
+  margin: 0;
+}
+.ac-warn-big .ac-warn-body strong { font-weight: 600; }
+
+/* ── Cores das métricas para Crédito vs Investimentos ─────── */
+.ac-metric .val.red { color: #D7373F; }
+.ac-metric .val.grn { color: #009E5C; }
+
+/* ── SLIDER Private theme ─────────────────────────────────────── */
+.ac-slider-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.ac-slider-label .lbl {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--private-muted);
+}
+.ac-slider-label .val {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--private-text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.014em;
+}
+.ac-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.ac-slider-row input[type=range] {
+  flex: 1;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  height: 4px;
+  background: var(--private-divider);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.ac-slider-row input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18), 0 0 0 0.5px rgba(0,0,0,0.04);
+  cursor: grab;
+  margin-top: -9px;
+}
+.ac-slider-row input[type=range]::-moz-range-thumb {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+  cursor: grab;
+}
+.ac-slider-row input[type=range]::-moz-range-progress {
+  height: 4px; border-radius: 2px; background: var(--private-blue);
+}
+.ac-slider-cap {
+  font-size: 11px;
+  color: var(--private-muted2);
+  font-variant-numeric: tabular-nums;
+  min-width: 36px;
+  text-align: center;
+}
+
+/* ── Tooltip helper (info inline) ──────────────────────────── */
+.ac-tip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--private-divider);
+  color: var(--private-muted);
+  font-size: 9px;
+  font-weight: 600;
+  font-style: italic;
+  margin-left: 4px;
+  cursor: help;
+  user-select: none;
+}
+.ac-tip:hover { background: rgba(0,113,227,0.12); color: var(--private-blue); }
+
+/* ── Aporte destacado (PGBL/Aposentadoria) ─────────────────── */
+.ac-aporte {
+  background: #fff;
+  border-radius: 24px;
+  border: 0.5px solid var(--private-border);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.03);
+  padding: 32px 28px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+.ac-aporte .lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--private-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+.ac-aporte .val {
+  font-size: 44px;
+  font-weight: 600;
+  color: var(--private-blue);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.024em;
+  line-height: 1.05;
+  margin-bottom: 8px;
+}
+.ac-aporte .sub {
+  font-size: 13px;
+  color: var(--private-muted);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.45;
+}
+
+/* Variante "Ganho com o crédito" — destaque com cor condicional ao
+   resultado. is-pos = ganho positivo (verde), is-neg = ganho negativo
+   (vermelho). Aplicada via JS no _CREDITO_GANHO_SCRIPT. */
+.ac-aporte.cr-ganho .val { transition: color .25s var(--private-ease); }
+.ac-aporte.cr-ganho.is-pos {
+  background: linear-gradient(180deg, rgba(0,158,92,0.04) 0%, #fff 60%);
+  border-color: rgba(0,158,92,0.20);
+}
+.ac-aporte.cr-ganho.is-pos .val { color: #009E5C; }
+.ac-aporte.cr-ganho.is-pos .lbl::before {
+  content: '✓ ';
+  color: #009E5C;
+}
+.ac-aporte.cr-ganho.is-neg {
+  background: linear-gradient(180deg, rgba(196,43,28,0.04) 0%, #fff 60%);
+  border-color: rgba(196,43,28,0.20);
+}
+.ac-aporte.cr-ganho.is-neg .val { color: #C42B1C; }
+.ac-aporte.cr-ganho.is-neg .lbl::before {
+  content: '✗ ';
+  color: #C42B1C;
+}
+
+/* Quando uma seção vem logo após o destaque .ac-aporte ou um disclaimer
+   .ac-disc, o gap fica grande demais (margin-bottom + padding-top somados).
+   Encosta tudo: o cronograma fica visualmente conectado ao disclaimer
+   acima dele. */
+.ac-aporte + .ac-section,
+.ac-disc + .ac-section {
+  margin-top: -4px;
+}
+.cr-cronograma { padding-top: 22px; }
+
+/* ── Cronograma mês a mês: mensagem que substitui a tabela em mobile ─ */
+.cr-cronograma-mobile-msg {
+  display: none;        /* só aparece em mobile via @media abaixo */
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 28px 22px;
+  background: var(--private-bg);
+  border: 0.5px dashed var(--private-divider);
+  border-radius: 14px;
+  color: var(--private-muted);
+}
+.cr-cronograma-mobile-msg svg { color: var(--private-muted2); }
+.cr-cronograma-mobile-msg strong {
+  font-size: 14px;
+  color: var(--private-text);
+  font-weight: 600;
+}
+.cr-cronograma-mobile-msg span {
+  font-size: 12.5px;
+  line-height: 1.5;
+  max-width: 320px;
+}
+
+/* Esconde tabelas grandes (cronograma 13-cols, comparativo PGBL 4×13)
+   em qualquer tela onde elas não caibam legivelmente. Mostra uma
+   mensagem informativa no lugar. 980px pega celular em landscape. */
+@media (max-width: 980px) {
+  .cr-cronograma .ac-tbl-wrap { display: none; }
+  .cr-cronograma .cr-cronograma-mobile-msg { display: flex; }
+
+  /* Calc PGBL: tabela 4-cols × 13-rows fica horrível em mobile, mesmo
+     virando cards. Esconde toda a tabela + disclaimer "*IR Retido" e
+     mostra a mensagem mobile-only. O banner #pg-economia logo abaixo
+     já entrega o "quanto economiza" sem precisar da tabela. */
+  .pg-tabela .ac-tbl-wrap,
+  .pg-tabela > .ac-disc.warn { display: none; }
+  .pg-tabela .pg-tabela-mobile-msg { display: flex; }
+
+  /* Calc Aposentadoria: matriz 7-cols (Renda × Prazo) também não cabe
+     bem em mobile. Mesma estratégia: esconde + msg. O resultado do
+     cenário atual já aparece nos KPIs acima. */
+  .ap-cenarios-wrap { display: none; }
+  .ap-cenarios-mobile-msg { display: flex; }
+}
+
+@media (max-width: 540px) {
+  /* Reduz o destaque do .ac-aporte em mobile pra não ficar gigante */
+  .ac-aporte { padding: 24px 20px; border-radius: 18px; margin-bottom: 10px; }
+  .ac-aporte .val { font-size: 32px; }
+  .ac-aporte .lbl { font-size: 10px; margin-bottom: 6px; }
+
+  /* Compacta o espaçamento entre disc/aporte e a próxima section */
+  .ac-disc { margin-top: 8px; padding: 10px 14px; }
+  .ac-aporte + .ac-section,
+  .ac-disc + .ac-section { margin-top: -2px; }
+  .cr-cronograma,
+  .pg-tabela { padding: 20px 22px 20px; }
+
+  /* Banner "Aportando R$ X você economiza R$ Y em IR" — em mobile da
+     calc PGBL vira o card de destaque do resultado, já que escondemos
+     a tabela detalhada acima. Ganha visual de aporte mais "pesado". */
+  #pg-economia {
+    background: linear-gradient(180deg, rgba(0,158,92,0.08) 0%, #fff 60%);
+    border: 0.5px solid rgba(0,158,92,0.28);
+    border-radius: 18px;
+    padding: 22px 20px;
+    text-align: center;
+    margin-top: 14px;
+    color: var(--private-text);
+  }
+  #pg-economia strong {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #009E5C;
+    line-height: 1.35;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  #pg-economia > div {
+    font-size: 13px;
+    color: var(--private-muted);
+    font-weight: 500;
+  }
+}
+
+/* ── Status badges (Premissa atualizada) ──────────────────── */
+.ac-bdg {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(0,113,227,0.08);
+  color: var(--private-blue);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.ac-bdg.muted {
+  background: var(--private-divider);
+  color: var(--private-muted);
+}
+
+/* Verdict card grande (top do resumo) */
+.ac-verdict {
+  background: #fff;
+  border-radius: 22px;
+  border: 0.5px solid var(--private-border);
+  box-shadow: var(--private-shadow-sm);
+  padding: 26px 28px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.ac-verdict .eyebrow {
+  font-size: 12px;
+  color: var(--private-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+.ac-verdict h2 {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  margin: 0 0 6px;
+}
+.ac-verdict h2.pos { color: #009E5C; }
+.ac-verdict h2.neg { color: #D7373F; }
+.ac-verdict .ganho-val {
+  font-size: 38px;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.05;
+  margin-top: 4px;
+}
+.ac-verdict .ganho-val.pos { color: #009E5C; }
+.ac-verdict .ganho-val.neg { color: #D7373F; }
+
+/* ===========================================================
+   Apple Care+ vs Apple Care One — calculadora "apple-care"
+   =========================================================== */
+
+/* Lista compacta de devices: nome | preços | qty stepper */
+body.private-style .ac-applecare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 18px;
+  margin-top: 8px;
+}
+@media (max-width: 720px) {
+  body.private-style .ac-applecare-grid { grid-template-columns: 1fr; }
+}
+
+body.private-style .ac-applecare-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 6px 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #FBFBFD;
+  border: 0.5px solid var(--private-divider);
+  transition: background .15s ease, border-color .15s ease;
+}
+body.private-style .ac-applecare-row:hover {
+  background: #fff;
+  border-color: rgba(0,113,227,0.20);
+}
+body.private-style .ac-applecare-row .name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--private-text);
+  letter-spacing: -0.005em;
+  line-height: 1.28;
+}
+body.private-style .ac-applecare-row .price {
+  grid-column: 1 / -1;
+  font-size: 11.5px;
+  color: var(--private-muted);
+  font-variant-numeric: tabular-nums;
+  margin-top: 1px;
+}
+body.private-style .ac-applecare-row .price .sep {
+  margin: 0 6px;
+  opacity: 0.5;
+}
+
+/* Stepper compacto [−][input][+] */
+body.private-style .ac-stepper {
+  display: inline-flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 999px;
+  border: 0.5px solid var(--private-border);
+  overflow: hidden;
+  height: 30px;
+}
+body.private-style .ac-stepper button {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: transparent;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--private-blue);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  transition: background .12s ease;
+}
+body.private-style .ac-stepper button:hover { background: rgba(0,113,227,0.08); }
+body.private-style .ac-stepper button:active { background: rgba(0,113,227,0.18); }
+body.private-style .ac-stepper input {
+  width: 38px;
+  height: 30px;
+  border: 0;
+  border-left: 0.5px solid var(--private-divider);
+  border-right: 0.5px solid var(--private-divider);
+  background: transparent;
+  font-size: 13.5px;
+  font-weight: 500;
+  text-align: center;
+  padding: 0;
+  color: var(--private-text);
+  font-variant-numeric: tabular-nums;
+  border-radius: 0;
+  outline: none;
+}
+body.private-style .ac-stepper input::-webkit-outer-spin-button,
+body.private-style .ac-stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* Veredito colorido (.ac-aporte com classe ac-vd-*) */
+body.private-style .ac-aporte.ac-vd-pos {
+  background: linear-gradient(135deg, rgba(0,158,92,0.06) 0%, rgba(0,158,92,0.02) 100%);
+  border-color: rgba(0,158,92,0.30);
+}
+body.private-style .ac-aporte.ac-vd-pos .val { color: #009E5C; }
+
+body.private-style .ac-aporte.ac-vd-neg {
+  background: linear-gradient(135deg, rgba(215,55,63,0.06) 0%, rgba(215,55,63,0.02) 100%);
+  border-color: rgba(215,55,63,0.30);
+}
+body.private-style .ac-aporte.ac-vd-neg .val { color: #D7373F; }
+
+body.private-style .ac-aporte.ac-vd-eq .val { color: var(--private-muted); }
+
+/* Linha de comparação dos 2 planos (tabela ou grid de 2 cols) */
+body.private-style .ac-applecare-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 4px;
+}
+@media (max-width: 720px) {
+  body.private-style .ac-applecare-compare { grid-template-columns: 1fr; }
+}
+body.private-style .ac-applecare-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 0.5px solid var(--private-border);
+  padding: 18px 20px;
+}
+body.private-style .ac-applecare-card.is-one {
+  background: linear-gradient(180deg, rgba(0,113,227,0.04) 0%, #fff 100%);
+}
+body.private-style .ac-applecare-card .ttl {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--private-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+body.private-style .ac-applecare-card .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 0;
+}
+body.private-style .ac-applecare-card .row + .row { border-top: 0.5px solid var(--private-divider); }
+body.private-style .ac-applecare-card .row .lbl {
+  font-size: 13px;
+  color: var(--private-muted);
+  font-weight: 500;
+}
+body.private-style .ac-applecare-card .row .val {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--private-text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}

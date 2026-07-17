@@ -1,0 +1,11 @@
+---
+// Footer.astro — rodapé com data de build (preenchida por /scripts/atb_footer_date.js).
+// `crumb` é o segmento do meio: "João Bragança" na home, "Calculadoras" nas calc, etc.
+interface Props {
+  crumb?: string;
+}
+const { crumb = 'João Bragança' } = Astro.props;
+---
+<footer class="private-footer">
+  © 2026 Invest Analysis · {crumb} · Atualizado em <span data-build-date>—</span>
+</footer>

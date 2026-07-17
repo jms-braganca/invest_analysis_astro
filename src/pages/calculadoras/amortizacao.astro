@@ -1,0 +1,285 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/private-calc.css';
+---
+<Layout
+  title="Amortização — SAC e Price · Calculadoras · Invest Analysis"
+  footerCrumb="Calculadoras"
+>
+  <style is:global>
+.amz-select{appearance:none;-webkit-appearance:none;border:1px solid var(--private-border,#e3e6ee);background:var(--surface,#fff);color:inherit;border-radius:10px;padding:11px 12px;font-family:inherit;font-size:14px;cursor:pointer;width:100%}
+body.theme-dark .amz-select{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+.cmc-select{appearance:none;-webkit-appearance:none;border:1px solid var(--private-border,#e3e6ee);background:var(--surface,#fff);color:inherit;border-radius:10px;padding:11px 12px;font-family:inherit;font-size:14px;cursor:pointer;width:100%}
+body.theme-dark .cmc-select{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+/* aportes */
+#amz-plans{display:flex;flex-direction:column;gap:8px;margin-bottom:6px}
+.amz-plan{background:var(--info-bg,#eef3ff);border:1px solid var(--private-border,#e3e6ee);border-radius:12px}
+body.theme-dark .amz-plan{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)}
+/* linha-resumo (estado padrão) */
+.amz-plan-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px}
+.amz-plan-sum-text{font-size:14px;color:var(--text);line-height:1.4}
+.amz-plan-sum-text strong{font-weight:700}
+.amz-plan-sum-rep{color:var(--info,#3366ff);font-weight:600}
+.amz-plan-sum-empty{color:var(--private-muted2,#a1a1a6);font-style:italic}
+.amz-plan-sum-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.amz-plan-edit-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--private-border,#e3e6ee);background:var(--surface,#fff);color:inherit;border-radius:9px;padding:7px 12px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer}
+body.theme-dark .amz-plan-edit-btn{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+.amz-plan-edit-btn svg{width:14px;height:14px}
+/* bloco de edição (oculto até clicar em Editar) */
+.amz-plan-edit{display:none;flex-direction:column;gap:10px;padding:12px}
+.amz-plan.editing .amz-plan-edit{display:flex}
+.amz-plan.editing .amz-plan-summary{display:none}
+.amz-plan-row{display:grid;gap:10px;align-items:end}
+.amz-plan-row1{grid-template-columns:1.2fr .8fr 1.1fr}
+.amz-plan-row2{grid-template-columns:.9fr .9fr 1.6fr;align-items:center}
+.amz-plan-field label{display:block;font-size:12px;color:var(--private-muted,#6e6e73);margin-bottom:5px}
+.amz-plan-field label .unit{color:var(--private-muted2,#a1a1a6);font-weight:400}
+.amz-plan-field input{width:100%;border:1px solid var(--private-border,#e3e6ee);background:var(--surface,#fff);color:inherit;border-radius:10px;padding:11px 12px;font-family:inherit;font-size:14px}
+body.theme-dark .amz-plan-field input{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+.amz-plan-note{font-size:12px;color:var(--info,#3366ff);font-weight:600;align-self:end;padding-bottom:11px}
+.amz-plan-edit-actions{display:flex;gap:10px;align-items:center;border-top:1px solid var(--private-border,#e3e6ee);padding-top:10px}
+body.theme-dark .amz-plan-edit-actions{border-color:rgba(255,255,255,.1)}
+.amz-plan-done{border:none;background:var(--info,#3366ff);color:#fff;border-radius:9px;padding:9px 18px;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.amz-plan-del-2{border:none;background:transparent;color:#D7373F;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;padding:9px 6px}
+.amz-plan-del{height:36px;width:36px;border-radius:9px;border:1px solid var(--private-border,#e3e6ee);background:transparent;color:#D7373F;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.amz-plan-del svg{width:16px;height:16px}
+.amz-add-plan{display:inline-flex;align-items:center;gap:7px;border:1px dashed var(--info,#3366ff);background:transparent;color:var(--info,#3366ff);border-radius:10px;padding:10px 16px;font-family:inherit;font-size:13.5px;font-weight:600;cursor:pointer;margin-top:4px}
+.amz-add-plan svg{width:16px;height:16px}
+@media(max-width:700px){.amz-plan-row1{grid-template-columns:1fr 1fr}.amz-plan-row2{grid-template-columns:1fr 1fr}.amz-plan-note{grid-column:1/-1;padding-bottom:0}.amz-plan-sum-text{font-size:13px}}
+/* comparativo */
+#amz-compare{background:#0a6640;color:#fff;border-radius:14px;padding:16px 20px;margin:4px 0 8px}
+body.theme-dark #amz-compare{background:#0c7a4c}
+#amz-compare .amz-cmp-lbl{font-size:11px;letter-spacing:1px;text-transform:uppercase;opacity:.8;font-weight:600}
+#amz-compare .amz-cmp-eco{font-size:26px;font-weight:700;letter-spacing:-.4px;margin:2px 0 4px}
+#amz-compare .amz-cmp-sub{font-size:12.5px;opacity:.92;line-height:1.5}
+/* tabela */
+.amz-tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ac-tbl .amz-c0{white-space:nowrap;font-weight:600}
+.ac-tbl .amz-extra{color:#0a6640;font-weight:700}
+body.theme-dark .ac-tbl .amz-extra{color:#30d158}
+.amz-view-row{display:flex;justify-content:flex-end;margin-bottom:10px}
+.amz-view-row select{max-width:200px}
+  </style>
+
+  <div slot="topbar-sub" class="atb-sub">
+    <div class="atb-sub-pages">
+      <a href="/calculadoras/troca-ativos.html" class="atb-sub-page">Troca de Ativos</a>
+      <a href="/calculadoras/limite-fgc.html" class="atb-sub-page">Limite FGC</a>
+      <a href="/calculadoras/alocacao-fgc.html" class="atb-sub-page">Alocação FGC</a>
+      <a href="/calculadoras/rentabilidade.html" class="atb-sub-page">Rentabilidade</a>
+      <a href="/calculadoras/credito-vs-invest.html" class="atb-sub-page">Crédito vs. Investimentos</a>
+      <a href="/calculadoras/cet.html" class="atb-sub-page">CET</a>
+      <a href="/calculadoras/avista-vs-prazo.html" class="atb-sub-page">À Vista vs Parcelado</a>
+      <a href="/calculadoras/amortizacao.html" class="atb-sub-page is-active">Amortização</a>
+    </div>
+    <div class="atb-kpis" aria-live="polite"><div class="atb-kpi-group is-active" data-kpi="cdi"><span class="atb-kpi-group-label">CDI</span><div class="atb-kpi"><span class="atb-kpi-label" data-month>Mai</span><span class="atb-kpi-value">0,48%</span></div><div class="atb-kpi is-secondary"><span class="atb-kpi-label">Ano</span><span class="atb-kpi-value">5,04%</span></div><div class="atb-kpi is-tertiary"><span class="atb-kpi-label">12m</span><span class="atb-kpi-value">14,83%</span></div></div><div class="atb-kpi-group" data-kpi="ibov"><span class="atb-kpi-group-label">Ibov</span><div class="atb-kpi"><span class="atb-kpi-label" data-month>Mai</span><span class="atb-kpi-value neg">-4,78%</span></div><div class="atb-kpi is-secondary"><span class="atb-kpi-label">Ano</span><span class="atb-kpi-value pos">+10,70%</span></div><div class="atb-kpi is-tertiary"><span class="atb-kpi-label">12m</span><span class="atb-kpi-value pos">+28,86%</span></div></div></div>
+  </div>
+
+
+<section class="page-hero" data-private-hero>
+  <p class="eyebrow">Calculadoras · Amortização</p>
+  <h1>Amortização de financiamento. <span class="muted">SAC e Price.</span></h1>
+  <p>Monte a tabela completa de um financiamento nos sistemas SAC ou Price, com correção monetária sobre o saldo, taxa/seguro por parcela e aportes extraordinários — reduzindo prazo ou parcela. Veja o comparativo com e sem antecipação, mês a mês.</p>
+</section>
+
+<div class="ac-page ac-page-wide">
+
+  <div class="ac-toolbar">
+    <nav class="ac-breadcrumb" aria-label="Navegação">
+      <a href="/index.html">Início</a>
+      <span class="ac-breadcrumb-sep">›</span>
+      <span class="ac-breadcrumb-current">Calculadoras</span>
+      <span class="ac-breadcrumb-sep">›</span>
+      <span class="ac-breadcrumb-current">Amortização</span>
+    </nav>
+    <button type="button" class="ac-clear-btn calc-clear-btn" id="amz-clear" title="Limpar todos os campos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      Limpar tudo
+    </button>
+  </div>
+
+  <!-- ── DADOS DO FINANCIAMENTO ─────────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Financiamento. <span class="muted-sub">Premissas básicas.</span></h2>
+    </div>
+    <div class="ac-grid-2" style="margin-bottom:14px">
+      <div class="ac-field">
+        <label>Valor do empréstimo <span class="unit">R$</span></label>
+        <input type="text" inputmode="decimal" id="amz-pv" placeholder="1.000.000,00">
+      </div>
+      <div class="ac-field">
+        <label>Data de início</label>
+        <input type="date" id="amz-date" class="amz-select">
+      </div>
+    </div>
+    <div class="ac-grid-2" style="margin-bottom:14px">
+      <div class="ac-field">
+        <label>Sistema de amortização</label>
+        <select id="amz-system" class="amz-select">
+          <option value="sac" selected>Tabela SAC — parcelas decrescentes</option>
+          <option value="price">Tabela Price — parcelas fixas</option>
+        </select>
+      </div>
+      <div class="ac-field">
+        <label>Quantidade de parcelas <span class="unit">meses</span></label>
+        <input type="text" inputmode="numeric" id="amz-n" placeholder="420">
+      </div>
+    </div>
+    <div class="ac-grid-2">
+      <div class="ac-field">
+        <label>Taxa de juros <span class="unit">%</span></label>
+        <input type="text" inputmode="decimal" id="amz-rate" placeholder="12">
+      </div>
+      <div class="ac-field">
+        <label>Período da taxa</label>
+        <select id="amz-rate-type" class="amz-select">
+          <option value="anual" selected>Anual (a.a.)</option>
+          <option value="mensal">Mensal (a.m.)</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CORREÇÃO E SEGURO ─────────────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Correção e custos. <span class="muted-sub">Opcionais.</span></h2>
+    </div>
+    <div class="ac-grid-2">
+      <div class="ac-field">
+        <label>Correção monetária <span class="unit">% a.a. — incide sobre o saldo</span></label>
+        <input type="text" inputmode="decimal" id="amz-corr" placeholder="0">
+      </div>
+      <div class="ac-field">
+        <label>Taxa / seguro por parcela <span class="unit">R$</span></label>
+        <input type="text" inputmode="decimal" id="amz-seguro" placeholder="0,00">
+      </div>
+    </div>
+  </section>
+
+  <!-- ── APORTES EXTRAORDINÁRIOS ───────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Amortizações extras. <span class="muted-sub">Aportes opcionais.</span></h2>
+    </div>
+    <p class="ac-desc">Cada aporte é aplicado logo após a parcela indicada. <strong>Reduzir prazo</strong> mantém a prestação e encurta o financiamento; <strong>reduzir parcela</strong> mantém o prazo e diminui a mensalidade. Você pode somar vários.</p>
+    <div id="amz-plans"></div>
+    <button type="button" class="amz-add-plan" id="amz-add-plan">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Adicionar aporte
+    </button>
+  </section>
+
+  <!-- ── ORÇAMENTO MENSAL FIXO ─────────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Orçamento mensal fixo. <span class="muted-sub">Teto de pagamento.</span></h2>
+    </div>
+    <p class="ac-desc">Se você tem um valor fixo todo mês para o financiamento, informe-o aqui. Em cada parcela, o que sobrar acima da prestação do fluxo (<strong>orçamento − parcela</strong>) é amortizado automaticamente, reduzindo o prazo. Combina com os aportes avulsos acima. Deixe em branco para não usar.</p>
+    <div class="ac-grid-2">
+      <div class="ac-field">
+        <label>Orçamento mensal <span class="unit">R$ — total que você paga por mês</span></label>
+        <input type="text" inputmode="decimal" id="amz-budget" placeholder="6.500,00">
+      </div>
+      <div class="ac-field">
+        <label>A partir da parcela <span class="unit">nº (padrão 1)</span></label>
+        <input type="text" inputmode="numeric" id="amz-budget-start" placeholder="1">
+      </div>
+    </div>
+    <div class="ac-disc" style="margin-top:12px">
+      Enquanto a parcela do fluxo for <strong>maior</strong> que o orçamento, não há amortização extra naquele mês — paga-se apenas a parcela. O excedente vira amortização só quando o orçamento supera a parcela. Como o pagamento mensal fica fixo, o efeito é sempre <strong>redução de prazo</strong>.
+    </div>
+  </section>
+
+  <!-- ── DESTAQUE: TOTAL A PAGAR ───────────────────────────── -->
+  <div class="ac-aporte" id="amz-dest-wrap">
+    <div class="lbl">Total a pagar</div>
+    <div class="val" id="amz-dest-val">—</div>
+    <div class="sub" id="amz-dest-sub">Preencha os campos acima para simular.</div>
+  </div>
+
+  <!-- ── COMPARATIVO COM/SEM ANTECIPAÇÃO ───────────────────── -->
+  <div id="amz-compare" style="display:none">
+    <div class="amz-cmp-lbl">Economia com a antecipação</div>
+    <div class="amz-cmp-eco">—</div>
+    <div class="amz-cmp-sub"></div>
+  </div>
+
+  <!-- ── KPIs ──────────────────────────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Resumo do resultado. <span class="muted-sub">Componentes do custo.</span></h2>
+    </div>
+    <div class="ac-grid-3 ac-grid-divided">
+      <div class="ac-metric"><span class="lbl">Valor emprestado</span><span class="val sm" id="amz-pv-val">—</span></div>
+      <div class="ac-metric"><span class="lbl">Total de juros</span><span class="val sm red" id="amz-juros-val">—</span></div>
+      <div class="ac-metric"><span class="lbl">Correção paga</span><span class="val sm red" id="amz-corr-val">—</span></div>
+    </div>
+    <div class="ac-grid-3 ac-grid-divided" style="margin-top:16px">
+      <div class="ac-metric"><span class="lbl">Taxas / seguros</span><span class="val sm red" id="amz-seg-val">—</span></div>
+      <div class="ac-metric"><span class="lbl">Total amortizado (aportes)</span><span class="val sm blu" id="amz-amort-val">—</span></div>
+      <div class="ac-metric"><span class="lbl">Quantidade de parcelas</span><span class="val sm" id="amz-qtd-val">—</span></div>
+    </div>
+    <div class="ac-grid-3 ac-grid-divided" style="margin-top:16px">
+      <div class="ac-metric"><span class="lbl">Valor da 1ª parcela</span><span class="val sm" id="amz-prim-val">—</span></div>
+      <div class="ac-metric"><span class="lbl">Valor da última parcela</span><span class="val sm" id="amz-ult-val">—</span></div>
+      <div class="ac-metric"><span class="lbl">Data da última parcela</span><span class="val sm blu" id="amz-data-val">—</span></div>
+    </div>
+  </section>
+
+  <!-- ── TABELA DETALHADA ──────────────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Tabela de amortização. <span class="muted-sub">Mês a mês.</span></h2>
+    </div>
+    <div class="amz-view-row">
+      <select id="amz-view" class="amz-select">
+        <option value="mes" selected>Visão mensal</option>
+        <option value="ano">Visão anual</option>
+      </select>
+    </div>
+    <div class="ac-tbl-wrap amz-tbl-wrap">
+      <table class="ac-tbl">
+        <thead>
+          <tr>
+            <th>Mês</th><th>Dívida</th><th>Correção</th><th>Dívida corrigida</th>
+            <th>Juros</th><th>Amort.</th><th>Seguro</th><th>Parcela</th><th>Aporte</th><th>Saldo</th>
+          </tr>
+        </thead>
+        <tbody id="amz-tbody">
+          <tr><td colspan="10" style="text-align:center;padding:20px;color:var(--private-muted2)">Preencha os dados acima.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="ac-disc ok" style="margin-top:14px">
+    <strong>Como funciona:</strong> a cada mês a correção monetária incide sobre o saldo devedor; os juros são calculados sobre o saldo já corrigido. No <strong>SAC</strong> a amortização é constante (saldo ÷ parcelas restantes) e a parcela cai; no <strong>Price</strong> a parcela é recalculada para ficar fixa sobre o saldo corrigido. Aportes reduzindo prazo tendem a economizar muito mais juros do que reduzindo parcela.
+  </div>
+
+  <div class="ac-data-tag">
+    Método: SAC e Price com correção sobre o saldo · taxa anual convertida por capitalização composta — Atualizado em 13/06/2026
+  </div>
+
+</div>
+
+<div class="ac-pdf-bar" id="amz-pdf-bar">
+  <div class="left">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="12" y1="18" x2="12" y2="12"/>
+      <polyline points="9 15 12 12 15 15"/>
+    </svg>
+    <span class="title">Salvar simulação em PDF</span>
+  </div>
+  <button type="button" class="ac-pdf-btn" id="amz-pdf-btn">Gerar PDF</button>
+</div>
+
+  <Fragment slot="scripts">
+    <script is:inline src="/scripts/utils.js"></script>
+    <script is:inline src="/scripts/calc-common.js"></script>
+    <script is:inline src="/scripts/calc-amortizacao.js"></script>
+  </Fragment>
+</Layout>

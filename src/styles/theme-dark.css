@@ -1,0 +1,1800 @@
+/* ============================================================
+   theme-dark.css — Tema dark Apple-like aplicável a todo o site.
+
+   Ativação:
+     • body.theme-dark              → tema dark gerenciado pelo toggle
+     • body.theme-dark-ipb          → flags exclusivas da página IPB
+                                      (selo, esconde col instituição/checkbox).
+                                      A página IPB recebe AMBAS as classes
+                                      ('theme-dark theme-dark-ipb') pra herdar
+                                      todos os overrides genéricos.
+
+   Importar SEMPRE depois de theme.css + private-topbar.css + CSS específico
+   da página. Como o seletor é só `body.theme-dark X`, a ordem só importa
+   se outro seletor com mesma especificidade vier depois (não acontece).
+
+   Estratégia: 70% dos overrides são via CSS variables (--bg, --surface,
+   --private-text, etc.). Páginas que usam var() ficam dark automaticamente.
+   O resto é override pontual de cores hardcoded por seletor.
+   ============================================================ */
+
+
+/* ── PART 1 — Base tokens (theme.css) ───────────────────────── */
+body.theme-dark {
+  /* Backgrounds em camadas. Preto puro no fundo, surfaces sutilmente
+     elevadas. Inspirado em macOS Sonoma dark + iOS settings. */
+  --bg:        #000000;
+  --surface:   #141414;
+  --surface2:  #1c1c1e;
+  --surface3:  #232325;
+
+  --border:    rgba(255,255,255,0.08);
+  --border-s:  rgba(255,255,255,0.14);
+  --divider:   rgba(255,255,255,0.06);
+
+  /* Mantém a hierarquia text/muted/muted2, mas no espectro escuro. */
+  --text:      #f5f5f7;
+  --muted:     #a1a1a6;
+  --muted2:    #6e6e73;
+
+  /* Navy/azul institucional fica menos saturado em dark pra não brilhar. */
+  --navy:      #5B7FFF;    /* azul iOS dark, substituto do #002060 do light */
+  --navy2:     #7090FF;
+  --navy-lt:   rgba(91,127,255,0.16);
+
+  /* Status — versões com bg translúcido pra ficarem legíveis no dark. */
+  --pos:       #30D158;
+  --pos-bg:    rgba(48,209,88,0.14);
+  --neg:       #FF453A;
+  --neg-bg:    rgba(255,69,58,0.14);
+  --warn:      #FF9F0A;
+  --warn-bg:   rgba(255,159,10,0.14);
+  --info:      #BF5AF2;
+  --info-bg:   rgba(191,90,242,0.14);
+
+  --itau-orange: #FF8A3D;
+
+  /* Sombras: em dark, "sombra" vira halo escuro/profundidade. */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.5);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.55);
+  --shadow-lg: 0 18px 48px rgba(0,0,0,0.65);
+}
+
+
+/* ── PART 2 — Private tokens (private-topbar.css) ──────────── */
+body.theme-dark {
+  --private-bg:           #000000;
+  --private-surface:      #141414;
+  --private-text:         #f5f5f7;
+  --private-muted:        #a1a1a6;
+  --private-muted2:       #6e6e73;
+  --private-border:       rgba(255,255,255,0.10);
+  --private-divider:      rgba(255,255,255,0.06);
+  /* --private-blue é consumido inline pelo paintRange (JS) do slider,
+     pelo toggle "ON" e pelos focus rings. No dark, viramos esse "azul"
+     pra laranja IPB pra unificar o sistema visual (mesmo tom do CTA
+     "Sobre" e do botão "Limpar filtros"). */
+  --private-blue:         #FF8A3D;
+  --private-blue-h:       #FFA15E;
+  --private-glass-bg:     rgba(20,20,20,0.72);
+  --private-glass-bg-h:   rgba(28,28,30,0.88);
+  --private-glass-border: rgba(255,255,255,0.10);
+  --private-shadow-sm:    0 1px 2px rgba(0,0,0,0.5);
+  --private-shadow-md:    0 8px 24px rgba(0,0,0,0.55);
+  --private-shadow-lg:    0 18px 48px rgba(0,0,0,0.65);
+}
+
+
+/* ── PART 3 — Globais ──────────────────────────────────────── */
+body.theme-dark {
+  background: #000;
+  color: #f5f5f7;
+  color-scheme: dark;
+}
+body.theme-dark a { color: inherit; }
+body.theme-dark ::selection { background: rgba(255,138,61,0.35); color: #fff; }
+
+/* Scrollbar Apple-style */
+body.theme-dark ::-webkit-scrollbar { width: 10px; height: 10px; }
+body.theme-dark ::-webkit-scrollbar-track { background: transparent; }
+body.theme-dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.10); border-radius: 5px; }
+body.theme-dark ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.18); }
+
+/* Transição suave quando troca tema. */
+body { transition: background-color .25s ease, color .25s ease; }
+
+
+/* ── PART 4 — Topbar (private-topbar.css) ─────────────────── */
+body.theme-dark .private-topbar {
+  background: rgba(20,20,20,0.72);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border-bottom: .5px solid rgba(255,255,255,0.08);
+}
+body.theme-dark .atb-link,
+body.theme-dark .atb-link-mega { color: #f5f5f7; }
+body.theme-dark .atb-link:hover,
+body.theme-dark .atb-link-mega:hover { color: #fff; opacity: 1; }
+body.theme-dark .atb-link.is-active,
+body.theme-dark .atb-link-mega.is-active { color: #fff; }
+body.theme-dark .atb-cta {
+  background: #FF8A3D;
+  color: #1d1d1f;
+  border-color: transparent;
+}
+body.theme-dark .atb-cta:hover { background: #FFA15E; }
+body.theme-dark .atb-hamburger { color: #f5f5f7; }
+body.theme-dark .atb-hamburger:hover { background: rgba(255,255,255,0.08); }
+
+body.theme-dark .atb-mega-stage,
+body.theme-dark .atb-mega {
+  background: rgba(20,20,20,0.92);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark .atb-mega-eyebrow { color: #a1a1a6; }
+body.theme-dark .atb-mega-link {
+  color: #f5f5f7;
+  border-bottom-color: rgba(255,255,255,0.06);
+}
+body.theme-dark .atb-mega-link:hover { color: #FF8A3D; }
+
+body.theme-dark .atb-sub {
+  background: rgba(20,20,20,0.72);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border-top: .5px solid rgba(255,255,255,0.06);
+}
+body.theme-dark .atb-sub-page { color: #a1a1a6; background: transparent; }
+body.theme-dark .atb-sub-page:hover { color: #f5f5f7; }
+body.theme-dark .atb-sub-page.is-active { color: #fff; background: rgba(255,255,255,0.08); }
+
+body.theme-dark .atb-kpi-group-label { color: #6e6e73; }
+body.theme-dark .atb-kpi-label { color: #a1a1a6; }
+body.theme-dark .atb-kpi-value { color: #f5f5f7; }
+body.theme-dark .atb-kpi-group { border-color: rgba(255,255,255,0.06); }
+
+body.theme-dark .atb-mobile-sub,
+body.theme-dark .atb-mobile-nav {
+  background: rgba(20,20,20,0.96);
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark .atb-mobile-sub-link { color: #f5f5f7; border-bottom-color: rgba(255,255,255,0.06); }
+
+
+/* ── Toggle button (sol/lua) — injetado pelo theme-toggle.js ──
+   Posição: primeiro filho da .atb-nav, à esquerda do link "Início".
+   Margin: zero à esquerda (cola no extremo), 14px à direita pra separar
+   visualmente do primeiro link da navegação. */
+.atb-theme-toggle {
+  appearance: none;
+  background: rgba(0,0,0,0.04);
+  border: .5px solid rgba(0,0,0,0.08);
+  color: #1d1d1f;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 14px 0 0;
+  padding: 0;
+  cursor: pointer;
+  transition: background .18s ease, color .18s ease, border-color .18s ease, transform .25s ease;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+.atb-theme-toggle:hover { background: rgba(0,0,0,0.08); transform: rotate(15deg); }
+.atb-theme-toggle svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.atb-theme-toggle .icon-sun { display: none; }
+.atb-theme-toggle .icon-moon { display: block; }
+body.theme-dark .atb-theme-toggle {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.10);
+  color: #FF8A3D;
+}
+body.theme-dark .atb-theme-toggle:hover { background: rgba(255,255,255,0.10); }
+body.theme-dark .atb-theme-toggle .icon-sun { display: block; }
+body.theme-dark .atb-theme-toggle .icon-moon { display: none; }
+/* Em IPB o toggle é desativado (sempre dark) — fica como indicador apenas. */
+body.theme-dark-ipb .atb-theme-toggle { cursor: default; opacity: 0.6; }
+body.theme-dark-ipb .atb-theme-toggle:hover { transform: none; background: rgba(255,255,255,0.06); }
+
+
+/* ── PART 5 — Hero + utilitários compartilhados ────────────── */
+body.theme-dark.private-style .page-hero h1 { color: #f5f5f7; }
+body.theme-dark.private-style .page-hero h1 .muted { color: #6e6e73; }
+body.theme-dark.private-style .page-hero p { color: #a1a1a6; }
+body.theme-dark.private-style .page-hero .eyebrow { color: #FF8A3D; }
+
+body.theme-dark .eyebrow { color: #FF8A3D; }
+body.theme-dark .serif { color: #f5f5f7; }
+body.theme-dark .disclaimer { color: #6e6e73; }
+
+body.theme-dark .pill-navy   { color: #7090FF; background: rgba(91,127,255,0.16); }
+body.theme-dark .pill-green  { color: #30D158; background: rgba(48,209,88,0.14); }
+body.theme-dark .pill-warn   { color: #FF9F0A; background: rgba(255,159,10,0.14); }
+body.theme-dark .pill-purple { color: #BF5AF2; background: rgba(191,90,242,0.14); }
+
+/* Footer comum */
+body.theme-dark .private-footer {
+  background: transparent;
+  color: #6e6e73;
+  border-top: .5px solid rgba(255,255,255,0.06);
+}
+
+
+/* ── PART 6 — Fundos / Previdência (ap-* — private-fundos.css) ── */
+body.theme-dark .ap-section-title { color: #f5f5f7; }
+body.theme-dark .ap-section-title .muted { color: #6e6e73; }
+
+body.theme-dark .ap-search {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark .ap-search:focus-within {
+  border-color: rgba(255,138,61,0.6);
+  box-shadow: 0 0 0 4px rgba(255,138,61,0.16);
+}
+body.theme-dark .ap-search input { background: transparent; color: #f5f5f7; }
+body.theme-dark .ap-search input::placeholder { color: #6e6e73; }
+body.theme-dark .ap-search svg { color: #6e6e73; }
+body.theme-dark .ap-search-count { color: #a1a1a6; }
+body.theme-dark .ap-search-clear { color: #a1a1a6; }
+body.theme-dark .ap-search-clear:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+body.theme-dark .ap-filters-toggle {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  color: #f5f5f7;
+}
+body.theme-dark .ap-filters-toggle:hover {
+  background: #232325;
+  border-color: rgba(255,255,255,0.14);
+}
+body.theme-dark .ap-filters-toggle-label { color: #f5f5f7; }
+body.theme-dark .ap-filters-active-count { color: #a1a1a6; }
+body.theme-dark .ap-filters-icon { color: #a1a1a6; }
+body.theme-dark .ap-filters-caret { border-top-color: #6e6e73; }
+body.theme-dark .ap-filters-body { background: transparent; }
+
+body.theme-dark .ap-segmented {
+  background: #232325;
+  border: .5px solid rgba(255,255,255,0.06);
+}
+body.theme-dark .ap-segmented button { color: #a1a1a6; background: transparent; }
+body.theme-dark .ap-segmented button:hover { color: #f5f5f7; }
+body.theme-dark .ap-segmented button.is-selected {
+  background: #1c1c1e;
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+body.theme-dark .ap-slider {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: none;
+}
+body.theme-dark .ap-slider-label { color: #f5f5f7; }
+body.theme-dark .ap-slider-value { color: #FF8A3D; font-weight: 600; }
+body.theme-dark .ap-slider-ticks { color: #6e6e73; }
+body.theme-dark .ap-slider input[type=range] { background: #2c2c2e; }
+body.theme-dark .ap-slider input[type=range]::-webkit-slider-thumb {
+  background: #ffffff;
+  border: 2px solid #FF8A3D;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+body.theme-dark .ap-slider input[type=range]::-moz-range-thumb {
+  background: #ffffff;
+  border: 2px solid #FF8A3D;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+body.theme-dark .ap-select-pill {
+  background-color: #2c2c2e;
+  color: #f5f5f7;
+  border: .5px solid rgba(255,255,255,0.10);
+}
+body.theme-dark .ap-select-pill:hover { background-color: #3a3a3c; }
+
+body.theme-dark .ap-toggle {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark .ap-toggle:hover { background: #232325; border-color: rgba(255,255,255,0.14); }
+body.theme-dark .ap-toggle-label { color: #f5f5f7; }
+body.theme-dark .ap-toggle-sub { color: #a1a1a6; }
+body.theme-dark .ap-toggle-switch::before {
+  background: #39393b;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+body.theme-dark .ap-toggle-switch:has(input:checked)::before { background: #FF8A3D; }
+body.theme-dark .ap-toggle-switch::after {
+  background: #f5f5f7;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.6), 0 1px 1px rgba(0,0,0,0.4);
+}
+body.theme-dark .ap-toggle-switch:has(input:focus-visible)::before {
+  outline: 2px solid #FF8A3D;
+  outline-offset: 2px;
+}
+
+body.theme-dark .ap-reset { color: #FF8A3D; }
+body.theme-dark .ap-reset:hover { color: #FFA15E; }
+
+/* Class-rail (sidebar flutuante esquerda) */
+body.theme-dark .class-rail {
+  background: rgba(20,20,20,0.65);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border: .5px solid rgba(255,255,255,0.08);
+  box-shadow: 0 18px 48px rgba(0,0,0,0.65), 0 2px 6px rgba(0,0,0,0.4);
+}
+body.theme-dark .class-rail a { color: #a1a1a6; }
+body.theme-dark .class-rail a:hover { background: rgba(255,255,255,0.06); color: #f5f5f7; }
+body.theme-dark .class-rail a.active { background: #FF8A3D; color: #0a0a0a; }
+
+/* Class block (acordeão) */
+body.theme-dark .ap-class-block { background: transparent; box-shadow: none; }
+body.theme-dark .ap-class-block .ap-class-head {
+  background: #1c1c1e;
+  border: .5px solid rgba(255,255,255,0.08);
+}
+body.theme-dark .ap-class-block .ap-class-head:hover { background: #232325; }
+body.theme-dark .ap-class-block.is-open .ap-class-head { border-bottom-color: rgba(255,255,255,0.04); }
+body.theme-dark .ap-class-block .ap-class-title h3 { color: #f5f5f7; }
+body.theme-dark .ap-class-count {
+  background: #2c2c2e;
+  color: #a1a1a6;
+  border: .5px solid rgba(255,255,255,0.06);
+}
+body.theme-dark .ap-class-caret { border-top-color: #6e6e73; }
+body.theme-dark .ap-class-body {
+  background: #1c1c1e;
+  border: .5px solid rgba(255,255,255,0.08);
+  border-top: none;
+}
+
+/* "Carregar mais" (paginação) — dark. Cor do texto herda --private-blue
+   (laranja no dark) via var(); só o fundo/borda precisam de override. */
+body.theme-dark .ap-load-more {
+  background: #1c1c1e;
+  border-top-color: rgba(255,255,255,0.08);
+}
+body.theme-dark .ap-load-more:hover { background: #232325; }
+
+/* Tabelas */
+body.theme-dark .ap-table { background: transparent; }
+body.theme-dark .ap-table thead th,
+body.theme-dark .ap-class-body .ap-table thead th {
+  background: #232325;
+  color: #a1a1a6;
+  border-bottom: .5px solid rgba(255,255,255,0.10);
+}
+body.theme-dark .ap-table thead th.sortable:hover { color: #fff; }
+body.theme-dark .ap-table thead th .arrow { color: #6e6e73; }
+body.theme-dark .ap-table thead th .arrow.is-asc,
+body.theme-dark .ap-table thead th .arrow.is-desc { color: #FF8A3D; }
+
+body.theme-dark .ap-table tbody td { border-bottom: .5px solid rgba(255,255,255,0.05); color: #f5f5f7; }
+body.theme-dark .ap-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+body.theme-dark .ap-table tbody tr.is-selected { background: rgba(255,138,61,0.08); }
+body.theme-dark .ap-table tbody tr.is-selected:hover { background: rgba(255,138,61,0.12); }
+
+body.theme-dark .ap-fund-name { color: #f5f5f7; }
+body.theme-dark .ap-fund-cnpj { color: #6e6e73; }
+body.theme-dark .ap-fund-prazo { color: #a1a1a6; }
+body.theme-dark .ap-muted { color: #6e6e73; }
+
+body.theme-dark .ap-fund-status.open    { background: rgba(48,209,88,0.14);   color: #30D158; }
+body.theme-dark .ap-fund-status.closed  { background: rgba(255,69,58,0.14);   color: #FF453A; }
+body.theme-dark .ap-fund-status.paused  { background: rgba(255,159,10,0.14);  color: #FF9F0A; }
+body.theme-dark .ap-fund-status.warn    { background: rgba(255,159,10,0.14);  color: #FF9F0A; }
+
+body.theme-dark .ap-num.pos    { color: #30D158; }
+body.theme-dark .ap-num.neg    { color: #FF453A; }
+body.theme-dark .ap-num.neutral { color: #a1a1a6; }
+body.theme-dark .ap-num-period { color: #6e6e73; }
+
+/* Pills %CDI/pp: regras canônicas estão na PART 15 com !important
+   (precisa vencer .ap-cdi-pill { background: var(--private-divider) } base). */
+
+body.theme-dark .cap-pos { color: #30D158; }
+body.theme-dark .cap-neg { color: #FF453A; }
+
+body.theme-dark .ap-fund-lamina {
+  background: #232325;
+  color: #a1a1a6;
+  border: .5px solid rgba(255,255,255,0.08);
+}
+body.theme-dark .ap-fund-lamina:hover { background: #2c2c2e; color: #fff; }
+body.theme-dark .ap-fund-lamina.is-vgbl { color: #BF5AF2; }
+body.theme-dark .ap-fund-lamina.is-pgbl { color: #0A84FF; }
+
+/* Floating bar (comparador — visível em fundos.html/previdencia.html) */
+body.theme-dark .ap-floating-bar {
+  background: rgba(20,20,20,0.92);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: 0 18px 48px rgba(0,0,0,0.65);
+}
+body.theme-dark .ap-fb-count { color: #f5f5f7; }
+body.theme-dark .ap-fb-clear { color: #a1a1a6; }
+body.theme-dark .ap-fb-clear:hover { color: #fff; }
+body.theme-dark .ap-fb-cta { background: #FF8A3D; color: #0a0a0a; }
+body.theme-dark .ap-fb-cta:hover { background: #FFA15E; }
+
+/* Empty-state (instituição sem previdência) */
+body.theme-dark .inst-empty-state { color: #a1a1a6; }
+body.theme-dark .inst-empty-state-title { color: #f5f5f7; }
+body.theme-dark .hourglass-spin { color: #FF8A3D; }
+
+/* Loading */
+body.theme-dark .dyn-loading { color: #6e6e73; }
+body.theme-dark .dyn-loading::after { border-color: #2c2c2e; border-top-color: #FF8A3D; }
+
+/* Switcher de instituição (botões grandes com logo dos bancos)
+   ── Estratégia: logos escuras (BTG/Inter/XP/Nu) precisam de fundo CLARO
+   pra ficarem legíveis em dark. Itaú e Todos têm seus próprios bgs. */
+body.theme-dark .inst-switcher {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+body.theme-dark .inst-btn-todos { background: #2c2c2e; border-color: rgba(255,255,255,0.10); }
+body.theme-dark .inst-btn-todos .inst-fallback { color: #f5f5f7; }
+
+/* Itaú: navy escuro + logo branca (logo já legível) */
+body.theme-dark .inst-btn-itau { background: #002060; border-color: rgba(255,255,255,0.10); }
+body.theme-dark .inst-btn-itau .inst-fallback { color: #fff; }
+
+/* BTG, XP, Inter, Nu: logos escuras/coloridas — precisam de fundo claro */
+body.theme-dark .inst-btn-btg,
+body.theme-dark .inst-btn-xp,
+body.theme-dark .inst-btn-nu,
+body.theme-dark .inst-btn-inter {
+  background: #f5f5f7;
+  border-color: rgba(255,255,255,0.14);
+}
+body.theme-dark .inst-btn-btg .inst-fallback,
+body.theme-dark .inst-btn-xp .inst-fallback,
+body.theme-dark .inst-btn-nu .inst-fallback,
+body.theme-dark .inst-btn-inter .inst-fallback { color: #002060; }
+
+/* Estado inativo: leve grayscale pra dar dica visual sem perder legibilidade */
+body.theme-dark .inst-btn:not(.is-active) { filter: grayscale(.4) brightness(.92); opacity: .85; }
+body.theme-dark .inst-btn:hover:not(.is-active) { filter: none; opacity: 1; }
+
+/* Estado ativo: borda laranja IPB + halo */
+body.theme-dark .inst-btn.is-active {
+  border-color: #FF8A3D;
+  box-shadow: 0 4px 14px rgba(255,138,61,0.36);
+  filter: none;
+  opacity: 1;
+}
+
+/* ── Inst pills nas tabelas (coluna "Instituição" do modo "Todos") ──
+   Cada banco mantém sua identidade visual; ajustes mínimos pra
+   legibilidade no fundo escuro da tabela. */
+body.theme-dark .inst-pill {
+  background: #2c2c2e;
+  color: #a1a1a6;
+  border-color: rgba(255,255,255,0.06);
+}
+body.theme-dark .inst-pill-itau {
+  background: #002060;
+  color: #fff;
+  border-color: #002060;
+}
+body.theme-dark .inst-pill-btg {
+  /* No light: bg branco / texto navy. No dark: fundo navy translúcido +
+     texto azul claro pra distinguir do Itaú (que é navy sólido). */
+  background: rgba(91,127,255,0.18);
+  color: #91A6FF;
+  border-color: rgba(91,127,255,0.32);
+}
+body.theme-dark .inst-pill-xp {
+  background: #FFD200;
+  color: #1a1a1a;
+  border-color: #FFD200;
+}
+body.theme-dark .inst-pill-inter {
+  background: #FF7A00;
+  color: #fff;
+  border-color: #FF7A00;
+}
+body.theme-dark .inst-pill-nu {
+  background: #8A05BE;
+  color: #fff;
+  border-color: #8A05BE;
+}
+
+
+/* ── PART 7 — Comparação + Correlação (dashboard.css, private-comparacao.css, private-correlacao.css) ── */
+body.theme-dark .dashboard,
+body.theme-dark .dashboard-wide { background: transparent; color: #f5f5f7; }
+
+body.theme-dark .panel,
+body.theme-dark .card,
+body.theme-dark .ds-panel {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  color: #f5f5f7;
+  box-shadow: none;
+}
+
+body.theme-dark .panel h2,
+body.theme-dark .panel h3,
+body.theme-dark .card h2,
+body.theme-dark .card h3 { color: #f5f5f7; }
+
+/* Heatmap de correlação */
+body.theme-dark .heat-th { color: #a1a1a6; border-color: rgba(255,255,255,0.06); background: #232325; }
+body.theme-dark .heat-td { border-color: rgba(255,255,255,0.04); color: #f5f5f7; }
+body.theme-dark .heat-table { background: transparent; }
+
+/* Compare-select (seletor de fundos da página de comparação) */
+body.theme-dark .cs-container,
+body.theme-dark .cs-modal {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  color: #f5f5f7;
+}
+body.theme-dark .cs-search input {
+  background: #232325;
+  color: #f5f5f7;
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark .cs-search input::placeholder { color: #6e6e73; }
+body.theme-dark .cs-row { border-bottom-color: rgba(255,255,255,0.04); }
+body.theme-dark .cs-row:hover { background: rgba(255,255,255,0.04); }
+body.theme-dark .cs-row.is-selected { background: rgba(255,138,61,0.10); }
+
+/* Botões / inputs comuns nas páginas de dashboard */
+body.theme-dark input[type="text"],
+body.theme-dark input[type="number"],
+body.theme-dark input[type="search"],
+body.theme-dark select,
+body.theme-dark textarea {
+  background: #1c1c1e;
+  color: #f5f5f7;
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark input[type="text"]::placeholder,
+body.theme-dark input[type="number"]::placeholder,
+body.theme-dark input[type="search"]::placeholder,
+body.theme-dark textarea::placeholder { color: #6e6e73; }
+body.theme-dark button:not(.atb-theme-toggle):not(.atb-cta):not(.atb-hamburger):not(.atb-link-mega):not(.atb-mobile-sub-link):not(.ap-segmented button):not(.ap-fb-cta):not(.ap-fb-clear):not(.ap-filters-toggle):not(.ap-reset):not(.inst-btn):not(.ap-load-more) {
+  background: #2c2c2e;
+  color: #f5f5f7;
+  border-color: rgba(255,255,255,0.08);
+}
+
+
+/* ── PART 8 — Portfolio (portfolio.css, private-portfolio.css) ── */
+body.theme-dark .pf-page,
+body.theme-dark .portfolio-page,
+body.theme-dark .pf-container { background: transparent; }
+
+body.theme-dark .pf-card,
+body.theme-dark .pf-section,
+body.theme-dark .pf-block {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  color: #f5f5f7;
+  box-shadow: none;
+}
+
+body.theme-dark .pf-table thead th { background: #232325; color: #a1a1a6; border-bottom-color: rgba(255,255,255,0.10); }
+body.theme-dark .pf-table tbody td { border-bottom-color: rgba(255,255,255,0.05); color: #f5f5f7; }
+body.theme-dark .pf-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+body.theme-dark .pf-row-detail { background: #141414; }
+body.theme-dark .pf-detail-key { color: #6e6e73; }
+body.theme-dark .pf-detail-val { color: #f5f5f7; }
+
+
+/* ── PART 9 — Sobre (sobre.css, private-sobre.css, sidebar-sobre.css) ── */
+body.theme-dark .sobre-hero,
+body.theme-dark .sobre-section,
+body.theme-dark .sobre-card,
+body.theme-dark .sobre-block {
+  background: transparent;
+  color: #f5f5f7;
+}
+body.theme-dark .sobre-section h2,
+body.theme-dark .sobre-section h3 { color: #f5f5f7; }
+body.theme-dark .sobre-section p { color: #a1a1a6; }
+
+body.theme-dark .sobre-card,
+body.theme-dark .sobre-block.has-bg {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+}
+
+body.theme-dark .sidebar-sobre {
+  background: rgba(20,20,20,0.65);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark .sidebar-sobre a { color: #a1a1a6; }
+body.theme-dark .sidebar-sobre a:hover { background: rgba(255,255,255,0.06); color: #f5f5f7; }
+body.theme-dark .sidebar-sobre a.active { background: #FF8A3D; color: #0a0a0a; }
+
+/* Hero meta pills (LinkedIn + CFP/CEA).
+   No light, .sb-hero-meta a usa background:var(--private-text) que vira
+   #f5f5f7 (branco) no dark → ficava ilegível com text branco em cima.
+   Aqui invertemos: bg surface escuro + texto claro, hover laranja. */
+body.theme-dark .sb-hero-meta a,
+body.theme-dark .sobre-hero-meta a {
+  background: #1c1c1e;
+  color: #f5f5f7;
+  border: 0.5px solid rgba(255,255,255,0.12);
+}
+body.theme-dark .sb-hero-meta a:hover,
+body.theme-dark .sobre-hero-meta a:hover {
+  background: #FF8A3D;
+  color: #0a0a0a;
+  border-color: transparent;
+}
+body.theme-dark .sb-hero-badge,
+body.theme-dark .sobre-hero-badge {
+  background: rgba(255,138,61,0.14);
+  color: #FF8A3D;
+}
+
+
+/* ── PART 10 — Landing/Home (landing.css) ──────────────────── */
+body.theme-dark .home-card,
+body.theme-dark .home-tile {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  color: #f5f5f7;
+  box-shadow: none;
+}
+body.theme-dark .home-card:hover,
+body.theme-dark .home-tile:hover {
+  background: #232325;
+  border-color: rgba(255,255,255,0.14);
+  transform: translateY(-2px);
+}
+body.theme-dark .home-card h3,
+body.theme-dark .home-tile h3 { color: #f5f5f7; }
+body.theme-dark .home-card p,
+body.theme-dark .home-tile p { color: #a1a1a6; }
+body.theme-dark .home-card-foot,
+body.theme-dark .home-tile-foot { color: #6e6e73; border-top-color: rgba(255,255,255,0.06); }
+body.theme-dark .home-card-foot .count,
+body.theme-dark .home-tile-foot .count { color: #FF8A3D; }
+
+body.theme-dark .landing-hero h1 { color: #f5f5f7; }
+body.theme-dark .landing-hero p  { color: #a1a1a6; }
+
+
+/* ── PART 11 — Calculadoras (calc-common.css, calc-*.css, private-calc.css) ── */
+body.theme-dark .calc-container,
+body.theme-dark .calc-page,
+body.theme-dark .calc-wrap { background: transparent; }
+
+body.theme-dark .calc-card,
+body.theme-dark .calc-panel,
+body.theme-dark .calc-section,
+body.theme-dark .calc-result,
+body.theme-dark .calc-input-group {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  color: #f5f5f7;
+  box-shadow: none;
+}
+body.theme-dark .calc-label,
+body.theme-dark .calc-input-group label { color: #a1a1a6; }
+body.theme-dark .calc-help,
+body.theme-dark .calc-sub { color: #6e6e73; }
+
+body.theme-dark .calc-input,
+body.theme-dark .calc-select {
+  background: #232325;
+  color: #f5f5f7;
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark .calc-input:focus,
+body.theme-dark .calc-select:focus {
+  border-color: rgba(255,138,61,0.6);
+  box-shadow: 0 0 0 3px rgba(255,138,61,0.16);
+}
+
+body.theme-dark .calc-result-value { color: #FF8A3D; }
+body.theme-dark .calc-result-label { color: #a1a1a6; }
+
+body.theme-dark .calc-cta,
+body.theme-dark .calc-btn-primary {
+  background: #FF8A3D;
+  color: #0a0a0a;
+  border-color: transparent;
+}
+body.theme-dark .calc-cta:hover,
+body.theme-dark .calc-btn-primary:hover { background: #FFA15E; }
+
+body.theme-dark .calc-table thead th { background: #232325; color: #a1a1a6; }
+body.theme-dark .calc-table tbody td { color: #f5f5f7; border-color: rgba(255,255,255,0.05); }
+
+
+/* ── PART 12 — Polish / sidebar genérico / extras ─────────── */
+body.theme-dark .sidebar {
+  background: rgba(20,20,20,0.65);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark .sidebar a { color: #a1a1a6; }
+body.theme-dark .sidebar a:hover { background: rgba(255,255,255,0.06); color: #f5f5f7; }
+body.theme-dark .sidebar a.active { background: rgba(255,138,61,0.16); color: #FF8A3D; }
+
+
+/* ── PART 13 — IPB-only (theme-dark-ipb apenas) ──────────── */
+/* Selo "Itaú Private Bank" embaixo do hero */
+body.theme-dark-ipb .ipb-mark {
+  display: flex;
+  justify-content: center;
+  margin: 4px 0 32px;
+}
+body.theme-dark-ipb .ipb-mark-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 18px;
+  background: rgba(28,28,30,0.6);
+  border: .5px solid rgba(255,255,255,0.10);
+  border-radius: 999px;
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #a1a1a6;
+}
+body.theme-dark-ipb .ipb-mark-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #FF8A3D;
+  box-shadow: 0 0 0 4px rgba(255,138,61,0.16);
+}
+
+/* IPB esconde coluna de instituição (todos são IPB) e checkbox (sem comparador) */
+body.theme-dark-ipb .ap-inst-th,
+body.theme-dark-ipb .ap-inst-cell { display: none; }
+body.theme-dark-ipb .ap-th-select,
+body.theme-dark-ipb .ap-td-select { display: none; }
+
+
+/* ═════════════════════════════════════════════════════════════
+   PART 14 — Selectors REAIS das páginas internas
+   Cobre o que a PART 1 (variables) não cobre porque tem cores
+   hardcoded (#fff, #F5F5F7, #FFF8E6, etc.) ou pills coloridas
+   que precisam de versão dark legível.
+   ═════════════════════════════════════════════════════════════ */
+
+/* ── LANDING (index.html / landing.css) ───────────────────── */
+/* .nav-card e .hero já usam var(--surface)/var(--text) — herdam.
+   Polish específico: count em laranja, ícones de área. */
+body.theme-dark .nav-card-count { color: #FF8A3D; }
+body.theme-dark .nav-card-icon.area-fundos { background: rgba(91,127,255,0.16); color: #7090FF; }
+body.theme-dark .nav-card-icon.area-prev   { background: rgba(48,209,88,0.14);  color: #30D158; }
+body.theme-dark .nav-card-icon.area-corr   { background: rgba(255,159,10,0.14); color: #FF9F0A; }
+body.theme-dark .nav-card-icon.area-calc   { background: rgba(191,90,242,0.14); color: #BF5AF2; }
+body.theme-dark .nav-card-icon.area-comp,
+body.theme-dark .nav-card-icon.area-portfolio {
+  /* mantém o gradient roxo — funciona bem em dark */
+  color: #fff;
+}
+body.theme-dark .hero .eyebrow { color: #FF8A3D; }
+body.theme-dark .nav-card { box-shadow: 0 8px 24px rgba(0,0,0,0.55); }
+body.theme-dark .nav-card:hover {
+  background: #232325;
+  border-color: rgba(255,255,255,0.14);
+}
+
+
+/* ── PORTFOLIO.HTML (inline <style> com :root próprio) ──────
+   A página declara as próprias variáveis (--bg, --sf, --bd, --tx, --mu,
+   --dark, --pos-bg etc) no <style> inline. body.theme-dark vence :root
+   por especificidade, então sobrescrevemos pra paleta dark. */
+body.theme-dark {
+  /* ⚠ NÃO redeclarar --bg aqui (já viraria #000 só pelo body, ok).
+     As outras são exclusivas do portfolio.html. */
+  --bg-2:      #1c1c1e;
+  --sf:        #141414;
+  --bd:        rgba(255,255,255,0.10);
+  --bd-2:      rgba(255,255,255,0.14);
+  --bd-3:      rgba(255,255,255,0.06);
+  --tx:        #f5f5f7;
+  --mu:        #a1a1a6;
+  --mu-2:      #6e6e73;
+  --pos:       #30D158;
+  --pos-bg:    rgba(48,209,88,0.16);
+  --pos-vivid: #30D158;
+  --neg:       #FF453A;
+  --neg-bg:    rgba(255,69,58,0.16);
+  --info:      #FF8A3D;     /* azul → laranja IPB no sistema dark */
+  --acc:       #30D158;
+  --dark:      #FF8A3D;     /* o "dark" do portfolio era #1d1d1f (CTA preto);
+                               em dark, vira o accent laranja pra ficar visível */
+}
+
+/* Body bg do portfolio (linear-gradient herda --bg) */
+body.theme-dark .hero {
+  background: linear-gradient(180deg, #000 0%, #0a0a0a 100%) !important;
+}
+
+/* Topbar local do portfolio (sticky própria) */
+body.theme-dark .topbar {
+  background: rgba(20,20,20,0.85) !important;
+  border-bottom-color: rgba(255,255,255,0.08) !important;
+}
+
+/* Sidebar (.section-rail) — mesmo visual do .class-rail dos fundos */
+body.theme-dark .section-rail {
+  background: rgba(20,20,20,0.65) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  backdrop-filter: saturate(180%) blur(22px);
+  border-color: rgba(255,255,255,0.08) !important;
+  box-shadow: 0 18px 48px rgba(0,0,0,0.65), 0 2px 6px rgba(0,0,0,0.4) !important;
+}
+body.theme-dark .section-rail a { color: #a1a1a6 !important; }
+body.theme-dark .section-rail a:hover {
+  background: rgba(255,255,255,0.06) !important;
+  color: #f5f5f7 !important;
+}
+body.theme-dark .section-rail a.active {
+  background: #FF8A3D !important;
+  color: #0a0a0a !important;
+}
+body.theme-dark .section-rail a.active svg { stroke: #0a0a0a !important; }
+
+/* Chips do hero (.chip) — os 2 "brancos" invisíveis ao lado do verde YTD.
+   No light, .chip sem modifier usa --bg-2 (cinza claro). Em dark fica preto
+   sobre preto. Surface elevada + texto claro resolve. */
+body.theme-dark .chip {
+  background: #232325 !important;
+  color: #f5f5f7 !important;
+}
+body.theme-dark .chip.pos {
+  background: rgba(48,209,88,0.16) !important;
+  color: #30D158 !important;
+}
+body.theme-dark .chip.neg {
+  background: rgba(255,69,58,0.16) !important;
+  color: #FF453A !important;
+}
+body.theme-dark .chip.dark {
+  background: #2c2c2e !important;
+  color: #f5f5f7 !important;
+}
+
+/* Segmented control (Mês / YTD / Histórico) — selecionado vira laranja
+   como o lang switcher do sobre. */
+body.theme-dark .seg {
+  background: #1c1c1e !important;
+  border-color: rgba(255,255,255,0.10) !important;
+}
+body.theme-dark .seg button {
+  color: #a1a1a6 !important;
+  background: transparent !important;
+}
+body.theme-dark .seg button:hover {
+  color: #f5f5f7 !important;
+  background: rgba(255,255,255,0.05) !important;
+}
+body.theme-dark .seg button.on {
+  background: #FF8A3D !important;
+  color: #0a0a0a !important;
+}
+
+/* Cards do portfolio (.card e variantes) */
+body.theme-dark .card {
+  background: #1c1c1e !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  color: #f5f5f7;
+}
+body.theme-dark .card.dark {
+  background: #232325 !important;
+  border-color: rgba(255,255,255,0.10) !important;
+}
+body.theme-dark .card-divider { border-top-color: rgba(255,255,255,0.06) !important; }
+
+/* Split bar (Brasil vs Offshore) — Brasil herda --dark=laranja,
+   Offshore herda --info=laranja também (default), aí ficavam IDÊNTICOS.
+   Aqui forçamos Offshore num cinza neutro pra contrastar com Brasil. */
+body.theme-dark .split { background: rgba(255,255,255,0.06) !important; }
+body.theme-dark .split-l { background: #FF8A3D !important; color: #0a0a0a !important; }
+body.theme-dark .split-r { background: #3a3a3c !important; color: #f5f5f7 !important; }
+
+/* bar-fill (barras de progresso) em laranja, warn fica amarelo Apple */
+body.theme-dark .bar-fill { background: #FF8A3D !important; }
+body.theme-dark .bar-fill.warn { background: #FF9F0A !important; }
+
+/* Tabela do portfolio (.tbl) */
+body.theme-dark .tbl thead th {
+  background: #232325 !important;
+  color: #a1a1a6 !important;
+  border-bottom-color: rgba(255,255,255,0.10) !important;
+}
+body.theme-dark .tbl tbody td {
+  border-bottom-color: rgba(255,255,255,0.05) !important;
+  color: #f5f5f7;
+}
+body.theme-dark .tbl tbody tr:hover {
+  background: rgba(255,255,255,0.03) !important;
+}
+
+
+/* ── PORTFOLIO (portfolio.html / portfolio.css, private-portfolio.css) ── */
+/* Pills warn (yellow) e prev (purple) em dark */
+body.theme-dark .delta.warn,
+body.theme-dark .ptf-kpi.warn .ptf-kpi-icon,
+body.theme-dark .ptf-cdi-badge.mid,
+body.theme-dark .pct-mid,
+body.theme-dark .leg-gold { background: rgba(255,159,10,0.14); color: #FF9F0A; }
+body.theme-dark .delta.prev,
+body.theme-dark .ptf-kpi.prev .ptf-kpi-icon { background: rgba(191,90,242,0.14); color: #BF5AF2; }
+
+/* Page header (título da página) */
+body.theme-dark .page-header,
+body.theme-dark .page-title-block { color: #f5f5f7; }
+body.theme-dark .page-header .muted { color: #6e6e73; }
+
+
+/* ── SOBRE (sobre.html / sobre.css, private-sobre.css, sidebar-sobre.css) ── */
+/* Todos os cards #fff viram surface dark */
+body.theme-dark .exp-card,
+body.theme-dark .exp-card-logo,
+body.theme-dark .form-item,
+body.theme-dark .form-item-logo,
+body.theme-dark .timeline-h-logo,
+body.theme-dark .sb-exp-card,
+body.theme-dark .sb-exp-logo,
+body.theme-dark .sb-edu-item,
+body.theme-dark .sb-edu-logo,
+body.theme-dark .sb-project,
+body.theme-dark .sb-skill-block,
+body.theme-dark .sb-timeline-logo,
+body.theme-dark .sb-timeline-item .dot {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  color: #f5f5f7;
+  box-shadow: none;
+}
+body.theme-dark .exp-card-empresa,
+body.theme-dark .sb-exp-card h3 { color: #f5f5f7; }
+body.theme-dark .exp-card-periodo,
+body.theme-dark .exp-card-desc { color: #a1a1a6; }
+body.theme-dark .exp-stat-num { color: #FF8A3D; }
+body.theme-dark .exp-stat-label { color: #6e6e73; }
+
+/* Skill chip "cert" (era #FFF8E6) */
+body.theme-dark .skill-chip,
+body.theme-dark .exp-card-tag { background: #232325; color: #a1a1a6; }
+body.theme-dark .skill-chip.cert { background: rgba(255,159,10,0.14); color: #FF9F0A; }
+
+/* Contato CTA */
+body.theme-dark .contato-cta {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  color: #f5f5f7;
+}
+body.theme-dark .contato-cta-text { color: #a1a1a6; }
+body.theme-dark .contato-cta-email { color: #FF8A3D; background: transparent; }
+body.theme-dark .contato-cta-btn { background: #FF8A3D; color: #0a0a0a; }
+body.theme-dark .contato-cta-btn:hover { background: #FFA15E; }
+
+/* Lang switcher.
+   No light, .sb-lang (container) usa bg rgba(255,255,255,0.72) → fica
+   esbranquiçado em dark. Aqui forçamos dark + reforçamos ativo laranja. */
+body.theme-dark .sb-lang {
+  background: rgba(28,28,30,0.72) !important;
+  border-color: rgba(255,255,255,0.10) !important;
+}
+body.theme-dark .lang-btn .flag { background: #2c2c2e; border-color: rgba(255,255,255,0.10); }
+body.theme-dark .sb-lang-btn {
+  background: transparent !important;
+  color: #a1a1a6 !important;
+  box-shadow: none !important;
+}
+body.theme-dark .sb-lang-btn:hover {
+  background: rgba(255,255,255,0.06) !important;
+  color: #f5f5f7 !important;
+}
+body.theme-dark .sb-lang-btn.on,
+body.theme-dark .sb-lang-btn.active {
+  background: #FF8A3D !important;
+  color: #0a0a0a !important;
+  box-shadow: 0 1px 3px rgba(255,138,61,0.30) !important;
+}
+body.theme-dark .sb-lang-btn.on .lang-code,
+body.theme-dark .sb-lang-btn.active .lang-code { color: #0a0a0a !important; }
+
+/* CTA do sobre privado (cards "saiba mais") */
+body.theme-dark .sb-cta-btn { background: #FF8A3D; color: #0a0a0a; }
+
+
+/* ── CALCULADORAS (calc-*.css, private-calc.css) ───────────── */
+/* Containers e cards */
+body.theme-dark .cc,
+body.theme-dark .ac-section,
+body.theme-dark .ac-aporte,
+body.theme-dark .ac-verdict,
+body.theme-dark .ac-check,
+body.theme-dark .ac-slider-row {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  color: #f5f5f7;
+  box-shadow: none;
+}
+
+/* Field wrapper — TRANSPARENTE.
+   Antes ele recebia bg #232325, criando um retângulo sem cantos arredondados
+   em torno do label + input. Agora só o input fica com bg (o "balão"),
+   o label flutua direto sobre a section. */
+body.theme-dark .ac-field {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #f5f5f7;
+}
+body.theme-dark .ac-field:focus-within {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Unidade (%, R$) no label — pílula sutil em dark */
+body.theme-dark .ac-field label .unit {
+  background: rgba(255,255,255,0.08);
+  color: #a1a1a6;
+}
+
+/* Inputs DENTRO de .ac-field — bg surface, mantém cantos arredondados (14px).
+   Inclui [type="date"] que estava ficando branco (a regra antiga só pegava
+   o wrapper, não o input em si). color-scheme: dark fala pro browser usar
+   chrome nativo escuro (calendário, spin buttons). */
+body.theme-dark .ac-field input[type="text"],
+body.theme-dark .ac-field input[type="date"],
+body.theme-dark .ac-field input[type="number"],
+body.theme-dark .ac-field input[type="email"],
+body.theme-dark .ac-field input[type="tel"],
+body.theme-dark .ac-field select,
+body.theme-dark .ac-field textarea {
+  background: #232325 !important;
+  color: #f5f5f7 !important;
+  border: 0.5px solid rgba(255,255,255,0.08) !important;
+  color-scheme: dark;
+}
+body.theme-dark .ac-field input::placeholder { color: #6e6e73 !important; }
+body.theme-dark .ac-field input:focus,
+body.theme-dark .ac-field select:focus,
+body.theme-dark .ac-field textarea:focus {
+  background: #2c2c2e !important;
+  border-color: rgba(255,138,61,0.6) !important;
+  box-shadow: 0 0 0 3px rgba(255,138,61,0.16) !important;
+}
+
+/* Calendário do <input type="date"> — ícone invertido pra ficar visível em dark */
+body.theme-dark .ac-field input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.85);
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+/* Select arrow SVG — versão dark (cinza claro em vez de #636366) */
+body.theme-dark .ac-field select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23a1a1a6' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><polyline points='3 5 6 8 9 5'/></svg>") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 14px center !important;
+  background-size: 10px 10px !important;
+}
+
+/* Layout antigo (.cc — usado em algumas calculadoras legadas) */
+body.theme-dark .cc input,
+body.theme-dark .cc select,
+body.theme-dark .cc textarea {
+  background: #232325;
+  color: #f5f5f7;
+  border-color: rgba(255,255,255,0.08);
+  color-scheme: dark;
+}
+body.theme-dark .cc input:focus,
+body.theme-dark .cc select:focus,
+body.theme-dark .cc textarea:focus {
+  background: #2c2c2e;
+  border-color: rgba(255,138,61,0.6);
+  box-shadow: 0 0 0 3px rgba(255,138,61,0.16);
+}
+
+/* Best-effort para ac-be (bloco de valores destacados) */
+body.theme-dark .ac-be {
+  background: #232325;
+  border-color: rgba(255,255,255,0.06);
+}
+body.theme-dark .ac-be.is-current .val { color: #30D158; }
+
+/* Tabela de resultados */
+body.theme-dark .ac-tbl-wrap { background: #1c1c1e; }
+body.theme-dark .ac-tbl { background: transparent; color: #f5f5f7; }
+body.theme-dark .ac-tbl th { background: #232325; color: #a1a1a6; border-color: rgba(255,255,255,0.08); }
+body.theme-dark .ac-tbl td { border-color: rgba(255,255,255,0.05); }
+body.theme-dark .ac-tbl tbody tr:hover td:not(:first-child) { background: rgba(255,255,255,0.03); }
+body.theme-dark .ac-tbl .pos { color: #30D158; }
+body.theme-dark .ac-tbl .neg { color: #FF453A; }
+body.theme-dark .ac-metric .val.pos,
+body.theme-dark .ac-metric .val.grn { color: #30D158; }
+body.theme-dark .ac-metric .val.neg,
+body.theme-dark .ac-metric .val.red { color: #FF453A; }
+body.theme-dark .ac-verdict .ganho-val.neg { color: #FF453A; }
+
+/* Avisos/destaques amarelos do calc (eram #FFF8EB/E1, color #92400E) */
+body.theme-dark .ac-warn-big,
+body.theme-dark .calc-clear-bar,
+body.theme-dark .calc-clear-btn,
+body.theme-dark .cc-disc.ir {
+  background: rgba(255,159,10,0.10);
+  color: #FF9F0A;
+  border-color: rgba(255,159,10,0.20);
+}
+body.theme-dark .calc-clear-btn:hover { background: rgba(255,159,10,0.18); border-color: rgba(255,159,10,0.30); }
+
+/* Disclaimers laterais */
+body.theme-dark .cc-disc.des,
+body.theme-dark .cc-disc.ok,
+body.theme-dark .cc-disc.neg {
+  /* Estes já usam rgba — mas o color hardcoded fica claro demais em dark. */
+  color: inherit;
+}
+body.theme-dark .cc-disc.des { background: rgba(255,159,10,0.10); color: #FF9F0A; border-left-color: #FF9F0A; }
+body.theme-dark .cc-disc.ok  { background: rgba(48,209,88,0.10);  color: #30D158; border-left-color: #30D158; }
+body.theme-dark .cc-disc.neg { background: rgba(255,69,58,0.10);  color: #FF453A; border-left-color: #FF453A; }
+
+/* Botão PDF */
+body.theme-dark .ac-pdf-btn,
+body.theme-dark .calc-pdf-bar-btn {
+  background: #FF8A3D !important;
+  color: #0a0a0a !important;
+}
+body.theme-dark .ac-pdf-btn:hover,
+body.theme-dark .calc-pdf-bar-btn:hover { background: #FFA15E !important; }
+
+/* Floating PDF bar — .ac-pdf-bar (troca-ativos, cet, etc) e .calc-pdf-bar (legados).
+   No light era rgba(251,251,253,0.86) (branco esfumaçado), em dark fica visível
+   na bg preta — força surface escura com glass blur. */
+body.theme-dark .ac-pdf-bar,
+body.theme-dark .calc-pdf-bar {
+  background: rgba(28,28,30,0.86) !important;
+  border-color: rgba(255,255,255,0.10) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6) !important;
+}
+body.theme-dark .ac-pdf-bar .left,
+body.theme-dark .ac-pdf-bar .title,
+body.theme-dark .calc-pdf-bar-title { color: #f5f5f7 !important; }
+body.theme-dark .ac-pdf-bar .left svg { stroke: #a1a1a6; }
+
+/* ── Calculadoras: elementos secundários ainda brancos ─────── */
+
+/* Checkbox interno (.ac-check .box) — era branco */
+body.theme-dark .ac-check .box {
+  background: #2c2c2e;
+  border-color: rgba(255,255,255,0.18);
+}
+body.theme-dark .ac-check input:checked + .box {
+  background: #FF8A3D;
+  border-color: #FF8A3D;
+}
+body.theme-dark .ac-check .box svg { color: #0a0a0a; }
+
+/* Slider thumb (ac-slider-row e cc-slider-row) — era #fff */
+body.theme-dark .ac-slider-row input[type=range]::-webkit-slider-thumb,
+body.theme-dark .cc-slider-row input[type=range]::-webkit-slider-thumb {
+  background: #f5f5f7;
+  border-color: rgba(255,255,255,0.12);
+}
+body.theme-dark .ac-slider-row input[type=range]::-moz-range-thumb,
+body.theme-dark .cc-slider-row input[type=range]::-moz-range-thumb {
+  background: #f5f5f7;
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* Aporte destacado (PGBL/Aposentadoria) — era #fff */
+body.theme-dark .ac-aporte {
+  background: #1c1c1e !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  box-shadow: none !important;
+  color: #f5f5f7;
+}
+body.theme-dark .ac-aporte.ac-vd-pos {
+  background: linear-gradient(135deg, rgba(48,209,88,0.12) 0%, rgba(48,209,88,0.04) 100%) !important;
+  border-color: rgba(48,209,88,0.30) !important;
+}
+body.theme-dark .ac-aporte.ac-vd-pos .val { color: #30D158; }
+body.theme-dark .ac-aporte.ac-vd-neg {
+  background: linear-gradient(135deg, rgba(255,69,58,0.12) 0%, rgba(255,69,58,0.04) 100%) !important;
+  border-color: rgba(255,69,58,0.30) !important;
+}
+body.theme-dark .ac-aporte.ac-vd-neg .val { color: #FF453A; }
+body.theme-dark .ac-aporte.ac-vd-eq .val { color: #a1a1a6; }
+
+/* Veredict box (ac-verdict) — era #fff */
+body.theme-dark .ac-verdict {
+  background: #1c1c1e !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  box-shadow: none !important;
+}
+
+/* Tabela mobile (cards .ac-tbl tr em mobile) — era #fff */
+@media (max-width: 720px) {
+  body.theme-dark .ac-tbl-wrap:not(.no-scroll):not(.ap-cenarios-wrap) .ac-tbl tr {
+    background: #232325 !important;
+    border-color: rgba(255,255,255,0.08) !important;
+  }
+}
+
+/* Stepper (ac-stepper) — usado na apple-care, era #fff */
+body.theme-dark.private-style .ac-stepper,
+body.private-style.theme-dark .ac-stepper {
+  background: #2c2c2e;
+  border-color: rgba(255,255,255,0.10);
+}
+body.theme-dark.private-style .ac-stepper button,
+body.private-style.theme-dark .ac-stepper button { color: #FF8A3D; }
+body.theme-dark.private-style .ac-stepper button:hover,
+body.private-style.theme-dark .ac-stepper button:hover { background: rgba(255,138,61,0.12); }
+body.theme-dark.private-style .ac-stepper input,
+body.private-style.theme-dark .ac-stepper input {
+  background: transparent;
+  border-left-color: rgba(255,255,255,0.10);
+  border-right-color: rgba(255,255,255,0.10);
+  color: #f5f5f7;
+}
+
+/* Apple Care: linhas + cards */
+body.theme-dark.private-style .ac-applecare-row,
+body.private-style.theme-dark .ac-applecare-row {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.06);
+}
+body.theme-dark.private-style .ac-applecare-row:hover,
+body.private-style.theme-dark .ac-applecare-row:hover {
+  background: #232325;
+  border-color: rgba(255,138,61,0.30);
+}
+body.theme-dark.private-style .ac-applecare-card,
+body.private-style.theme-dark .ac-applecare-card {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark.private-style .ac-applecare-card.is-one,
+body.private-style.theme-dark .ac-applecare-card.is-one {
+  background: linear-gradient(180deg, rgba(255,138,61,0.10) 0%, #1c1c1e 100%);
+}
+
+/* ── calc-common.css overrides extras ─────────────────────── */
+body.theme-dark .calc-clear-btn {
+  background: rgba(255,159,10,0.10) !important;
+  border-color: rgba(255,159,10,0.20) !important;
+  color: #FF9F0A !important;
+}
+body.theme-dark .calc-clear-btn:hover {
+  background: rgba(255,159,10,0.18) !important;
+  border-color: #FF9F0A !important;
+}
+
+/* Disclaimer "ir" (alerta IR) em dark */
+body.theme-dark .cc-disc.ir {
+  background: rgba(255,159,10,0.10) !important;
+  color: #FF9F0A !important;
+  border-left-color: #FF9F0A !important;
+}
+
+/* PGBL sidebar active state (calc-pgbl.css) */
+body.theme-dark .sb-link.active.area-pgbl {
+  background: rgba(255,159,10,0.14) !important;
+  color: #FF9F0A !important;
+}
+
+/* ── IRPFm (irpfm.html — inline styles na própria página) ──── */
+/* Garante que .ac-section.is-collapsible mantém os cantos arredondados
+   mesmo com filhos full-bleed (toggle button + body). O overflow:hidden
+   força o clip dos filhos ao raio da section, eliminando qualquer
+   "retângulo" que vaze pelos cantos do topo. */
+body.theme-dark .ac-section.is-collapsible {
+  border-radius: 24px !important;
+  overflow: hidden;
+  background: #1c1c1e !important;
+  border: 0.5px solid rgba(255,255,255,0.10) !important;
+}
+body.theme-dark .ac-section-toggle {
+  background: transparent !important;
+  border: none !important;
+  color: #f5f5f7 !important;
+}
+body.theme-dark .ac-section-toggle:hover {
+  background: rgba(255,255,255,0.03) !important;
+}
+body.theme-dark .ac-section-toggle .ac-step-pill {
+  background: rgba(255,138,61,0.14) !important;
+  color: #FF8A3D !important;
+}
+body.theme-dark .ac-section-toggle .ac-section-chevron {
+  color: #6e6e73 !important;
+}
+body.theme-dark .ac-section-toggle:hover .ac-section-head h2 {
+  color: #FF8A3D !important;
+}
+body.theme-dark .ac-section-body {
+  border-top-color: rgba(255,255,255,0.06) !important;
+}
+body.theme-dark .ac-section-summary { color: #a1a1a6 !important; }
+body.theme-dark .ac-section-summary strong { color: #f5f5f7 !important; }
+
+/* Sub-cards INTERNOS — sobem 1 camada (#232325) pra contrastar com a
+   section pai (#1c1c1e) e ficarem visíveis como cards de verdade. */
+body.theme-dark .div-empresas-picker {
+  background: #232325 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+body.theme-dark .div-empresas-picker select {
+  background: #2c2c2e !important;
+  border-color: rgba(255,255,255,0.10) !important;
+  color: #f5f5f7 !important;
+  color-scheme: dark;
+}
+body.theme-dark .div-empresas-empty {
+  background: #0a0a0a !important;
+  border-color: rgba(255,255,255,0.10) !important;
+  color: #6e6e73 !important;
+}
+body.theme-dark .div-empresas-empty svg { color: #6e6e73 !important; }
+body.theme-dark .div-tbl-wrap {
+  background: #232325 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+body.theme-dark .div-tbl thead th {
+  background: #2c2c2e !important;
+  color: #a1a1a6 !important;
+  border-bottom-color: rgba(255,255,255,0.08) !important;
+}
+body.theme-dark .div-tbl tbody td input {
+  background: #232325 !important;
+  color: #f5f5f7 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+body.theme-dark .div-tbl tbody td input:focus {
+  background: #2c2c2e !important;
+  border-color: rgba(255,138,61,0.6) !important;
+  box-shadow: 0 0 0 2px rgba(255,138,61,0.16) !important;
+}
+body.theme-dark .div-tbl tbody td.is-irrf { color: #FF8A3D; }
+body.theme-dark .div-tbl tbody tr.is-total td {
+  background: rgba(255,138,61,0.08) !important;
+  border-top-color: rgba(255,138,61,0.25) !important;
+}
+body.theme-dark .div-kpi {
+  background: #232325 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+body.theme-dark .div-kpi .val.blu { color: #FF8A3D; }
+body.theme-dark .ac-row-table > .cell input[type="text"] {
+  background: #232325 !important;
+  color: #f5f5f7 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+body.theme-dark .ac-row-table > .cell input:focus {
+  background: #2c2c2e !important;
+  border-color: rgba(255,138,61,0.6) !important;
+  box-shadow: 0 0 0 3px rgba(255,138,61,0.10) !important;
+}
+body.theme-dark .ac-row-table > .cell-val.blu { color: #FF8A3D; }
+body.theme-dark .ac-final-card {
+  background: #232325 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  box-shadow: none !important;
+}
+body.theme-dark .ac-final-card.is-pay {
+  background: linear-gradient(180deg, rgba(255,69,58,0.10) 0%, #232325 60%) !important;
+  border-color: rgba(255,69,58,0.30) !important;
+}
+body.theme-dark .ac-final-card.is-pay .val { color: #FF453A; }
+body.theme-dark .ac-final-card.is-ref {
+  background: linear-gradient(180deg, rgba(48,209,88,0.10) 0%, #232325 60%) !important;
+  border-color: rgba(48,209,88,0.30) !important;
+}
+body.theme-dark .ac-final-card.is-ref .val { color: #30D158; }
+
+/* Tabela progressiva (faixas IR) */
+body.theme-dark .ac-table-progressive {
+  border-color: rgba(255,255,255,0.08) !important;
+}
+body.theme-dark .ac-table-progressive th {
+  background: #2c2c2e !important;
+  color: #a1a1a6 !important;
+  border-bottom-color: rgba(255,255,255,0.08) !important;
+}
+body.theme-dark .ac-table-progressive td {
+  border-bottom-color: rgba(255,255,255,0.06) !important;
+}
+body.theme-dark .ac-table-progressive tr.is-active td {
+  background: rgba(255,138,61,0.10) !important;
+  color: #FF8A3D !important;
+}
+
+/* Steps (instruções) — cards numerados */
+body.theme-dark .ac-step {
+  background: #232325 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  color: #f5f5f7 !important;
+}
+body.theme-dark .ac-step .n {
+  background: #FF8A3D !important;
+  color: #0a0a0a !important;
+}
+
+/* Diagnóstico (badge final) */
+body.theme-dark .ac-diag {
+  background: #232325 !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  color: #f5f5f7 !important;
+}
+
+/* Legend dots */
+body.theme-dark .ac-legend .dot { border-color: rgba(255,255,255,0.18) !important; }
+
+/* Inline style="background:#FBFBFD" em ac-info-row (limite-fgc + aposentadoria).
+   O attribute selector pega qualquer inline com esse hex específico. */
+body.theme-dark .ac-info-row[style*="#FBFBFD"],
+body.theme-dark [style*="background:#FBFBFD"],
+body.theme-dark [style*="background: #FBFBFD"] {
+  background: #1c1c1e !important;
+}
+/* Idem pro dot da legenda inline */
+body.theme-dark .dot[style*="#FBFBFD"] {
+  background: #2c2c2e !important;
+}
+
+
+/* ── DASHBOARD (comparacao.html, correlacao.html / dashboard.css) ── */
+/* .classe-bloco, .classe-body, .dest-* usam var(--surface) — herda.
+   Patches específicos: */
+body.theme-dark .cdi-pill-card { background: #1c1c1e; border-color: rgba(255,255,255,0.08); color: #f5f5f7; }
+body.theme-dark .cdi-pill-card .cdi-pill-period { color: #6e6e73; }
+body.theme-dark .cdi-pill-card .cdi-pill-cdi { color: #FF8A3D; }
+body.theme-dark .cdi-pill-card .cdi-pill-ibov { color: #7090FF; }
+
+body.theme-dark .classe-bloco { background: transparent; }
+body.theme-dark .classe-header {
+  background: #1c1c1e;
+  border-color: rgba(255,255,255,0.08);
+  color: #f5f5f7;
+}
+body.theme-dark .classe-body { background: #1c1c1e; border-color: rgba(255,255,255,0.08); border-top: none; }
+body.theme-dark .classe-count { background: #2c2c2e; color: #a1a1a6; }
+body.theme-dark .classe-nome { color: #f5f5f7; }
+
+body.theme-dark .classe-nav { background: rgba(20,20,20,0.65); border: .5px solid rgba(255,255,255,0.08); }
+body.theme-dark .classe-nav-chip { color: #a1a1a6; background: transparent; }
+body.theme-dark .classe-nav-chip:hover { background: rgba(255,255,255,0.06); color: #f5f5f7; }
+body.theme-dark .classe-nav-chip.active { background: #FF8A3D; color: #0a0a0a; }
+body.theme-dark .classe-nav-chip-count { background: rgba(255,255,255,0.10); color: inherit; }
+body.theme-dark .classe-nav-chip:hover .classe-nav-chip-count { background: rgba(255,255,255,0.16); }
+
+body.theme-dark .dest-header { color: #f5f5f7; border-bottom-color: rgba(255,255,255,0.08); }
+body.theme-dark .dest-header-criterio { color: #6e6e73; }
+body.theme-dark .dest-row { border-bottom-color: rgba(255,255,255,0.05); }
+body.theme-dark .dest-row:hover { background: rgba(255,255,255,0.03); }
+body.theme-dark .dest-classe { color: #a1a1a6; }
+body.theme-dark .dest-chip { background: #2c2c2e; color: #f5f5f7; border-color: rgba(255,255,255,0.06); }
+body.theme-dark .dest-chip-nome { color: #f5f5f7; }
+body.theme-dark .dest-chip-ret { color: #30D158; }
+body.theme-dark .dest-chip-pct { color: #6e6e73; }
+
+body.theme-dark .fundo-search {
+  background: #1c1c1e;
+  color: #f5f5f7;
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark .fundo-search::placeholder { color: #6e6e73; }
+body.theme-dark .fundo-search:focus {
+  border-color: rgba(255,138,61,0.6);
+  box-shadow: 0 0 0 3px rgba(255,138,61,0.16);
+}
+
+body.theme-dark .footnote { color: #6e6e73; }
+
+
+/* ═════════════════════════════════════════════════════════════
+   PART 15 — Comparador (.cmp-*) e Correlação (.cor-*)
+   Cobre todos os cards brancos (sidebar, painel do chart, heatmap,
+   tabela), busca, chips, toggles e empty states.
+   ═════════════════════════════════════════════════════════════ */
+
+/* ── Layout principal ─────────────────────────────────────── */
+body.theme-dark .cmp-page,
+body.theme-dark .cor-page,
+body.theme-dark .cmp-main,
+body.theme-dark .cor-main { background: transparent; }
+
+/* ── Sidebar (Selecionados / Adicionar Fundo / Benchmarks / Janela) ── */
+body.theme-dark .cmp-sidebar,
+body.theme-dark .cor-sidebar {
+  background: #1c1c1e;
+  border: .5px solid rgba(255,255,255,0.08);
+  color: #f5f5f7;
+  box-shadow: none;
+}
+
+body.theme-dark .cmp-section h3,
+body.theme-dark .cor-section h3,
+body.theme-dark .cmp-section { color: #a1a1a6; }
+body.theme-dark .cmp-count { color: #6e6e73; }
+
+/* Toggles "Fundos 555 / Previdência" */
+body.theme-dark .cmp-toggle-row { gap: 6px; }
+body.theme-dark .cmp-toggle {
+  background: #232325;
+  color: #a1a1a6;
+  border-color: rgba(255,255,255,0.06);
+}
+body.theme-dark .cmp-toggle:hover { background: #2c2c2e; color: #f5f5f7; }
+body.theme-dark .cmp-toggle.is-active,
+body.theme-dark .cmp-toggle[data-active="true"] {
+  background: #0a0a0a;
+  color: #f5f5f7;
+  border-color: rgba(255,255,255,0.12);
+}
+body.theme-dark .cmp-toggle-dot { background: #FF8A3D; }
+
+/* Busca dentro da sidebar */
+body.theme-dark .cmp-search-wrap,
+body.theme-dark .cmp-search-input-wrap,
+body.theme-dark .cor-search-wrap { background: transparent; }
+body.theme-dark .cmp-search-input,
+body.theme-dark .cor-search-input {
+  background: #232325;
+  color: #f5f5f7;
+  border-color: rgba(255,255,255,0.08);
+}
+body.theme-dark .cmp-search-input::placeholder,
+body.theme-dark .cor-search-input::placeholder { color: #6e6e73; }
+body.theme-dark .cmp-search-input:focus,
+body.theme-dark .cor-search-input:focus {
+  background: #232325;
+  border-color: rgba(255,138,61,0.6);
+  box-shadow: 0 0 0 3px rgba(255,138,61,0.16);
+}
+body.theme-dark .cmp-search-icon,
+body.theme-dark .cor-search-icon { color: #6e6e73; }
+
+/* Resultados da busca (dropdown) */
+body.theme-dark .cmp-search-results {
+  background: #232325;
+  border-color: rgba(255,255,255,0.08);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.65);
+}
+body.theme-dark .cmp-result { color: #f5f5f7; border-bottom-color: rgba(255,255,255,0.04); }
+body.theme-dark .cmp-result:hover { background: rgba(255,255,255,0.06); }
+body.theme-dark .cmp-result-nome { color: #f5f5f7; }
+body.theme-dark .cmp-result-meta { color: #6e6e73; }
+
+/* Chips de fundos selecionados */
+body.theme-dark .cmp-chip {
+  background: rgba(255,138,61,0.10);
+  border: .5px solid rgba(255,138,61,0.25);
+  color: #f5f5f7;
+}
+body.theme-dark .cmp-chip:hover { background: rgba(255,138,61,0.16); }
+body.theme-dark .cmp-chip-name { color: #f5f5f7; }
+body.theme-dark .cmp-chip-x { color: #a1a1a6; }
+body.theme-dark .cmp-chip-x:hover { background: rgba(255,69,58,0.16); color: #FF453A; }
+
+/* Botão "Limpar seleção" */
+body.theme-dark .cmp-reset {
+  background: transparent;
+  color: #a1a1a6;
+  border-color: rgba(255,255,255,0.10);
+}
+body.theme-dark .cmp-reset:hover { background: rgba(255,255,255,0.06); color: #f5f5f7; border-color: rgba(255,255,255,0.18); }
+
+/* Empty states */
+body.theme-dark .cmp-empty,
+body.theme-dark .cmp-empty-state,
+body.theme-dark .cor-empty {
+  color: #6e6e73;
+  border-color: rgba(255,255,255,0.08);
+  background: transparent;
+}
+
+/* ── Painéis principais (Evolução, Correlação, Tabela) ──── */
+body.theme-dark .cmp-chart-card,
+body.theme-dark .cmp-corr-card,
+body.theme-dark .cmp-table-wrap,
+body.theme-dark .cor-card,
+body.theme-dark .cor-heatmap-wrap {
+  background: #1c1c1e;
+  border: .5px solid rgba(255,255,255,0.08);
+  color: #f5f5f7;
+  box-shadow: none;
+}
+
+body.theme-dark .cmp-chart-head,
+body.theme-dark .cmp-corr-head,
+body.theme-dark .cor-head { color: #f5f5f7; }
+body.theme-dark .cmp-chart-head .muted,
+body.theme-dark .cmp-corr-head .muted,
+body.theme-dark .cor-head .muted { color: #6e6e73; }
+
+/* Chart Evolução: o título "Evolução." ficava branco no light;
+   precisamos garantir que apareça no dark com bg escuro. */
+body.theme-dark .cmp-chart-card h2,
+body.theme-dark .cmp-corr-card h2,
+body.theme-dark .cor-card h2 { color: #f5f5f7; }
+
+/* Heatmap de correlação — labels e células */
+body.theme-dark .cmp-corr-grid,
+body.theme-dark .cor-svg { background: transparent; }
+body.theme-dark .cmp-corr-corner { background: transparent; color: #6e6e73; }
+body.theme-dark .cmp-corr-row-label,
+body.theme-dark .cmp-corr-col-label { color: #a1a1a6; }
+body.theme-dark .cmp-corr-legend { color: #6e6e73; }
+/* As células .cmp-corr-cell recebem cor inline via JS (gradiente -1..+1).
+   Mantemos. Só o texto preto do light fica ruim em células claras —
+   o JS já adapta a cor do texto baseado na luminância. */
+
+/* Tabela do comparador (mesmo schema da .ap-table, mas em cmp-table-wrap) */
+body.theme-dark .cmp-table thead th {
+  background: #232325;
+  color: #a1a1a6;
+  border-bottom-color: rgba(255,255,255,0.10);
+}
+body.theme-dark .cmp-table tbody td { color: #f5f5f7; border-bottom-color: rgba(255,255,255,0.05); }
+body.theme-dark .cmp-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+body.theme-dark .cmp-color-dot { box-shadow: 0 0 0 2px #1c1c1e; }
+
+/* ── Pills %CDI / pp dentro da tabela ─────────────────────── */
+/* PROBLEMA 3: O CSS base define
+     .ap-cdi-pill { background: var(--private-divider); color: var(--private-text); }
+   No dark, --private-divider é translúcido e --private-text é branco, então
+   o pill fica TRANSPARENTE com texto branco — herda o fundo escuro do parent
+   ficando ilegível. Forçamos com !important pra vencer qualquer cascata e
+   garantir contraste. */
+body.theme-dark .ap-cdi-pill,
+body.theme-dark .cmp-table .ap-cdi-pill,
+body.theme-dark .ap-num-cell .ap-cdi-pill {
+  background: #f5f5f7 !important;
+  color: #1d1d1f !important;
+  border: .5px solid rgba(0,0,0,0.06);
+}
+/* As variantes pos/neg/high/low mantêm cor de status (verde/vermelho)
+   pra preservar leitura imediata de "acima/abaixo do benchmark". */
+body.theme-dark .ap-cdi-pill.pos,
+body.theme-dark .ap-cdi-pill.high,
+body.theme-dark .cmp-table .ap-cdi-pill.high,
+body.theme-dark .ap-num-cell .ap-cdi-pill.high {
+  background: rgba(48,209,88,0.18) !important;
+  color: #30D158 !important;
+  border-color: rgba(48,209,88,0.30);
+}
+body.theme-dark .ap-cdi-pill.neg,
+body.theme-dark .ap-cdi-pill.low,
+body.theme-dark .cmp-table .ap-cdi-pill.low,
+body.theme-dark .ap-num-cell .ap-cdi-pill.low {
+  background: rgba(255,69,58,0.18) !important;
+  color: #FF453A !important;
+  border-color: rgba(255,69,58,0.30);
+}
+
+/* ── Correlação: heatmap próprio (.cor-*) ────────────────── */
+body.theme-dark .cor-fund-list { background: transparent; }
+body.theme-dark .cor-fund-item {
+  background: transparent;
+  border-bottom-color: rgba(255,255,255,0.04);
+  color: #f5f5f7;
+}
+body.theme-dark .cor-fund-item:hover { background: rgba(255,255,255,0.04); }
+body.theme-dark .cor-fund-item .check {
+  background: #232325;
+  border-color: rgba(255,255,255,0.10);
+}
+body.theme-dark .cor-fund-item.is-selected .check { background: #FF8A3D; border-color: #FF8A3D; }
+body.theme-dark .cor-fund-item .check svg { color: #0a0a0a; }
+body.theme-dark .cor-summary { color: #a1a1a6; }
+/* PROBLEMA 1: O contêiner .cor-tabs ("Adicionar Fundo") era #ECECEE
+   (cinza muito claro) e .cor-tab.is-selected era #fff — em dark theme
+   o "trilho" ficou parecendo um anel branco. Override aqui sobrescreve
+   tanto o trilho quanto o estado ativo. */
+body.theme-dark .cor-tabs {
+  background: #232325;
+  border: .5px solid rgba(255,255,255,0.06);
+  box-shadow: none;
+}
+body.theme-dark .cor-tab {
+  background: transparent;
+  color: #a1a1a6;
+  border-color: rgba(255,255,255,0.06);
+  box-shadow: none;
+}
+body.theme-dark .cor-tab:hover { color: #f5f5f7; }
+body.theme-dark .cor-tab.is-selected,
+body.theme-dark .cor-tab.is-active {
+  background: #1c1c1e;
+  color: #f5f5f7;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+body.theme-dark .cor-tooltip {
+  background: #232325;
+  color: #f5f5f7;
+  border: .5px solid rgba(255,255,255,0.10);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.65);
+}
+
+/* PROBLEMA 2: Barra de legenda do heatmap. No light era vermelho→branco→azul.
+   No dark, viramos magenta→cinza→verde pra bater com o gradient dos cells. */
+body.theme-dark .cmp-corr-legend-bar,
+body.theme-dark .heatmap__legenda-bar {
+  background: linear-gradient(to right,
+    rgba(255,55,95,0.85),
+    rgba(255,55,95,0.20),
+    #1c1c1e,
+    rgba(48,209,88,0.20),
+    rgba(48,209,88,0.85)) !important;
+}
+body.theme-dark .cmp-corr-legend,
+body.theme-dark .heatmap__legenda-num { color: #6e6e73; }
+
+
+/* ─────────────────────────────────────────────────────────────
+   PART 16 — Mobile cards (≤833px) + radio de seleção
+   ─────────────────────────────────────────────────────────────
+   Bug raiz: em mobile, private-fundos.css colapsa <tr> da .ap-table
+   em "cards" empilhados via display:grid + background:#fff (linha
+   1100). Sem override aqui, o card fica branco e oculta o nome do
+   fundo, "Cota:" e "Patrimônio:" (texto claro sobre fundo claro).
+
+   Páginas afetadas: fundos.html, previdencia.html, fundosipb.html,
+   e comparacao.html (que reusa .ap-table dentro de .cmp-table-wrap).
+
+   Nota: .cmp-table-wrap já tem bg dark via PART 15 linha 1606, e
+   .cmp-table thead th via linha 1640 — não duplicamos aqui.
+   ───────────────────────────────────────────────────────────── */
+
+/* Radio circular de seleção (.ap-row-select): base é background:#fff
+   com border preto translúcido — invisível em dark. Override cobre
+   desktop + mobile. Estado is-selected já fica laranja porque o CSS
+   base usa var(--private-blue) que é #FF8A3D no dark (PART 2). */
+body.theme-dark .ap-row-select {
+  background: transparent;
+  border-color: rgba(255,255,255,0.30);
+}
+body.theme-dark .ap-row-select:hover {
+  border-color: rgba(255,255,255,0.55);
+}
+/* Checkmark (svg interno) usa color:#fff no base — fica fraco sobre
+   o laranja accent. Trocamos pra preto pra ganhar contraste AA. */
+body.theme-dark .ap-table tbody tr.is-selected .ap-row-select svg {
+  color: #0a0a0a;
+}
+
+/* Cards mobile: cada <tr> ganha padding/border/radius/bg em
+   @media (max-width:833px) no private-fundos.css (linhas 1100-1110).
+   Trocamos só o background — a border já usa var(--private-border)
+   que vira rgba(255,255,255,0.10) automaticamente via PART 2.
+   Hierarquia de elevação: page #000 → .ap-class-body #1c1c1e
+   → .ap-table tr #2c2c2e → .ap-num-cell #000 (preto puro destaca
+   os pills internos sobre o card). */
+@media (max-width: 833px) {
+  body.theme-dark .ap-table tr {
+    background: #2c2c2e;
+  }
+  /* Estado selecionado em mobile: o bg padrão rgba(255,138,61,0.08)
+     (linha 372) fica sumido sobre #2c2c2e. Reforçamos com bg mais
+     opaco + border laranja pra destacar o card selecionado. */
+  body.theme-dark .ap-table tbody tr.is-selected {
+    background: rgba(255,138,61,0.14);
+    border-color: rgba(255,138,61,0.45);
+  }
+}
+

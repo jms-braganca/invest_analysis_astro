@@ -1,0 +1,343 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/private-sobre.css';
+---
+<Layout title="Sobre · João Bragança · Invest Analysis">
+
+<div class="sb-toolbar">
+  <div class="sb-lang" role="group" aria-label="Idioma">
+    <button class="sb-lang-btn lang-btn" data-lang="pt" type="button" aria-label="Português brasileiro">
+      <span class="flag">
+        <svg viewBox="0 0 28 20" xmlns="http://www.w3.org/2000/svg">
+          <rect width="28" height="20" fill="#009C3B"/>
+          <path d="M14 2 L26 10 L14 18 L2 10 Z" fill="#FFDF00"/>
+          <circle cx="14" cy="10" r="4" fill="#002776"/>
+          <path d="M10.5 10.2 Q14 8.8 17.5 10.2" stroke="#FFF" stroke-width="0.6" fill="none"/>
+        </svg>
+      </span>
+      <span class="lang-code">PT-BR</span>
+    </button>
+    <button class="sb-lang-btn lang-btn" data-lang="en" type="button" aria-label="American English">
+      <span class="flag">
+        <svg viewBox="0 0 28 20" xmlns="http://www.w3.org/2000/svg">
+          <rect width="28" height="20" fill="#fff"/>
+          <rect width="28" height="1.54" y="0"     fill="#B22234"/>
+          <rect width="28" height="1.54" y="3.08"  fill="#B22234"/>
+          <rect width="28" height="1.54" y="6.16"  fill="#B22234"/>
+          <rect width="28" height="1.54" y="9.24"  fill="#B22234"/>
+          <rect width="28" height="1.54" y="12.32" fill="#B22234"/>
+          <rect width="28" height="1.54" y="15.40" fill="#B22234"/>
+          <rect width="28" height="1.54" y="18.46" fill="#B22234"/>
+          <rect width="11" height="10.78" fill="#3C3B6E"/>
+        </svg>
+      </span>
+      <span class="lang-code">EN-US</span>
+    </button>
+  </div>
+</div>
+
+<div class="sb-page">
+
+  <!-- ── HERO ─────────────────────────────────────────────── -->
+  <section class="sb-hero sobre-hero">
+    <div class="sb-hero-foto sobre-foto">
+      <img src="/shared/assets/foto-joao.png" alt="João Bragança" onerror="this.parentNode.innerHTML='JB';">
+    </div>
+    <div class="sb-hero-text sobre-hero-text">
+      <p class="hero-eyebrow" data-pt="Sobre" data-en="About">Sobre</p>
+      <h1>João Bragança</h1>
+      <p class="tagline"
+         data-pt="Especialista em investimentos com 10 anos no segmento alta renda. Construo ferramentas que transformam dados de mercado em decisões."
+         data-en="Investment specialist with 10 years in the high-net-worth segment. I build tools that turn market data into decisions.">
+        Especialista em investimentos com 10 anos no segmento alta renda.
+        Construo ferramentas que transformam dados de mercado em decisões.
+      </p>
+      <div class="sb-hero-meta sobre-hero-meta">
+        <a href="https://www.linkedin.com/in/joaomsbraganca/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          LinkedIn
+        </a>
+        <span class="sb-hero-badge sobre-hero-badge">CFP®</span>
+        <span class="sb-hero-badge sobre-hero-badge">CEA ANBIMA</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 01 · SOBRE MIM ───────────────────────────────────── -->
+  <section class="sb-section sobre-secao">
+    <div class="sb-section-head sobre-secao-titulo">
+      <span class="sb-section-num secao-num">01</span>
+      <h2 data-pt="Sobre mim" data-en="About me">Sobre mim</h2>
+    </div>
+    <div class="sb-prose sobre-prosa">
+      <p data-pt="Com MBA em Controladoria e Finanças pelo IBMEC, atuo como especialista em investimentos no <strong>Itaú Unibanco</strong> com foco em clientes de alta renda: empresários, executivos e famílias."
+         data-en="With an MBA in Controllership and Finance from IBMEC, I'm an investment specialist at <strong>Itaú Unibanco</strong>, focused on high-net-worth clients, business owners, executives and families.">Com MBA em Controladoria e Finanças pelo IBMEC, atuo como especialista em investimentos no <strong>Itaú Unibanco</strong> com foco em clientes de alta renda: empresários, executivos e famílias.</p>
+      <p data-pt="Sou curioso por natureza e acredito que entender como o mundo funciona é pré-requisito para qualquer boa decisão. Essa curiosidade guia tanto o trabalho com clientes quanto meu interesse por tecnologia e aprendizado contínuo."
+         data-en="Curious by nature, I believe that understanding how the world works is absolutely essential for making good decisions. That curiosity drives both my work with clients and my interest in technology and continuous learning.">Sou curioso por natureza e acredito que entender como o mundo funciona é pré-requisito para qualquer boa decisão. Essa curiosidade guia tanto o trabalho com clientes quanto meu interesse por tecnologia e aprendizado contínuo.</p>
+      <p data-pt="Acredito genuinamente no que faço: o dinheiro não é um fim em si, mas permeia todas as áreas da vida e pode transformá-la. Por isso, entendo que assessoria de qualidade vai além da alocação. Significa compreender o momento de vida do cliente, seus objetivos de longo prazo e estruturar soluções que façam sentido para o patrimônio como um todo, da construção à proteção, incluindo o planejamento sucessório. Aplico as seis grandes áreas do CFP® de forma integrada e valorizo especialmente o lado educacional da profissão."
+         data-en="I genuinely believe in what I do: money isn't an end in itself, but it touches every area of life and has the power to transform it. That's why I see quality advisory as something that goes beyond asset allocation. It means understanding the client's life stage, their long-term goals, and structuring solutions that make sense for the entire portfolio, from wealth building to protection, including estate planning. I apply the six core areas of CFP® in an integrated way, and I especially value the educational side of the profession.">Acredito genuinamente no que faço: o dinheiro não é um fim em si, mas permeia todas as áreas da vida e pode transformá-la. Por isso, entendo que assessoria de qualidade vai além da alocação. Significa compreender o momento de vida do cliente, seus objetivos de longo prazo e estruturar soluções que façam sentido para o patrimônio como um todo, da construção à proteção, incluindo o planejamento sucessório. Aplico as seis grandes áreas do CFP® de forma integrada e valorizo especialmente o lado educacional da profissão.</p>
+      <p data-pt="No tempo livre, desenvolvo ferramentas para monitoramento de fundos e carteiras, processando dados do Bacen e CVM e automatizando dashboards via Python. É onde o analítico encontra o prático, e frequentemente de onde saem insights que voltam para o trabalho. Fora das telas, você me encontra lendo ou atrás de uma boa estrada com o volume alto e os vidros baixos! 🎶🛣️"
+         data-en="Between 9 and 6, I build tools for monitoring funds and portfolios, processing data from BCB and CVM and automating dashboards in Python. It's where the analytical meets the practical, and often where insights come from that I bring back to my work. Away from the screens, you'll find me reading, or behind the wheel on a good road trip with the music up and the windows down! 🎶🛣️">No tempo livre, desenvolvo ferramentas para monitoramento de fundos e carteiras, processando dados do Bacen e CVM e automatizando dashboards via Python. É onde o analítico encontra o prático, e frequentemente de onde saem insights que voltam para o trabalho. Fora das telas, você me encontra lendo ou atrás de uma boa estrada com o volume alto e os vidros baixos! 🎶🛣️</p>
+    </div>
+  </section>
+
+  <!-- ── 02 · TRAJETÓRIA ──────────────────────────────────── -->
+  <section class="sb-section sobre-secao">
+    <div class="sb-section-head sobre-secao-titulo">
+      <span class="sb-section-num secao-num">02</span>
+      <h2 data-pt="Trajetória profissional" data-en="Career trajectory">Trajetória profissional</h2>
+    </div>
+
+    <div class="sb-timeline timeline-h">
+      <div class="sb-timeline-line timeline-h-line"></div>
+      <ol class="sb-timeline-items timeline-h-items">
+
+        <li class="sb-timeline-item timeline-h-item atual">
+          <div class="dot timeline-h-dot"></div>
+          <div class="sb-timeline-logo timeline-h-logo">
+            <img src="/shared/assets/logos/itau.png" alt="Itaú" onerror="this.style.display='none'; this.parentNode.innerHTML='<span>Itaú</span>';">
+          </div>
+          <div class="sb-timeline-period timeline-h-period" data-pt="2021 — presente" data-en="2021 — present">2021 — presente</div>
+          <div class="sb-timeline-org timeline-h-org">íon Itaú</div>
+          <div class="sb-timeline-role timeline-h-role" data-pt="Especialista de Investimentos III" data-en="Investment Specialist III">Especialista de Investimentos III</div>
+        </li>
+
+        <li class="sb-timeline-item timeline-h-item">
+          <div class="dot timeline-h-dot"></div>
+          <div class="sb-timeline-logo timeline-h-logo">
+            <img src="/shared/assets/logos/inter.jpg" alt="Inter" onerror="this.style.display='none'; this.parentNode.innerHTML='<span>Inter</span>';">
+          </div>
+          <div class="sb-timeline-period timeline-h-period">2017 — 2021</div>
+          <div class="sb-timeline-org timeline-h-org">Inter</div>
+          <div class="sb-timeline-role timeline-h-role" data-pt="Banker Private I" data-en="Private Banker I">Banker Private I</div>
+        </li>
+
+        <li class="sb-timeline-item timeline-h-item small">
+          <div class="dot timeline-h-dot"></div>
+          <div class="sb-timeline-logo timeline-h-logo">
+            <img src="/shared/assets/logos/alfa.png" alt="Banco Alfa" onerror="this.style.display='none'; this.parentNode.innerHTML='<span>Alfa</span>';">
+          </div>
+          <div class="sb-timeline-period timeline-h-period">2016 — 2017</div>
+          <div class="sb-timeline-org timeline-h-org">Banco Alfa</div>
+          <div class="sb-timeline-role timeline-h-role" data-pt="Estagiário Comercial" data-en="Commercial Intern">Estagiário Comercial</div>
+        </li>
+
+        <li class="sb-timeline-item timeline-h-item small">
+          <div class="dot timeline-h-dot"></div>
+          <div class="sb-timeline-logo timeline-h-logo">
+            <img src="/shared/assets/logos/ucj.png" alt="UCJ-UFMG" onerror="this.style.display='none'; this.parentNode.innerHTML='<span>UCJ</span>';">
+          </div>
+          <div class="sb-timeline-period timeline-h-period">2012 — 2013</div>
+          <div class="sb-timeline-org timeline-h-org">UCJ-UFMG</div>
+          <div class="sb-timeline-role timeline-h-role" data-pt="Consultor Voluntário" data-en="Volunteer Consultant">Consultor Voluntário</div>
+        </li>
+
+      </ol>
+    </div>
+
+    <div class="sb-exp-grid exp-cards">
+
+      <article class="sb-exp-card exp-card destaque">
+        <div class="sb-exp-head exp-card-head">
+          <div class="sb-exp-logo exp-card-logo">
+            <img src="/shared/assets/logos/itau.png" alt="Itaú" onerror="this.parentNode.innerHTML='<span class=&quot;sb-exp-logo-fallback exp-card-logo-fallback&quot;>Itaú</span>';">
+          </div>
+          <div class="sb-exp-titles exp-card-titles">
+            <div class="sb-exp-empresa exp-card-empresa" data-pt="íon Itaú · Especialista de Investimentos III" data-en="íon Itaú · Investment Specialist III">íon Itaú · Especialista de Investimentos III</div>
+            <div class="sb-exp-periodo exp-card-periodo" data-pt="jul/2021 — presente" data-en="Jul/2021 — present">jul/2021 — presente</div>
+          </div>
+          <span class="sb-exp-tag exp-card-tag" data-pt="Atual" data-en="Current">Atual</span>
+        </div>
+        <p class="sb-exp-desc exp-card-desc"
+           data-pt="Atendimento a clientes com R$ 3M+ no segmento alta renda. Revisão e otimização de portfólios, análise macro, alocação multi-classe."
+           data-en="Advisory for clients with R$ 3M+ in the high-net-worth segment. Portfolio review and optimization, macroeconomic analysis, multi-asset allocation.">
+          Atendimento a clientes com R$ 3M+ no segmento alta renda. Revisão e otimização de portfólios, análise macro, alocação multi-classe, wealth planning.
+        </p>
+        <div class="sb-exp-stats exp-card-stats">
+          <div class="sb-exp-stat exp-stat">
+            <div class="stat-num exp-stat-num">190</div>
+            <div class="stat-label exp-stat-label" data-pt="famílias" data-en="families">famílias</div>
+          </div>
+          <div class="sb-exp-stat exp-stat">
+            <div class="stat-num exp-stat-num">R$ 850 MM</div>
+            <div class="stat-label exp-stat-label">AuM</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="sb-exp-card exp-card">
+        <div class="sb-exp-head exp-card-head">
+          <div class="sb-exp-logo exp-card-logo">
+            <img src="/shared/assets/logos/inter.jpg" alt="Inter" onerror="this.parentNode.innerHTML='<span class=&quot;sb-exp-logo-fallback exp-card-logo-fallback&quot;>Inter</span>';">
+          </div>
+          <div class="sb-exp-titles exp-card-titles">
+            <div class="sb-exp-empresa exp-card-empresa" data-pt="Inter · Banker Private I" data-en="Inter · Private Banker I">Inter · Banker Private I</div>
+            <div class="sb-exp-periodo exp-card-periodo" data-pt="out/2017 — jul/2021 · 3a 10m" data-en="Oct/2017 — Jul/2021 · 3y 10m">out/2017 — jul/2021 · 3a 10m</div>
+          </div>
+        </div>
+        <p class="sb-exp-desc exp-card-desc"
+           data-pt="Atendimento a clientes private. Trajetória de Estagiário Operacional a Banker Private I, passando por 7 posições nesses 4 anos."
+           data-en="Private banking advisory. Career progression from Operations Intern to Private Banker I, through 7 positions over 4 years.">
+          Atendimento a clientes private. Trajetória de Estagiário Operacional a Banker Private I, passando por 7 posições nesses 4 anos.
+        </p>
+        <div class="sb-exp-stats exp-card-stats">
+          <div class="sb-exp-stat exp-stat">
+            <div class="stat-num exp-stat-num">92</div>
+            <div class="stat-label exp-stat-label" data-pt="famílias" data-en="families">famílias</div>
+          </div>
+          <div class="sb-exp-stat exp-stat">
+            <div class="stat-num exp-stat-num">R$ 4,2 Bi</div>
+            <div class="stat-label exp-stat-label" data-pt='AuM <small>(ex-controladores)</small>' data-en='AuM <small>(excl. controlling shareholders)</small>'>AuM <small>(ex-controladores)</small></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ── 03 · FORMAÇÃO ────────────────────────────────────── -->
+  <section class="sb-section sobre-secao">
+    <div class="sb-section-head sobre-secao-titulo">
+      <span class="sb-section-num secao-num">03</span>
+      <h2 data-pt="Formação acadêmica" data-en="Education">Formação acadêmica</h2>
+    </div>
+    <ul class="sb-edu form-lista">
+      <li class="sb-edu-item form-item">
+        <div class="sb-edu-logo form-item-logo">
+          <img src="/shared/assets/logos/ibmec.png" alt="Ibmec" onerror="this.parentNode.innerHTML='<span>I</span>';">
+        </div>
+        <div class="sb-edu-text form-item-text">
+          <div class="sb-edu-curso form-item-curso" data-pt="MBA em Controladoria" data-en="MBA in Management Accounting">MBA em Controladoria</div>
+          <div class="sb-edu-inst form-item-inst">Ibmec MG · 2020 — 2021</div>
+        </div>
+      </li>
+      <li class="sb-edu-item form-item">
+        <div class="sb-edu-logo form-item-logo">
+          <img src="/shared/assets/logos/ibmec.png" alt="Ibmec" onerror="this.parentNode.innerHTML='<span>I</span>';">
+        </div>
+        <div class="sb-edu-text form-item-text">
+          <div class="sb-edu-curso form-item-curso" data-pt="Bacharelado em Ciências Contábeis" data-en="Bachelor's in Accounting">Bacharelado em Ciências Contábeis</div>
+          <div class="sb-edu-inst form-item-inst">Ibmec MG · 2016 — 2019</div>
+        </div>
+      </li>
+      <li class="sb-edu-item form-item">
+        <div class="sb-edu-logo form-item-logo">
+          <img src="/shared/assets/logos/ufmg.png" alt="UFMG" onerror="this.parentNode.innerHTML='<span>U</span>';">
+        </div>
+        <div class="sb-edu-text form-item-text">
+          <div class="sb-edu-curso form-item-curso" data-pt="Bacharelado em Controladoria e Finanças" data-en="Bachelor's in Management Accounting and Finance">Bacharelado em Controladoria e Finanças</div>
+          <div class="sb-edu-inst form-item-inst">UFMG · 2012 — 2016</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ── 04 · ESPECIALIDADES ──────────────────────────────── -->
+  <section class="sb-section sobre-secao">
+    <div class="sb-section-head sobre-secao-titulo">
+      <span class="sb-section-num secao-num">04</span>
+      <h2 data-pt="Especialidades" data-en="Expertise">Especialidades</h2>
+    </div>
+    <div class="sb-skills skills-grid">
+
+      <div class="sb-skill-block skill-bloco">
+        <h4 data-pt="Áreas de atuação" data-en="Practice areas">Áreas de atuação</h4>
+        <div class="sb-chips skill-chips">
+          <span class="sb-chip skill-chip" data-pt="Gestão financeira"        data-en="Financial planning">Gestão financeira</span>
+          <span class="sb-chip skill-chip" data-pt="Investimentos"            data-en="Investments">Investimentos</span>
+          <span class="sb-chip skill-chip" data-pt="Previdência privada"      data-en="Private pensions">Previdência privada</span>
+          <span class="sb-chip skill-chip" data-pt="Planejamento sucessório"  data-en="Estate planning">Planejamento sucessório</span>
+          <span class="sb-chip skill-chip" data-pt="Planejamento fiscal"      data-en="Tax planning">Planejamento fiscal</span>
+          <span class="sb-chip skill-chip" data-pt="Seguros"                  data-en="Insurance">Seguros</span>
+        </div>
+      </div>
+
+      <div class="sb-skill-block skill-bloco">
+        <h4 data-pt="Certificações" data-en="Certifications">Certificações</h4>
+        <div class="sb-chips skill-chips">
+          <span class="sb-chip skill-chip cert">CFP®</span>
+          <span class="sb-chip skill-chip cert">CEA ANBIMA</span>
+          <span class="sb-chip skill-chip cert">PQO BM&amp;F Bovespa</span>
+        </div>
+      </div>
+
+      <div class="sb-skill-block skill-bloco">
+        <h4 data-pt="Stack técnica" data-en="Tech stack">Stack técnica</h4>
+        <div class="sb-chips skill-chips">
+          <span class="sb-chip skill-chip tec">Python</span>
+          <span class="sb-chip skill-chip tec">Pandas</span>
+          <span class="sb-chip skill-chip tec">Polars</span>
+          <span class="sb-chip skill-chip tec" data-pt="Automação CVM" data-en="CVM automation">Automação CVM</span>
+          <span class="sb-chip skill-chip tec" data-pt="Integração BCB/SGS" data-en="BCB/SGS integration">Integração BCB/SGS</span>
+          <span class="sb-chip skill-chip tec">Git</span>
+          <span class="sb-chip skill-chip tec">HTML/CSS/JS</span>
+        </div>
+      </div>
+
+      <div class="sb-skill-block skill-bloco">
+        <h4 data-pt="Idiomas" data-en="Languages">Idiomas</h4>
+        <div class="sb-chips skill-chips">
+          <span class="sb-chip skill-chip" data-pt="Português · Nativo" data-en="Portuguese · Native">Português · Nativo</span>
+          <span class="sb-chip skill-chip" data-pt="Inglês · B2 (TOEFL ITP)" data-en="English · B2 (TOEFL ITP)">Inglês · B2 (TOEFL ITP)</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 05 · TRABALHO TÉCNICO ────────────────────────────── -->
+  <section class="sb-section sobre-secao">
+    <div class="sb-section-head sobre-secao-titulo">
+      <span class="sb-section-num secao-num">05</span>
+      <h2 data-pt="Trabalho técnico" data-en="Technical work">Trabalho técnico</h2>
+    </div>
+    <p class="sb-prose sobre-prosa" style="margin-bottom:18px"
+       data-pt="Construo o ferramental que uso no dia a dia. Os projetos abaixo são abertos."
+       data-en="I build the tools I use every day. The projects below are open.">
+      Construo o ferramental que uso no dia a dia. Os projetos abaixo são abertos.
+    </p>
+    <div class="sb-projects projetos-grid">
+
+      <a href="/index.html" class="sb-project projeto-card">
+        <div class="sb-project-icon projeto-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
+        </div>
+        <h3 data-pt="Invest Analysis" data-en="Specialist Tools">Invest Analysis</h3>
+        <p data-pt="Dashboard pessoal de fundos 555, previdência, correlação e calculadoras de decisão. Atualizado automaticamente via CVM Dados Abertos e BACEN/SGS."
+           data-en="Personal dashboard for 555 funds, private pensions, correlation analysis, and decision calculators. Auto-updated via CVM Open Data and BACEN/SGS.">Dashboard pessoal de fundos 555, previdência, correlação e calculadoras de decisão. Atualizado automaticamente via CVM Dados Abertos e BACEN/SGS.</p>
+        <div class="sb-project-tags projeto-tags">
+          <span class="sb-project-tag projeto-tag">Python</span>
+          <span class="sb-project-tag projeto-tag">Pandas</span>
+          <span class="sb-project-tag projeto-tag">CVM</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── 06 · CONTATO ─────────────────────────────────────── -->
+  <section class="sb-section sobre-secao">
+    <div class="sb-section-head sobre-secao-titulo">
+      <span class="sb-section-num secao-num">06</span>
+      <h2 data-pt="Vamos conversar" data-en="Let's talk">Vamos conversar</h2>
+    </div>
+    <div class="sb-cta contato-cta">
+      <p class="sb-cta-text contato-cta-text"
+         data-pt="Quer entender como eu trabalho, discutir uma oportunidade ou bater um papo sobre mercado e ferramentas?"
+         data-en="Want to learn how I work, discuss an opportunity, or chat about markets and tooling?">
+        Quer entender como eu trabalho, discutir uma oportunidade ou bater um papo sobre mercado e ferramentas?
+      </p>
+      <a href="mailto:contato@jbraganca.com.br?subject=Contato%20via%20site%20Ferramentas%20Especialistas" class="sb-cta-btn contato-cta-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span data-pt="Enviar e-mail" data-en="Send email">Enviar e-mail</span>
+      </a>
+      <p class="sb-cta-email contato-cta-email">contato@jbraganca.com.br</p>
+    </div>
+  </section>
+
+</div>
+
+  <Fragment slot="scripts">
+    <script is:inline src="/shared/sobre.js"></script>
+  </Fragment>
+</Layout>

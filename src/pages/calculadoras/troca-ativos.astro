@@ -1,0 +1,216 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/private-calc.css';
+---
+<Layout
+  title="Troca de Ativos · Calculadoras · Invest Analysis"
+  footerCrumb="Calculadoras"
+>
+  <div slot="topbar-sub" class="atb-sub">
+    <div class="atb-sub-pages">
+      <a href="/calculadoras/troca-ativos.html" class="atb-sub-page is-active">Troca de Ativos</a>
+      <a href="/calculadoras/limite-fgc.html" class="atb-sub-page">Limite FGC</a>
+      <a href="/calculadoras/alocacao-fgc.html" class="atb-sub-page">Alocação FGC</a>
+      <a href="/calculadoras/rentabilidade.html" class="atb-sub-page">Rentabilidade</a>
+      <a href="/calculadoras/credito-vs-invest.html" class="atb-sub-page">Crédito vs. Investimentos</a>
+      <a href="/calculadoras/cet.html" class="atb-sub-page">CET</a>
+      <a href="/calculadoras/avista-vs-prazo.html" class="atb-sub-page">À Vista vs Parcelado</a>
+      <a href="/calculadoras/amortizacao.html" class="atb-sub-page">Amortização</a>
+    </div>
+    <div class="atb-kpis" aria-live="polite"><div class="atb-kpi-group is-active" data-kpi="cdi"><span class="atb-kpi-group-label">CDI</span><div class="atb-kpi"><span class="atb-kpi-label" data-month>Mai</span><span class="atb-kpi-value">0,48%</span></div><div class="atb-kpi is-secondary"><span class="atb-kpi-label">Ano</span><span class="atb-kpi-value">5,04%</span></div><div class="atb-kpi is-tertiary"><span class="atb-kpi-label">12m</span><span class="atb-kpi-value">14,83%</span></div></div><div class="atb-kpi-group" data-kpi="ibov"><span class="atb-kpi-group-label">Ibov</span><div class="atb-kpi"><span class="atb-kpi-label" data-month>Mai</span><span class="atb-kpi-value neg">-4,78%</span></div><div class="atb-kpi is-secondary"><span class="atb-kpi-label">Ano</span><span class="atb-kpi-value pos">+10,70%</span></div><div class="atb-kpi is-tertiary"><span class="atb-kpi-label">12m</span><span class="atb-kpi-value pos">+28,86%</span></div></div></div>
+  </div>
+
+
+<section class="page-hero" data-private-hero>
+  <p class="eyebrow">Calculadoras · Troca de Ativos</p>
+  <h1>Troca de Ativos. <span class="muted">Vale a pena?</span></h1>
+  <p>Compare papel atual vs. ativo novo até o vencimento. Veja ganho comparativo, ágio/deságio e taxa mínima por indexador.</p>
+</section>
+
+<div class="ac-page">
+
+  <!-- Toolbar: breadcrumb + limpar -->
+  <div class="ac-toolbar">
+    <nav class="ac-breadcrumb" aria-label="Navegação">
+      <a href="/index.html">Início</a>
+      <span class="ac-breadcrumb-sep">›</span>
+      <span class="ac-breadcrumb-current">Calculadoras</span>
+      <span class="ac-breadcrumb-sep">›</span>
+      <span class="ac-breadcrumb-current">Troca de Ativos</span>
+    </nav>
+    <button type="button" class="ac-clear-btn calc-clear-btn" title="Limpar todos os campos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      Limpar tudo
+    </button>
+  </div>
+
+  <!-- ── PREMISSAS MACRO ───────────────────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Premissas. <span class="muted-sub">Cenário macro.</span></h2>
+    </div>
+    <div class="ac-grid-2">
+      <div class="ac-field">
+        <label>CDI estimado a.a. <span class="unit">%</span></label>
+        <input type="text" inputmode="decimal" id="t-cdi" placeholder="0,00">
+      </div>
+      <div class="ac-field">
+        <label>IPCA estimado a.a. <span class="unit">%</span></label>
+        <input type="text" inputmode="decimal" id="t-ipca" placeholder="0,00">
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PAPEL ATUAL × ATIVO NOVO ──────────────────────────────── -->
+  <div class="ac-pair">
+
+    <section class="ac-section">
+      <div class="ac-section-head">
+        <h2>Papel atual.</h2>
+      </div>
+      <div class="ac-field-row">
+        <div class="ac-field ac-field-text"><label>Ticker</label><input type="text" id="t-pa-ticker" placeholder="ABCD11"></div>
+        <div class="ac-field ac-field-text"><label>Emissor</label><input type="text" id="t-pa-emissor" placeholder="Banco XYZ"></div>
+      </div>
+      <div class="ac-field-row">
+        <div class="ac-field">
+          <label>Indexador</label>
+          <select id="t-pa-idx">
+            <option value="IPCA+">IPCA+</option>
+            <option value="%CDI">%CDI</option>
+            <option value="CDI+" selected>CDI+</option>
+            <option value="Pré">Pré</option>
+          </select>
+        </div>
+        <div class="ac-field">
+          <label>Taxa <span class="unit">%</span></label>
+          <input type="text" inputmode="decimal" id="t-pa-taxa" placeholder="0,00">
+        </div>
+      </div>
+      <div class="ac-field"><label>Vencimento</label><input type="date" id="t-pa-venc"></div>
+      <div class="ac-field">
+        <label>Valor bruto de curva <span class="unit">R$</span></label>
+        <input type="text" inputmode="decimal" id="t-pa-vbc" placeholder="0,00">
+      </div>
+      <div class="ac-field">
+        <label>Valor líquido de venda <span class="unit">R$</span></label>
+        <input type="text" inputmode="decimal" id="t-pa-vlv" placeholder="0,00">
+      </div>
+    </section>
+
+    <section class="ac-section">
+      <div class="ac-section-head">
+        <h2>Ativo novo.</h2>
+      </div>
+      <div class="ac-field-row">
+        <div class="ac-field ac-field-text"><label>Ticker</label><input type="text" id="t-an-ticker" placeholder="EFGH12"></div>
+        <div class="ac-field ac-field-text"><label>Emissor</label><input type="text" id="t-an-emissor" placeholder="Banco ABC"></div>
+      </div>
+      <div class="ac-field-row">
+        <div class="ac-field">
+          <label>Indexador</label>
+          <select id="t-an-idx">
+            <option value="IPCA+">IPCA+</option>
+            <option value="%CDI">%CDI</option>
+            <option value="CDI+" selected>CDI+</option>
+            <option value="Pré">Pré</option>
+          </select>
+        </div>
+        <div class="ac-field">
+          <label>Taxa <span class="unit">%</span></label>
+          <input type="text" inputmode="decimal" id="t-an-taxa" placeholder="0,00">
+        </div>
+      </div>
+      <div class="ac-field"><label>Vencimento do ativo novo</label><input type="date" id="t-an-venc"></div>
+      <div class="ac-info-row"><span class="lbl">Base de reinvestimento</span><span class="val" id="t-base-reinv">—</span></div>
+      <div class="ac-info-row"><span class="lbl">Dias úteis até venc. atual</span><span class="val" id="t-du-atual">—</span></div>
+    </section>
+
+  </div>
+
+  <!-- ── RESUMO DA OPERAÇÃO ─────────────────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Resumo. <span class="muted-sub">Comparação na data do vencimento.</span></h2>
+    </div>
+
+    <!-- Hero: ganho comparativo em destaque -->
+    <div class="ac-metric is-hero">
+      <span class="lbl">Ganho comparativo</span>
+      <span class="val" id="t-r-ganho">—</span>
+    </div>
+
+    <!-- Atual × Novo na mesma data -->
+    <div class="ac-grid-2 ac-grid-divided" style="margin-top:8px">
+      <div class="ac-metric">
+        <span class="lbl">Valor do papel atual no vencimento</span>
+        <span class="val blu" id="t-r-pa">—</span>
+      </div>
+      <div class="ac-metric">
+        <span class="lbl">Valor do novo ativo na mesma data</span>
+        <span class="val blu" id="t-r-an-d">—</span>
+      </div>
+    </div>
+
+    <!-- Ágio + break-even -->
+    <div class="ac-grid-3 ac-grid-divided" style="margin-top:14px;border-top:0.5px solid var(--private-divider);padding-top:14px">
+      <div class="ac-metric">
+        <span class="lbl">Ágio / deságio na saída</span>
+        <span class="val sm" id="t-r-agio">—</span>
+      </div>
+      <div class="ac-metric">
+        <span class="lbl">Data de break-even</span>
+        <span class="val sm" id="t-r-be-data">—</span>
+      </div>
+      <div class="ac-metric">
+        <span class="lbl">Taxa de break-even</span>
+        <span class="val sm" id="t-r-be-taxa">—</span>
+      </div>
+    </div>
+
+    <!-- Novo no próprio vencimento -->
+    <div style="margin-top:14px;border-top:0.5px solid var(--private-divider);padding-top:14px">
+      <div class="ac-metric">
+        <span class="lbl">Valor do novo ativo no próprio vencimento</span>
+        <span class="val blu" id="t-r-an-v">—</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BREAK-EVEN POR INDEXADOR ──────────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Break-even por indexador. <span class="muted-sub">Taxa mínima do novo para igualar o atual.</span></h2>
+    </div>
+    <p class="ac-desc">Taxa que o novo ativo precisaria render em cada indexador, até o vencimento do papel atual, para igualar o atual.</p>
+    <div class="ac-grid-4">
+      <div class="ac-be"><div class="lbl">CDI+</div><div class="val" id="t-be-cdi">—</div></div>
+      <div class="ac-be"><div class="lbl">% CDI</div><div class="val" id="t-be-pct">—</div></div>
+      <div class="ac-be"><div class="lbl">IPCA+</div><div class="val" id="t-be-ipca">—</div></div>
+      <div class="ac-be"><div class="lbl">Pré</div><div class="val" id="t-be-pre">—</div></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Floating PDF bar -->
+<div class="ac-pdf-bar" id="t-pdf-bar">
+  <div class="left">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="12" y1="18" x2="12" y2="12"/>
+      <polyline points="9 15 12 12 15 15"/>
+    </svg>
+    <span class="title">Salvar simulação em PDF</span>
+  </div>
+  <button type="button" class="ac-pdf-btn" id="t-pdf-btn">Gerar PDF</button>
+</div>
+
+  <Fragment slot="scripts">
+    <script is:inline src="/scripts/data/feriados_anbima.js"></script>
+    <script is:inline src="/scripts/utils.js"></script>
+    <script is:inline src="/scripts/calc-common.js"></script>
+    <script is:inline src="/scripts/calc-troca.js"></script>
+  </Fragment>
+</Layout>

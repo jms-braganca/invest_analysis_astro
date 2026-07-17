@@ -1,0 +1,719 @@
+/* ============================================================
+   private-topbar.css — Top bar Private theme (frosted + scroll-shrink)
+   + Sub-bar de seções/KPIs estilo apple.com/iphone
+   Compatível com a estrutura existente (.topbar, .tb-*)
+   ============================================================ */
+
+:root {
+  /* tokens Private theme */
+  --private-bg:        #F5F5F7;     /* fundo "off-white" da Private */
+  --private-surface:   #ffffff;
+  --private-text:      #1D1D1F;     /* preto Private */
+  --private-muted:     #6E6E73;     /* cinza Private */
+  --private-muted2:    #86868B;
+  --private-border:    rgba(0,0,0,0.08);
+  --private-divider:   rgba(0,0,0,0.06);
+  --private-blue:      #0071E3;     /* azul Private */
+  --private-blue-h:    #0077ED;
+
+  /* glass */
+  --private-glass-bg:    rgba(251,251,253,0.72);
+  --private-glass-bg-h:  rgba(251,251,253,0.92);
+  --private-glass-border: rgba(0,0,0,0.06);
+
+  /* alturas da topbar */
+  --private-tb-h:        56px;       /* expandida */
+  --private-tb-h-min:    44px;       /* minimizada */
+  --private-sub-h:       46px;       /* sub-bar expandida */
+  --private-sub-h-min:   38px;       /* sub-bar minimizada */
+
+  /* sombras suaves */
+  --private-shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --private-shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+  --private-shadow-lg: 0 12px 32px rgba(0,0,0,0.08);
+
+  /* easing */
+  --private-ease: cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Tipografia Private theme aplicada no body quando a classe estiver presente */
+body.private-style {
+  background: var(--private-bg);
+  color: var(--private-text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+               "Helvetica Neue", "Inter", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.47;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── RESERVA DO TICKER (anti-CLS) ──────────────────────────────
+   Reserva os 38px do ticker de cotações desde o 1º paint, pra ele NÃO
+   empurrar hero/switcher/conteúdo pra baixo quando as cotações chegam
+   (o atb_ticker.js preenche este espaço). Enquanto não chega, fica uma faixa
+   vazia com o fundo do ticker. O estado final é idêntico ao de antes — só a
+   transição de carregamento deixa de "pular". */
+.atb-ticker {
+  display: block;
+  height: 38px;
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+  background: #f5f5f7;
+  border-bottom: .5px solid rgba(0, 0, 0, .08);
+}
+body.theme-dark .atb-ticker {
+  background: #0b0b0c;
+  border-bottom-color: rgba(255, 255, 255, .08);
+}
+
+/* ── WRAPPER STICKY DA BARRA TODA (main + sub + mega) ──────── */
+.private-topbar {
+  position: sticky;
+  /* 38px = altura do ticker reservado acima (a barra gruda logo abaixo dele). */
+  top: 38px;
+  z-index: 100;
+  width: 100%;
+  /* não tem background aqui: cada faixa cuida da sua */
+}
+
+/* ── FAIXA PRINCIPAL ───────────────────────────────────────── */
+.private-topbar .atb-main {
+  height: var(--private-tb-h);
+  background: var(--private-glass-bg);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+          backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  transition:
+    height .35s var(--private-ease),
+    background .35s var(--private-ease),
+    border-color .35s var(--private-ease);
+}
+.private-topbar.is-scrolled .atb-main {
+  height: var(--private-tb-h-min);
+  background: var(--private-glass-bg-h);
+  border-bottom-color: var(--private-glass-border);
+}
+
+/* Brand (logo + nome) */
+.atb-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--private-text);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  transition: opacity .2s var(--private-ease);
+}
+.atb-brand:hover { opacity: 0.7; }
+.atb-logo {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: var(--itau-orange, #EC7000);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 14px; font-weight: 600;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+}
+.atb-brand-text {
+  font-size: 14px;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+.atb-brand-text small {
+  display: block;
+  font-size: 11px;
+  color: var(--private-muted);
+  font-weight: 400;
+}
+
+/* Nav */
+.atb-nav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.atb-nav-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.atb-link,
+.atb-link-mega {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--private-text);
+  opacity: 0.85;
+  text-decoration: none;
+  border-radius: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity .2s var(--private-ease), background .2s var(--private-ease);
+  white-space: nowrap;
+}
+.atb-link:hover,
+.atb-link-mega:hover,
+.atb-link-mega.is-open { opacity: 1; }
+.atb-link.is-active,
+.atb-link-mega.is-active {
+  opacity: 1;
+  font-weight: 500;
+}
+.atb-link.is-active::after,
+.atb-link-mega.is-active::after {
+  content: "";
+  position: absolute;
+  left: 14px; right: 14px;
+  bottom: 2px;
+  height: 1.5px;
+  background: var(--private-text);
+  border-radius: 2px;
+}
+.atb-link svg { width: 14px; height: 14px; }
+
+/* CTA opcional à direita */
+.atb-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--private-text);
+  color: #fff;
+  border-radius: 980px;     /* pill — Private usa muito */
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background .2s var(--private-ease), transform .2s var(--private-ease);
+}
+.atb-cta:hover { background: #000; transform: translateY(-1px); }
+.atb-cta svg { width: 12px; height: 12px; }
+
+/* Hamburger mobile */
+.atb-hamburger {
+  display: none;
+  width: 36px; height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--private-text);
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background .15s var(--private-ease);
+}
+.atb-hamburger:hover { background: rgba(0,0,0,0.06); }
+.atb-hamburger svg { width: 20px; height: 20px; }
+
+/* ── MEGA MENU (apple.com style) ───────────────────────────── */
+/* Stage = container absoluto logo abaixo da .atb-main.
+   Cada mega-panel é absoluto dentro do stage; só um abre por vez. */
+.private-topbar .atb-mega-stage {
+  position: absolute;
+  top: var(--private-tb-h);
+  left: 0; right: 0;
+  pointer-events: none;
+  z-index: 5;
+  transition: top .35s var(--private-ease);
+}
+.private-topbar.is-scrolled .atb-mega-stage { top: var(--private-tb-h-min); }
+
+.atb-mega {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 0;
+  overflow: hidden;
+  background: var(--private-glass-bg-h);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+          backdrop-filter: saturate(180%) blur(24px);
+  border-bottom: 1px solid transparent;
+  transition:
+    height .42s var(--private-ease),
+    border-color .42s var(--private-ease),
+    box-shadow .42s var(--private-ease);
+  pointer-events: none;
+  z-index: 1;
+}
+.atb-mega.is-open {
+  border-bottom-color: var(--private-glass-border);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.05);
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.atb-mega-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 40px 44px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 80px;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity .25s var(--private-ease) .04s,
+              transform .3s var(--private-ease) .04s;
+}
+.atb-mega.is-open .atb-mega-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Single-col: o conteúdo é alinhado embaixo do TEXTO do trigger via CSS
+   variable --atb-mega-x setada por JS no .atb-mega-stage (left do botão
+   relativo ao stage). Como o .atb-link-mega tem padding lateral 14px,
+   somamos 14px pra alinhar com o início do texto. Fallback sem JS: 22px
+   (mesmo padding lateral da .atb-main). */
+.atb-mega-inner.single-col {
+  grid-template-columns: minmax(0, 360px);
+  justify-content: start;
+  max-width: none;
+  margin: 0;
+  padding: 28px 22px 44px;
+  padding-left: calc(var(--atb-mega-x, 8px) + 14px);
+}
+
+.atb-mega-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.atb-mega-eyebrow {
+  font-size: 12px;
+  color: var(--private-muted);
+  font-weight: 400;
+  margin: 0 0 18px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.atb-mega-link {
+  display: block;
+  color: var(--private-text);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  line-height: 1.18;
+  text-decoration: none;
+  padding: 5px 0;
+  transition: color .15s var(--private-ease), opacity .15s var(--private-ease);
+}
+.atb-mega-link:hover { color: var(--private-blue); }
+.atb-mega-link.is-small {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--private-text);
+  padding: 5px 0;
+  letter-spacing: -0.005em;
+}
+.atb-mega-link.is-small:hover { opacity: 0.6; color: var(--private-text); }
+
+/* Mobile sub-list (escondida no desktop) */
+.atb-mobile-sub { display: none; }
+
+/* Link "Sobre" do drawer mobile — escondido no desktop, onde o
+   .atb-cta no canto direito já cumpre esse papel. */
+.atb-link-mobile-only { display: none; }
+
+/* ── SUB-BARRA (seções + KPIs) ─────────────────────────────── */
+.private-topbar .atb-sub {
+  height: 0;
+  overflow: hidden;
+  background: var(--private-glass-bg-h);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+          backdrop-filter: saturate(180%) blur(24px);
+  border-bottom: 1px solid transparent;
+  transition:
+    height .4s var(--private-ease),
+    border-color .4s var(--private-ease),
+    box-shadow .4s var(--private-ease);
+  display: flex;
+  align-items: center;
+  padding: 0 22px;
+  gap: 18px;
+  pointer-events: none;
+}
+.private-topbar.show-sub .atb-sub {
+  height: var(--private-sub-h);
+  border-bottom-color: var(--private-glass-border);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  pointer-events: auto;
+}
+.private-topbar.is-scrolled.show-sub .atb-sub {
+  height: var(--private-sub-h-min);
+}
+
+/* Sub-bar = páginas (esquerda) + KPI rotator (direita) */
+.atb-sub-pages {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.atb-sub-pages::-webkit-scrollbar { display: none; }
+.atb-sub-page {
+  padding: 6px 14px;
+  font-size: 12.5px;
+  color: var(--private-muted);
+  text-decoration: none;
+  border-radius: 6px;
+  white-space: nowrap;
+  transition: color .15s var(--private-ease), background .15s var(--private-ease);
+}
+.atb-sub-page:hover { color: var(--private-text); background: rgba(0,0,0,0.04); }
+.atb-sub-page.is-active {
+  color: var(--private-text);
+  font-weight: 500;
+}
+
+/* KPIs — rotator vertical: alterna grupos como uma "fita rolando" */
+.atb-kpis {
+  position: relative;
+  margin-left: auto;
+  width: 320px;
+  height: 36px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.atb-kpi-group {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity .55s var(--private-ease),
+              transform .55s var(--private-ease);
+  pointer-events: none;
+}
+.atb-kpi-group.is-active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.atb-kpi-group.is-leaving {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+.atb-kpi-group-label {
+  font-size: 10px;
+  color: var(--private-text);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  padding-right: 12px;
+  border-right: 1px solid var(--private-divider);
+  white-space: nowrap;
+}
+.atb-kpi {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.1;
+  min-width: 0;
+}
+.atb-kpi-label {
+  font-size: 9.5px;
+  color: var(--private-muted2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+.atb-kpi-value {
+  font-size: 13px;
+  color: var(--private-text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.atb-kpi-value.pos { color: #009E5C; }
+.atb-kpi-value.neg { color: #D7373F; }
+
+@media (prefers-reduced-motion: reduce) {
+  .atb-kpi-group { transition: none; }
+}
+
+/* ── HERO Private theme (opcional) ────────────────────────────── */
+body.private-style .private-hero {
+  text-align: center;
+  padding: 92px 22px 64px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+body.private-style .private-hero .eyebrow {
+  font-size: 13px;
+  color: var(--private-muted);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  margin-bottom: 12px;
+}
+body.private-style .private-hero h1 {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 56px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.07;
+  color: var(--private-text);
+  margin: 0 0 18px;
+}
+body.private-style .private-hero .hero-sub {
+  font-size: 19px;
+  color: var(--private-muted);
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.42;
+  font-weight: 400;
+}
+body.private-style .private-hero .hero-cta-row {
+  display: flex; gap: 16px; justify-content: center; margin-top: 28px;
+}
+body.private-style .private-cta {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 11px 22px;
+  background: var(--private-blue);
+  color: #fff;
+  border-radius: 980px;
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  transition: background .2s var(--private-ease);
+}
+body.private-style .private-cta:hover { background: var(--private-blue-h); }
+body.private-style .private-cta-ghost {
+  display: inline-flex; align-items: center; gap: 4px;
+  color: var(--private-blue);
+  font-size: 14px;
+  text-decoration: none;
+  padding: 11px 0;
+  transition: opacity .2s var(--private-ease);
+}
+body.private-style .private-cta-ghost:hover { opacity: 0.7; }
+body.private-style .private-cta-ghost svg { width: 12px; height: 12px; }
+
+/* ── CARDS Private theme ──────────────────────────────────────── */
+body.private-style .private-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  max-width: 980px;
+  margin: 0 auto 80px;
+  padding: 0 22px;
+}
+body.private-style .private-card {
+  position: relative;
+  background: var(--private-surface);
+  border-radius: 22px;
+  padding: 36px 32px 32px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  overflow: hidden;
+  transition: transform .35s var(--private-ease), box-shadow .35s var(--private-ease);
+  box-shadow: var(--private-shadow-sm);
+}
+body.private-style .private-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--private-shadow-md);
+}
+body.private-style .private-card .card-eyebrow {
+  font-size: 11px;
+  color: var(--private-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+body.private-style .private-card h3 {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  line-height: 1.1;
+  color: var(--private-text);
+  margin: 0 0 8px;
+}
+body.private-style .private-card p {
+  font-size: 14px;
+  color: var(--private-muted);
+  line-height: 1.45;
+  margin: 0 0 22px;
+  flex: 1;
+}
+body.private-style .private-card .card-foot {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px;
+  color: var(--private-blue);
+  font-weight: 400;
+}
+body.private-style .private-card .card-foot .count {
+  color: var(--private-muted);
+}
+body.private-style .private-card .card-foot svg {
+  width: 14px; height: 14px;
+  transition: transform .25s var(--private-ease);
+}
+body.private-style .private-card:hover .card-foot svg { transform: translateX(3px); }
+
+/* ── FOOTER Private theme ─────────────────────────────────────── */
+body.private-style .private-footer {
+  background: var(--private-bg);
+  padding: 22px 22px 28px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--private-muted2);
+  border-top: 1px solid var(--private-divider);
+}
+
+/* ── MOBILE ────────────────────────────────────────────────── */
+@media (max-width: 833px) {
+  /* Private usa 833px como breakpoint pra esconder a nav full */
+  .private-topbar .atb-main { padding: 0 16px; }
+  .private-topbar .atb-sub  { padding: 0 16px; gap: 10px; }
+
+  /* No mobile o mega-menu desktop não aparece — vira accordion no drawer */
+  .private-topbar .atb-mega-stage { display: none; }
+
+  .atb-nav {
+    display: none;
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    background: var(--private-glass-bg-h);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+            backdrop-filter: saturate(180%) blur(24px);
+    padding: 8px 12px 14px;
+    border-bottom: 1px solid var(--private-glass-border);
+    max-height: calc(100vh - var(--private-tb-h));
+    overflow-y: auto;
+  }
+  .atb-nav.is-open { display: flex; }
+  .atb-nav-item {
+    display: block;
+    width: 100%;
+  }
+  .atb-link,
+  .atb-link-mega {
+    padding: 12px 14px;
+    font-size: 16px;
+    border-radius: 10px;
+    width: 100%;
+    justify-content: space-between;
+    text-align: left;
+  }
+  .atb-link.is-active::after,
+  .atb-link-mega.is-active::after { display: none; }
+  .atb-link.is-active,
+  .atb-link-mega.is-active { background: rgba(0,0,0,0.05); }
+  .atb-cta { display: none; }
+  .atb-link-mobile-only { display: block; }   /* Sobre vira link normal no drawer */
+  .atb-hamburger { display: inline-flex; }
+
+  /* caret do accordion */
+  .atb-link-mega::after {
+    content: "";
+    width: 8px; height: 8px;
+    border-right: 1.6px solid currentColor;
+    border-bottom: 1.6px solid currentColor;
+    transform: rotate(45deg);
+    margin-right: 8px;
+    margin-bottom: 2px;
+    opacity: 0.55;
+    transition: transform .25s var(--private-ease), opacity .25s var(--private-ease);
+    position: static;
+    background: none;
+    left: auto; right: auto; bottom: auto;
+    border-radius: 0;
+    height: 8px;
+  }
+  .atb-link-mega.is-expanded::after {
+    transform: rotate(-135deg) translate(-2px,-2px);
+    opacity: 1;
+  }
+
+  /* accordion */
+  .atb-mobile-sub {
+    display: block;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height .35s var(--private-ease);
+    padding: 0 6px;
+  }
+  .atb-mobile-sub.is-expanded { max-height: 480px; }
+  .atb-mobile-sub-link {
+    display: block;
+    padding: 11px 16px 11px 24px;
+    font-size: 15px;
+    color: var(--private-muted);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: color .15s var(--private-ease), background .15s var(--private-ease);
+  }
+  .atb-mobile-sub-link:hover,
+  .atb-mobile-sub-link:active { color: var(--private-text); background: rgba(0,0,0,0.04); }
+
+  .private-topbar .atb-sub { gap: 12px; }
+  .atb-sub-page { font-size: 12px; padding: 6px 10px; }
+  .atb-kpis { width: 230px; height: 32px; }
+  .atb-kpi-group { gap: 10px; }
+  .atb-kpi-group-label { font-size: 9px; padding-right: 8px; }
+  .atb-kpi-label { font-size: 8.5px; }
+  .atb-kpi-value { font-size: 12px; }
+
+  body.private-style .private-hero { padding: 60px 18px 44px; }
+  body.private-style .private-hero h1 { font-size: 36px; }
+  body.private-style .private-hero .hero-sub { font-size: 17px; }
+  body.private-style .private-cards {
+    grid-template-columns: 1fr;
+    padding: 0 16px;
+    margin-bottom: 56px;
+  }
+  body.private-style .private-card { padding: 28px 24px 24px; min-height: 180px; }
+  body.private-style .private-card h3 { font-size: 22px; }
+}
+
+@media (max-width: 540px) {
+  /* em telas pequenas: páginas viram scroll horizontal, KPI rotator encolhe */
+  .atb-kpis { width: 180px; }
+  .atb-kpi.is-tertiary { display: none; } /* esconde 12m, sobra mês + ano */
+  .atb-brand-text { display: none; }      /* só o logo redondo */
+}
+@media (max-width: 380px) {
+  .atb-kpis { width: 130px; }
+  .atb-kpi.is-secondary { display: none; } /* só mês corrente sobra */
+}
+
+/* ── Reduce motion ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .private-topbar .atb-main,
+  .private-topbar .atb-sub,
+  body.private-style .private-card,
+  .atb-cta, .private-cta {
+    transition: none !important;
+  }
+}
+
+/* ── PRINT ────────────────────────────────────────────────── */
+@media print {
+  .private-topbar { display: none; }
+}

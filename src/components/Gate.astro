@@ -1,0 +1,11 @@
+---
+// Gate.astro — NÃO USADO.
+//
+// O gate AES foi implementado direto no Layout.astro via prop `gated` — porque
+// o <meta robots> e o <style> de esconder o conteúdo PRECISAM ir no <head>, e um
+// componente-wrapper não injeta no head. Uso: <Layout gated={true} ...>.
+//
+// A lógica de cripto está em public/scripts/crypto_ipb.js (VERBATIM do original).
+// Mantido este arquivo só como pista; pode ser removido.
+---
+<slot />

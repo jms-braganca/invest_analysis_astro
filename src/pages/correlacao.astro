@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/private-fundos.css';
+import '../styles/private-comparacao.css';
+import '../styles/private-correlacao.css';
+---
+<Layout title="Correlação · Invest Analysis" footerCrumb="Correlação">
+  <style is:global>
+    .inst-switcher-wrap { width: 100%; display: flex; justify-content: center; margin: 6px 0 28px 0; padding: 0 32px; }
+    .inst-switcher { display: inline-flex; gap: 14px; padding: 8px; background: #fff; border: 1px solid #e3e6ee; border-radius: 16px; flex-wrap: wrap; }
+    .inst-btn { min-width: 132px; height: 52px; padding: 8px 22px; border: 2px solid transparent; border-radius: 10px; cursor: pointer; transition: all .18s ease; display: flex; align-items: center; justify-content: center; background: #fff; text-decoration: none; }
+    .inst-btn img { max-height: 28px; max-width: 100px; }
+    .inst-btn-todos { background: #f4f5fa; border-color: #d9dde6; }
+    .inst-btn-itau { background: #002060; border-color: #002060; }
+    .inst-btn:not(.is-active) img { opacity: .55; }
+    .inst-btn:not(.is-active) { filter: grayscale(.25); }
+    .inst-btn.is-active { border-color: #EC7000; box-shadow: 0 4px 12px rgba(236,112,0,.22); }
+    .inst-btn .inst-fallback { font-weight: 700; letter-spacing: .04em; text-transform: uppercase; font-size: 13px; color: #002060; }
+    .inst-btn-itau .inst-fallback { color: #fff; }
+    @media (max-width: 720px) { .inst-switcher-wrap { padding: 0 14px; } .inst-switcher { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; } .inst-btn { min-width: 0; width: 100%; height: 48px; } }
+    .dyn-loading { padding: 40px; text-align: center; color: #6e6e73; font-size: 14px; }
+    .dyn-loading::after { content: ''; display: inline-block; width: 14px; height: 14px; border: 2px solid #d2d2d7; border-top-color: #1d1d1f; border-radius: 50%; margin-left: 8px; animation: spin .8s linear infinite; vertical-align: middle; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+
+<section class="page-hero" data-private-hero>
+  <p class="eyebrow">Correlação · Diversificação visualizada</p>
+  <h1>Como seus fundos se movem. <span class="muted">Juntos ou opostos.</span></h1>
+  <p>Matriz de Pearson dos retornos diários — escolha fundos e veja a relação entre eles.</p>
+</section>
+
+<div class="inst-switcher-wrap">
+  <nav class="inst-switcher" aria-label="Selecione a instituição">
+    <a class="inst-btn inst-btn-todos is-active" href="/correlacao.html" data-inst="todos"><span class="inst-fallback">Todos</span></a>
+    <a class="inst-btn inst-btn-btg"   href="/correlacao.html#inst=btg"   data-inst="btg"><img src="/shared/assets/inst/btg.png"   alt="BTG"  onerror="this.style.display='none'; this.nextElementSibling.hidden=false;"><span class="inst-fallback" hidden>BTG</span></a>
+    <a class="inst-btn inst-btn-inter" href="/correlacao.html#inst=inter" data-inst="inter"><img src="/shared/assets/inst/inter.png" alt="Inter" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;"><span class="inst-fallback" hidden>Inter</span></a>
+    <a class="inst-btn inst-btn-itau"  href="/correlacao.html#inst=itau"  data-inst="itau"><img src="/shared/assets/inst/itau.png"  alt="Itaú" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;"><span class="inst-fallback" hidden>Itaú</span></a>
+    <a class="inst-btn inst-btn-xp"    href="/correlacao.html#inst=xp"    data-inst="xp"><img src="/shared/assets/inst/xp.png"    alt="XP"   onerror="this.style.display='none'; this.nextElementSibling.hidden=false;"><span class="inst-fallback" hidden>XP</span></a>
+  </nav>
+</div>
+
+<div class="cor-page">
+  <aside class="cor-sidebar">
+    <div class="cor-section">
+      <h3>Selecionados</h3>
+      <span class="cmp-count"><span id="corCount">0</span></span>
+    </div>
+    <div class="cor-chips" id="corChips"></div>
+
+    <div class="cor-section"><h3>Adicionar fundo</h3></div>
+    <div class="cor-tabs" role="tablist">
+      <button class="cor-tab is-selected" data-tipo="fundo">Fundos 555</button>
+      <button class="cor-tab"              data-tipo="prev">Previdência</button>
+    </div>
+    <div class="cor-search-wrap">
+      <svg class="cor-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="corSearch" class="cor-search-input" placeholder="Buscar fundo pelo nome ou CNPJ" autocomplete="off">
+    </div>
+    <div class="cor-fund-list" id="corFundList"><p class="dyn-loading">Carregando</p></div>
+
+    <div class="cor-section"><h3>Janela</h3></div>
+    <div class="cmp-window-row">
+      <div class="ap-segmented" id="corWindow">
+        <button data-window="12m" class="is-selected">12 meses</button>
+        <button data-window="24m">24 meses</button>
+        <button data-window="all">Tudo</button>
+      </div>
+    </div>
+
+    <button class="cmp-reset" type="button" id="corReset">Limpar seleção</button>
+  </aside>
+
+  <main class="cor-main">
+    <div class="cor-card">
+      <div class="cor-head">
+        <h2>Matriz de correlação. <span class="muted-sub">Pearson dos retornos diários.</span></h2>
+        <div class="cmp-corr-legend">
+          <span>−1</span><span class="cmp-corr-legend-bar"></span><span>+1</span>
+        </div>
+      </div>
+      <div class="cor-summary" id="corSummary">Selecione 2 ou mais fundos pra ver a matriz.</div>
+      <div class="cor-heatmap-wrap" id="corHeatmap"></div>
+    </div>
+  </main>
+</div>
+
+  <Fragment slot="scripts">
+    <script type="module" is:inline src="/js/atb_kpis_loader.js"></script>
+    <script type="module" is:inline src="/js/correlacao_loader.js"></script>
+  </Fragment>
+</Layout>

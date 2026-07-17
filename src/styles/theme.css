@@ -1,0 +1,120 @@
+/* ============================================================
+   theme.css — Design tokens compartilhados
+   Importado por todos os HTMLs antes do CSS específico
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Cores institucionais */
+  --navy:      #002060;
+  --navy2:     #003399;
+  --navy-lt:   #E8EDF7;
+
+  /* Backgrounds em camadas */
+  --bg:        #ECEEF2;       /* fundo geral da página */
+  --surface:   #ffffff;       /* cards, sidebar, painéis */
+  --surface2:  #F0F2F8;       /* divisores suaves dentro de cards */
+  --surface3:  #F8F9FD;       /* hover states */
+
+  /* Bordas */
+  --border:    #E8EAF2;
+  --border-s:  #D8DCE8;       /* mais forte, p/ inputs */
+  --divider:   #F0F2F8;       /* divisor interno de cards */
+
+  /* Texto */
+  --text:      #0D1B3E;
+  --muted:     #5A6480;
+  --muted2:    #8A93AD;
+
+  /* Status */
+  --pos:       #0A6640;
+  --pos-bg:    #E8F3EC;
+  --neg:       #B52B2B;
+  --neg-bg:    #FBEAEA;
+  --warn:      #B8590E;
+  --warn-bg:   #FFF1E0;
+  --info:      #6B21A8;
+  --info-bg:   #F3E8FF;
+
+  /* Itaú */
+  --itau-orange: #EC7000;
+
+  /* Sombras */
+  --shadow-sm: 0 2px 12px rgba(0,32,96,0.06);
+  --shadow-md: 0 2px 16px rgba(0,32,96,0.05);
+  --shadow-lg: 0 4px 24px rgba(0,32,96,0.08);
+
+  /* Layout */
+  --sidebar-w: 220px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Tipografia editorial */
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.serif {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+/* Pills de cor por área */
+.pill {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+.pill-navy   { color: var(--navy);  background: var(--navy-lt); }
+.pill-green  { color: var(--pos);   background: var(--pos-bg);  }
+.pill-warn   { color: var(--warn);  background: var(--warn-bg); }
+.pill-purple { color: var(--info);  background: var(--info-bg); }
+
+/* Disclaimer footer */
+.disclaimer {
+  text-align: center;
+  font-size: 10px;
+  color: var(--muted2);
+  margin-top: 36px;
+  letter-spacing: 0.4px;
+}
+
+/* Esconder utilitário responsive */
+.hide-mobile { display: initial; }
+.show-mobile { display: none; }
+
+@media (max-width: 900px) {
+  .hide-mobile { display: none; }
+  .show-mobile { display: initial; }
+}

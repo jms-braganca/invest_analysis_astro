@@ -1,0 +1,159 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/private-fundos.css';
+import '../styles/private-v2-extras.css';
+---
+<Layout title="Previdência · Invest Analysis" pagina="previdencia">
+  <style is:global>
+/* Switcher de instituição (mesmas regras do original) */
+.inst-switcher-wrap { width: 100%; display: flex; justify-content: center; margin: 6px 0 28px 0; padding: 0 32px; box-sizing: border-box; }
+.inst-switcher { display: inline-flex; gap: 14px; padding: 8px; background: var(--surface, #fff); border: 1px solid var(--border, #e3e6ee); border-radius: 16px; box-shadow: 0 2px 8px rgba(15,23,42,.04); flex-wrap: wrap; align-items: stretch; }
+.inst-btn { flex: 0 0 auto; min-width: 132px; height: 52px; padding: 8px 22px; border: 2px solid transparent; border-radius: 10px; cursor: pointer; transition: all .18s ease; display: flex; align-items: center; justify-content: center; background: #fff; position: relative; font-family: inherit; }
+.inst-btn:hover { transform: translateY(-1px); }
+.inst-btn img { max-height: 28px; max-width: 100px; width: auto; height: auto; display: block; transition: opacity .18s ease; }
+.inst-btn-todos { background: #f4f5fa; border-color: #d9dde6; }
+.inst-btn-todos .inst-fallback { color: #002060; font-size: 13px; letter-spacing: .06em; }
+.inst-btn-itau { background: #002060; border-color: #002060; }
+.inst-btn-btg, .inst-btn-xp, .inst-btn-nu, .inst-btn-inter { background: #fff; border-color: #d9dde6; }
+.inst-btn:not(.is-active) img { opacity: .55; }
+.inst-btn:not(.is-active) { filter: grayscale(.25); }
+.inst-btn.is-active { border-color: #EC7000; box-shadow: 0 4px 12px rgba(236,112,0,.22); }
+.inst-btn .inst-fallback { font-weight: 700; letter-spacing: .04em; text-transform: uppercase; font-size: 13px; }
+.inst-btn-itau .inst-fallback { color: #fff; }
+.inst-btn-btg .inst-fallback, .inst-btn-xp .inst-fallback, .inst-btn-nu .inst-fallback, .inst-btn-inter .inst-fallback { color: #002060; }
+@media (max-width: 720px) {
+  .inst-switcher-wrap { padding: 0 14px; }
+  .inst-switcher { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; padding: 8px; }
+  .inst-btn { min-width: 0; width: 100%; height: 48px; padding: 6px 10px; }
+  .inst-btn img { max-height: 22px; max-width: 100%; }
+  .inst-btn .inst-fallback { font-size: 11.5px; }
+}
+@media (max-width: 380px) {
+  .inst-switcher { grid-template-columns: repeat(2, 1fr); }
+}
+/* Class-rail (sidebar de classes flutuante) */
+.class-rail { position: fixed; left: 18px; top: 50%; transform: translateY(-50%); z-index: 90; background: rgba(255,255,255,0.65); -webkit-backdrop-filter: saturate(180%) blur(22px); backdrop-filter: saturate(180%) blur(22px); border: .5px solid rgba(0,0,0,0.06); border-radius: 18px; padding: 8px; box-shadow: 0 12px 36px -8px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 2px; max-height: calc(100vh - 48px); overflow-y: auto; scrollbar-width: none; }
+.class-rail::-webkit-scrollbar { display: none; }
+.class-rail a { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px; font-size: 12.5px; font-weight: 500; color: #6e6e73; white-space: nowrap; overflow: hidden; transition: background .18s ease, color .18s ease; text-decoration: none; }
+.class-rail a svg { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; stroke-width: 1.7; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.class-rail a span { max-width: 0; opacity: 0; overflow: hidden; transition: max-width .25s ease, opacity .15s ease; }
+.class-rail:hover a span { max-width: 200px; opacity: 1; padding-left: 2px; }
+.class-rail a:hover { background: rgba(0,0,0,0.04); color: #1d1d1f; }
+.class-rail a.active { background: #1d1d1f; color: #fff; }
+@media (max-width: 1280px) { .class-rail { display: none; } }
+/* Loading overlay sutil */
+.dyn-loading { padding: 40px; text-align: center; color: #6e6e73; font-size: 14px; }
+.dyn-loading::after { content: ''; display: inline-block; width: 14px; height: 14px; border: 2px solid #d2d2d7; border-top-color: #1d1d1f; border-radius: 50%; vertical-align: middle; margin-left: 8px; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+
+<section class="page-hero" data-private-hero>
+  <p class="eyebrow">Previdência · PGBL e VGBL</p>
+  <h1>Catálogo de previdência. <span class="muted">Com performance.</span></h1>
+  <p>Planos PGBL e VGBL das plataformas, com retornos por janela e link pras lâminas oficiais. Atualizados com cota até <span data-ultima-data>—</span>.</p>
+</section>
+
+<div class="inst-switcher-wrap">
+  <div class="inst-switcher" role="tablist" aria-label="Selecione a instituição">
+    <button type="button" class="inst-btn inst-btn-todos is-active" role="tab" data-inst="todos" aria-selected="true"><span class="inst-fallback">Todos</span></button>
+    <button type="button" class="inst-btn inst-btn-btg"   role="tab" data-inst="btg"   aria-selected="false"><img src="/shared/assets/inst/btg.png"   alt="BTG"  onerror="this.style.display='none'; this.nextElementSibling.hidden=false;"><span class="inst-fallback" hidden>BTG</span></button>
+    <button type="button" class="inst-btn inst-btn-inter" role="tab" data-inst="inter" aria-selected="false"><img src="/shared/assets/inst/inter.png" alt="Inter" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;"><span class="inst-fallback" hidden>Inter</span></button>
+    <button type="button" class="inst-btn inst-btn-itau"  role="tab" data-inst="itau"  aria-selected="false"><img src="/shared/assets/inst/itau.png"  alt="Itaú" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;"><span class="inst-fallback" hidden>Itaú</span></button>
+    <button type="button" class="inst-btn inst-btn-xp"    role="tab" data-inst="xp"    aria-selected="false"><img src="/shared/assets/inst/xp.png"    alt="XP"   onerror="this.style.display='none'; this.nextElementSibling.hidden=false;"><span class="inst-fallback" hidden>XP</span></button>
+  </div>
+</div>
+
+<aside class="class-rail" id="classRail"></aside>
+
+<div class="inst-panel" data-inst-active>
+  <div class="ap-page has-floating-room">
+    <div class="ap-search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Buscar PGBL/VGBL pelo nome ou CNPJ" autocomplete="off" data-search>
+      <button class="ap-search-clear" aria-label="Limpar" data-search-clear>×</button>
+      <span class="ap-search-count" data-count>— fundos</span>
+    </div>
+
+    <div class="ap-filters">
+      <button class="ap-filters-toggle" type="button" aria-expanded="false">
+        <svg class="ap-filters-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="6" x2="20" y2="6"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/>
+        </svg>
+        <span class="ap-filters-toggle-label">Filtros</span>
+        <span class="ap-filters-active-count">todos os fundos</span>
+        <span class="ap-filters-caret"></span>
+      </button>
+      <div class="ap-filters-body">
+        <h2 class="ap-section-title">Janela. <span class="muted">Por qual horizonte?</span></h2>
+        <div class="ap-toolbar">
+          <div class="ap-segmented" role="tablist" data-window>
+            <button data-value="12m" class="is-selected">12 meses</button>
+            <button data-value="24m">24 meses</button>
+          </div>
+          <button class="ap-reset" type="button" data-reset>Limpar filtros</button>
+        </div>
+
+      <h2 class="ap-section-title">Refine. <span class="muted">Pelo retorno e pelo prazo.</span></h2>
+      <div class="ap-sliders-row">
+        <div class="ap-slider">
+          <div class="ap-slider-head">
+            <div class="ap-slider-head-left">
+              <span class="ap-slider-label">Mínimo</span>
+              <select class="ap-select-pill" data-bench-select aria-label="Benchmark">
+                <option value="cdi">% CDI</option>
+                <option value="ibov">Ibov</option>
+              </select>
+            </div>
+            <span class="ap-slider-value" data-min-value>0 %</span>
+          </div>
+          <input type="range" min="0" max="200" step="5" value="0" data-min-slider>
+          <div class="ap-slider-ticks"><span>0%</span><span>50%</span><span>100%</span><span>150%</span><span>200%</span></div>
+        </div>
+
+        <div class="ap-slider">
+          <div class="ap-slider-head">
+            <span class="ap-slider-label">Prazo de resgate</span>
+            <span class="ap-slider-value" data-unit="dias" data-prazo-value>0</span>
+          </div>
+          <input type="range" min="0" max="76" step="1" value="0" data-prazo-slider>
+          <div class="ap-slider-ticks"><span>D+0</span><span>90d</span><span>180d</span><span>270d</span><span>360d</span></div>
+        </div>
+      </div>
+
+      <div class="ap-toggle-row">
+        <label class="ap-toggle">
+          <span class="ap-toggle-text">
+            <span class="ap-toggle-label">Apenas fundos abertos</span>
+            <span class="ap-toggle-sub">Esconde planos fechados, encerrados e inibidos.</span>
+          </span>
+          <span class="ap-toggle-switch">
+            <input type="checkbox" data-only-open aria-label="Apenas fundos abertos">
+          </span>
+        </label>
+      </div>
+    </div>
+    </div>
+
+    <h2 class="ap-section-title">Resultados. <span class="muted">Por categoria.</span></h2>
+
+    <div data-classes>
+      <p class="dyn-loading">Carregando fundos</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="ap-floating-bar" id="floatingBar">
+  <span class="ap-fb-count">0 fundos selecionados</span>
+  <button class="ap-fb-clear" type="button">Limpar</button>
+  <button class="ap-fb-cta" type="button">
+    Comparar fundos
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</div>
+
+  <Fragment slot="scripts">
+    <script type="module" is:inline src="/js/atb_kpis_loader.js"></script>
+    <script type="module" is:inline src="/js/app_previdencia.js"></script>
+  </Fragment>
+</Layout>

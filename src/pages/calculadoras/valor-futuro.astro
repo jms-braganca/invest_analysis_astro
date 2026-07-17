@@ -1,0 +1,169 @@
+---
+// POC — Valor Futuro. Migração 1:1 de calculadoras/valor-futuro.html.
+// Página estática (math pura client-side, sem fetch, sem gate) — de propósito,
+// pra provar a fundação (Layout + Topbar + tema + footer + ticker) sem ruído.
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/private-calc.css';
+---
+<Layout
+  title="Valor Futuro · Calculadoras · Invest Analysis"
+  footerCrumb="Calculadoras"
+>
+  <!-- estilos inline específicos da página (globais, iguais ao original) -->
+  <style is:global>
+    .ac-tbl .pos{color:#009E5C}
+    body.theme-dark .ac-tbl .pos{color:#30d158}
+    #vf-taxa-modo{appearance:none;-webkit-appearance:none;border:1px solid var(--private-border,#e3e6ee);background:var(--surface,#fff);color:inherit;border-radius:10px;padding:8px 12px;font-family:inherit;font-size:14px;cursor:pointer}
+    body.theme-dark #vf-taxa-modo{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+    .vf-taxa-wrap{display:flex;gap:10px;align-items:flex-end}
+    .vf-taxa-wrap .ac-field{flex:1}
+  </style>
+
+  <!-- barra de sub-páginas (Planejamento Financeiro), com Valor Futuro ativa -->
+  <div slot="topbar-sub" class="atb-sub">
+    <div class="atb-sub-pages">
+      <a href="/calculadoras/simular-pgbl.html" class="atb-sub-page">PGBL</a>
+      <a href="/calculadoras/aposentadoria.html" class="atb-sub-page">Aposentadoria</a>
+      <a href="/calculadoras/irpfm.html" class="atb-sub-page">IRPFm 2026</a>
+      <a href="/calculadoras/come-cotas.html" class="atb-sub-page">Come-cotas</a>
+      <a href="/calculadoras/valor-futuro.html" class="atb-sub-page is-active">Valor Futuro</a>
+      <a href="/calculadoras/sucessao-previdencia.html" class="atb-sub-page">Sucessão na Previdência</a>
+    </div>
+  </div>
+
+  <section class="page-hero" data-private-hero>
+    <p class="eyebrow">Planejamento Financeiro · Valor Futuro</p>
+    <h1>Quanto terei no futuro? <span class="muted">Com aportes mensais.</span></h1>
+    <p>A partir do que você tem hoje, do aporte mensal, da taxa de juros e do número de meses, estime quanto seu patrimônio se tornará.</p>
+  </section>
+
+  <div class="ac-page">
+    <div class="ac-toolbar">
+      <nav class="ac-breadcrumb" aria-label="Navegação">
+        <a href="/index.html">Início</a>
+        <span class="ac-breadcrumb-sep">›</span>
+        <span class="ac-breadcrumb-current">Calculadoras</span>
+        <span class="ac-breadcrumb-sep">›</span>
+        <span class="ac-breadcrumb-current">Valor Futuro</span>
+      </nav>
+      <button type="button" class="ac-clear-btn calc-clear-btn" id="vf-clear" title="Limpar todos os campos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        Limpar tudo
+      </button>
+    </div>
+
+    <section class="ac-section">
+      <div class="ac-section-head">
+        <h2>Ponto de partida. <span class="muted-sub">O que você já tem e quanto aporta.</span></h2>
+      </div>
+      <div class="ac-grid-2">
+        <div class="ac-field">
+          <label>Valor que tenho hoje <span class="unit">R$</span>
+            <span class="ac-tip" title="Saldo já investido hoje. Pode ser 0 se você está começando do zero.">i</span>
+          </label>
+          <input type="text" inputmode="decimal" id="vf-pv" placeholder="10.000,00">
+        </div>
+        <div class="ac-field">
+          <label>Aporte mensal <span class="unit">R$/mês</span>
+            <span class="ac-tip" title="Valor que você pretende investir todo mês. Considerado ao final de cada mês.">i</span>
+          </label>
+          <input type="text" inputmode="decimal" id="vf-pmt" placeholder="1.000,00">
+        </div>
+      </div>
+    </section>
+
+    <section class="ac-section">
+      <div class="ac-section-head">
+        <h2>Premissas. <span class="muted-sub">Taxa e prazo.</span></h2>
+      </div>
+      <div class="ac-grid-2">
+        <div class="vf-taxa-wrap">
+          <div class="ac-field">
+            <label>Taxa de juros <span class="unit">%</span>
+              <span class="ac-tip" title="Rentabilidade esperada. Escolha se é ao ano ou ao mês. Ao ano é convertido para mensal por juro composto.">i</span>
+            </label>
+            <input type="text" inputmode="decimal" id="vf-taxa" placeholder="10,00">
+          </div>
+          <div class="ac-field" style="flex:0 0 auto">
+            <label>&nbsp;</label>
+            <select id="vf-taxa-modo">
+              <option value="aa" selected>ao ano</option>
+              <option value="am">ao mês</option>
+            </select>
+          </div>
+        </div>
+        <div class="ac-field">
+          <label>Quantidade de aportes / meses <span class="unit">meses</span>
+            <span class="ac-tip" title="Número de meses da simulação (também o número de aportes mensais).">i</span>
+          </label>
+          <input type="text" inputmode="numeric" id="vf-n" placeholder="120">
+        </div>
+      </div>
+      <div class="ac-info-row" style="margin-top:14px;padding:14px 18px;background:#FBFBFD;border-radius:14px;border:0.5px solid var(--private-divider)">
+        <span class="lbl">Taxa equivalente ao mês</span>
+        <span class="val" id="vf-taxa-mes" style="font-size:15px">—</span>
+      </div>
+    </section>
+
+    <div class="ac-aporte" id="vf-fv-wrap">
+      <div class="lbl">Valor futuro estimado</div>
+      <div class="val" id="vf-fv-val">R$&nbsp;0,00</div>
+      <div class="sub" id="vf-fv-sub">Preencha os campos acima para calcular.</div>
+    </div>
+
+    <section class="ac-section">
+      <div class="ac-section-head">
+        <h2>Composição. <span class="muted-sub">De onde vem o valor.</span></h2>
+      </div>
+      <div class="ac-grid-3 ac-grid-divided">
+        <div class="ac-metric">
+          <span class="lbl">Valor inicial</span>
+          <span class="val sm" id="vf-total-pv">—</span>
+        </div>
+        <div class="ac-metric">
+          <span class="lbl">Total aportado</span>
+          <span class="val sm blu" id="vf-aportado">—</span>
+        </div>
+        <div class="ac-metric">
+          <span class="lbl">Rendimento (juros)</span>
+          <span class="val sm pos" id="vf-rendimento">—</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="ac-section">
+      <div class="ac-section-head">
+        <h2>Evolução. <span class="muted-sub">Ano a ano.</span></h2>
+      </div>
+      <div class="ac-tbl-wrap">
+        <table class="ac-tbl">
+          <thead>
+            <tr><th>Período</th><th>Mês</th><th>Total aportado</th><th>Rendimento</th><th>Saldo</th></tr>
+          </thead>
+          <tbody id="vf-tbody">
+            <tr><td colspan="5" style="text-align:center;padding:20px;color:var(--private-muted2)">Preencha os dados acima.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="ac-disc warn" style="margin-top:6px">
+      <strong>Importante:</strong> projeção determinística com taxa constante e aportes no fim de cada mês. Não considera inflação, IR nem taxas — é uma estimativa ilustrativa.
+    </div>
+  </div>
+
+  <div class="ac-pdf-bar" id="vf-pdf-bar">
+    <div class="left">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+      <span class="title">Salvar simulação em PDF</span>
+    </div>
+    <button type="button" class="ac-pdf-btn" id="vf-pdf-btn">Gerar PDF</button>
+  </div>
+
+  <!-- scripts da página, na ordem de dependência (utils -> common -> calc) -->
+  <Fragment slot="scripts">
+    <script is:inline src="/scripts/utils.js"></script>
+    <script is:inline src="/scripts/calc-common.js"></script>
+    <script is:inline src="/scripts/calc-valorfuturo.js"></script>
+  </Fragment>
+</Layout>

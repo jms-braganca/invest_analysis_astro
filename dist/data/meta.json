@@ -1,0 +1,92 @@
+{
+  "_schema": 1,
+  "gerado_em": "2026-07-04T06:05:45-03:00",
+  "instituicoes": [
+    {
+      "id": "itau",
+      "nome": "Itaú",
+      "logo": "../assets/logos/itau.png",
+      "cor": "#EC7000",
+      "tem_fundos": true,
+      "tem_previdencia": true,
+      "tem_cotas": true,
+      "n_fundos": 675,
+      "n_prev": 205
+    },
+    {
+      "id": "btg",
+      "nome": "BTG",
+      "logo": "../assets/logos/btg.png",
+      "cor": "#1a1a1a",
+      "tem_fundos": true,
+      "tem_previdencia": true,
+      "tem_cotas": true,
+      "n_fundos": 1151,
+      "n_prev": 246
+    },
+    {
+      "id": "xp",
+      "nome": "XP",
+      "logo": "../assets/logos/xp.png",
+      "cor": "#FFCC00",
+      "tem_fundos": true,
+      "tem_previdencia": true,
+      "tem_cotas": true,
+      "n_fundos": 643,
+      "n_prev": 318
+    },
+    {
+      "id": "inter",
+      "nome": "Inter",
+      "logo": "../assets/logos/inter.png",
+      "cor": "#FF7A00",
+      "tem_fundos": true,
+      "tem_previdencia": false,
+      "tem_cotas": true,
+      "n_fundos": 313,
+      "n_prev": 0
+    },
+    {
+      "id": "itauprivate",
+      "nome": "Itaú Private Bank",
+      "logo": null,
+      "cor": "#EC7000",
+      "tem_fundos": true,
+      "tem_previdencia": false,
+      "tem_cotas": false,
+      "n_fundos": 627,
+      "n_prev": 0,
+      "oculto": true
+    }
+  ],
+  "default_instituicao": "itau",
+  "ultima_data_cota": "2026-07-02",
+  "periodos_fundos": [
+    "Mês",
+    "Mês -1",
+    "Ano",
+    "12M",
+    "24M"
+  ],
+  "periodos_prev": [
+    "Mês",
+    "Mês -1",
+    "Ano",
+    "12M",
+    "24M"
+  ],
+  "cdi_acumulado": {
+    "Mês": 0.11,
+    "Mês -1": 1.12,
+    "Ano": 6.96,
+    "12M": 14.77,
+    "24M": 28.75
+  },
+  "ibov_acumulado": {
+    "Mês": 0.44,
+    "Mês -1": -1.01,
+    "Ano": 7.24,
+    "12M": 24.26,
+    "24M": 38.47
+  }
+}

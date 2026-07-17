@@ -1,0 +1,162 @@
+/* ============================================================
+   private-v2-extras.css — Estilos críticos extraídos do HTML
+   original (inline) e empacotados como CSS reusável pra V2.
+   Inclui:
+     • Pills de instituição (.inst-pill, .ap-inst-pills) com cores
+     • Colunas Cap. Mês/Ano (.has-captacao)
+     • Wider page (max-width 1440px)
+   ============================================================ */
+
+body.private-style .ap-page { max-width: 1440px; }
+
+/* ── Coluna Instituição ─────────────────────────────────────── */
+.ap-class-body .ap-table.has-instituicao thead th.ap-inst-th {
+  width: 110px;
+  min-width: 100px;
+  max-width: 130px;
+  text-align: left;
+  white-space: nowrap;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.ap-class-body .ap-table.has-instituicao tbody td.ap-inst-cell {
+  width: 110px;
+  min-width: 100px;
+  max-width: 130px;
+  text-align: left;
+  padding-left: 8px;
+  padding-right: 8px;
+  vertical-align: middle;
+}
+
+/* Container de pills — flex-wrap empilha em 2x2 quando ≥3. */
+.ap-inst-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 4px;
+  max-width: 100%;
+}
+
+/* Pill base (fallback cinza) */
+.inst-pill {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+  background: #f0f2f8;
+  color: #5a6480;
+  border-color: #d9dde6;
+}
+
+/* Cores por instituição (sobrescrevem fallback) */
+.inst-pill-itau   { background: #002060; color: #fff;    border-color: #002060; }
+.inst-pill-btg    { background: #fff;    color: #002060; border-color: #002060; }
+.inst-pill-xp     { background: #FFD200; color: #1a1a1a; border-color: #FFD200; }
+.inst-pill-inter  { background: #FF7A00; color: #fff;    border-color: #FF7A00; }
+.inst-pill-nu     { background: #8A05BE; color: #fff;    border-color: #8A05BE; }
+
+/* ── Colunas Cap. Mês / Cap. Ano ─────────────────────────────── */
+.ap-class-body .ap-table.has-captacao thead th,
+.ap-class-body .ap-table.has-captacao tbody td {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.ap-class-body .ap-table.has-captacao thead th:first-child {
+  padding-left: 18px;
+}
+.ap-class-body .ap-table.has-captacao thead th:last-child,
+.ap-class-body .ap-table.has-captacao tbody td:last-child {
+  padding-right: 18px;
+}
+.ap-class-body .ap-table.has-captacao thead th.ap-cap-th {
+  width: 72px;
+  min-width: 60px;
+  max-width: 84px;
+  white-space: nowrap;
+  font-size: 10.5px;
+}
+.ap-class-body .ap-table.has-captacao tbody td.ap-cap-cell {
+  width: 72px;
+  min-width: 60px;
+  max-width: 84px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  font-size: 12.5px;
+}
+.ap-cap-cell .cap-pos { color: #0A6640; font-weight: 600; }
+.ap-cap-cell .cap-neg { color: #B52B2B; font-weight: 600; }
+.ap-cap-cell .cap-na  { color: #B0B6C2; }
+
+/* Mobile: esconde captação nas telas estreitas (o private-fundos.css
+   original já reformata o layout em cards nesse breakpoint). */
+@media (max-width: 720px) {
+  .ap-class-body .ap-table.has-captacao .ap-cap-th,
+  .ap-class-body .ap-table.has-captacao .ap-cap-cell {
+    display: none;
+  }
+}
+
+/* ── Sort arrow asc/desc ─────────────────────────────────────── */
+.sortable .arrow {
+  font-size: 8px;
+  opacity: 0.35;
+  transition: opacity .15s, transform .15s;
+}
+.sortable:hover .arrow { opacity: .7; }
+.sortable .arrow.is-desc { opacity: 1; transform: rotate(0deg); }
+.sortable .arrow.is-asc  { opacity: 1; transform: rotate(180deg); }
+
+/* ── Empty state com ampulheta laranja ──────────────────────────
+   Aparece quando a instituição selecionada não tem previdência
+   (tem_previdencia=false no meta.json). A ampulheta gira: vira de
+   cabeça pra baixo, espera, gira de volta — feedback claro de
+   "em construção" sem desabilitar o botão. */
+.inst-empty-state {
+  max-width: 460px;
+  margin: 80px auto 120px;
+  padding: 32px 28px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid #e3e6ee;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
+}
+.inst-empty-state .hourglass-spin {
+  width: 56px;
+  height: 56px;
+  color: #EC7000;
+  margin: 0 auto 18px;
+  display: block;
+  animation: hourglass-rotate 2.4s ease-in-out infinite;
+}
+.inst-empty-state-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #002060;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.01em;
+}
+.inst-empty-state-body {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: #5a6480;
+  margin: 0;
+}
+.inst-empty-state-body strong {
+  color: #002060;
+  font-weight: 600;
+}
+@keyframes hourglass-rotate {
+  0%, 35%   { transform: rotate(0deg); }
+  50%, 85%  { transform: rotate(180deg); }
+  100%      { transform: rotate(360deg); }
+}

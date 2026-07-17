@@ -1,0 +1,142 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/private-fundos.css';
+import '../styles/private-v2-extras.css';
+---
+<Layout title="ETFs Offshore · Invest Analysis">
+  <style is:global>
+/* Switcher de Classe de Ativos (mesmo desenho do switcher de instituições) */
+.inst-switcher-wrap { width: 100%; display: flex; justify-content: center; margin: 6px 0 28px 0; padding: 0 16px; box-sizing: border-box; }
+.inst-switcher { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px; background: var(--surface, #fff); border: 1px solid var(--border, #e3e6ee); border-radius: 16px; box-shadow: 0 2px 8px rgba(15,23,42,.04); align-items: stretch; justify-content: center; max-width: 100%; box-sizing: border-box; }
+.inst-btn { flex: 0 0 auto; min-width: 84px; height: 42px; padding: 8px 14px; border: 2px solid transparent; border-radius: 10px; cursor: pointer; transition: all .18s ease; display: flex; align-items: center; justify-content: center; background: #f4f5fa; position: relative; font-family: inherit; }
+.inst-btn:hover { transform: translateY(-1px); }
+.inst-btn .inst-fallback { font-weight: 700; letter-spacing: .03em; font-size: 13px; color: #1d1d1f; }
+.inst-btn-todos { background: #f4f5fa; }
+.inst-btn:not(.is-active) { filter: grayscale(.2); opacity: .8; }
+.inst-btn.is-active { border-color: #0071e3; box-shadow: 0 4px 12px rgba(0,113,227,.20); background:#fff; }
+body.theme-dark .inst-switcher { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); }
+body.theme-dark .inst-btn { background: rgba(255,255,255,.05); }
+body.theme-dark .inst-btn .inst-fallback { color: #f5f5f7; }
+body.theme-dark .inst-btn.is-active { background: rgba(0,113,227,.18); border-color:#0a84ff; }
+@media (max-width: 720px) {
+  .inst-switcher-wrap { padding: 0 14px; }
+  .inst-switcher { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; }
+  .inst-btn { min-width: 0; width: 100%; height: 42px; padding: 6px 8px; }
+  .inst-btn .inst-fallback { font-size: 12px; }
+}
+@media (max-width: 380px) { .inst-switcher { grid-template-columns: repeat(2, 1fr); } }
+
+/* Class-rail (sidebar flutuante de Classes de Ativos) */
+.class-rail { position: fixed; left: 18px; top: 50%; transform: translateY(-50%); z-index: 90; background: rgba(255,255,255,0.65); -webkit-backdrop-filter: saturate(180%) blur(22px); backdrop-filter: saturate(180%) blur(22px); border: .5px solid rgba(0,0,0,0.06); border-radius: 18px; padding: 8px; box-shadow: 0 12px 36px -8px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.04); display: flex; flex-direction: column; gap: 2px; max-height: calc(100vh - 48px); overflow-y: auto; scrollbar-width: none; }
+.class-rail::-webkit-scrollbar { display: none; }
+.class-rail a { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 10px; font-size: 12.5px; font-weight: 500; color: #6e6e73; white-space: nowrap; overflow: hidden; transition: background .18s ease, color .18s ease; text-decoration: none; }
+.class-rail a svg { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; stroke-width: 1.7; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.class-rail a span { max-width: 0; opacity: 0; overflow: hidden; transition: max-width .25s ease, opacity .15s ease; }
+.class-rail:hover a span { max-width: 200px; opacity: 1; padding-left: 2px; }
+.class-rail a:hover { background: rgba(0,0,0,0.04); color: #1d1d1f; }
+body.theme-dark .class-rail { background: rgba(28,28,30,.7); border-color: rgba(255,255,255,.08); }
+body.theme-dark .class-rail a { color: #aeaeb2; }
+body.theme-dark .class-rail a:hover { background: rgba(255,255,255,.06); color:#fff; }
+@media (max-width: 1280px) { .class-rail { display: none; } }
+
+/* Âncoras da rail não ficam escondidas sob a topbar fixa */
+.ap-class-block { scroll-margin-top: 80px; }
+/* Loading */
+.dyn-loading { padding: 40px; text-align: center; color: #6e6e73; font-size: 14px; }
+.dyn-loading::after { content: ''; display: inline-block; width: 14px; height: 14px; border: 2px solid #d2d2d7; border-top-color: #1d1d1f; border-radius: 50%; vertical-align: middle; margin-left: 8px; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ───────── Tabela de ETFs (escopada, sem scroll horizontal) ───────── */
+.etf-table { width: 100%; border-collapse: collapse; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.etf-table thead th { font-size: 11px; font-weight: 600; color: var(--private-muted, #86868b); text-transform: uppercase; letter-spacing: .06em; text-align: right; padding: 15px 12px; border-bottom: .5px solid var(--private-divider, #ececee); background: #FBFBFD; white-space: nowrap; user-select: none; }
+.etf-table thead th.left { text-align: left; }
+.etf-table thead th:first-child { padding-left: 24px; }
+.etf-table thead th:last-child { padding-right: 24px; }
+.etf-table thead th.sortable { cursor: pointer; transition: color .15s ease; }
+.etf-table thead th.sortable:hover { color: var(--private-text, #1d1d1f); }
+.etf-table thead th .arrow { font-size: 8px; opacity: .35; margin-left: 3px; display:inline-block; }
+.etf-table thead th.sortable.is-asc .arrow, .etf-table thead th.sortable.is-desc .arrow { opacity: 1; }
+.etf-table thead th .arrow.is-asc { transform: rotate(180deg); }
+.etf-table tbody tr { transition: background .15s ease; }
+.etf-table tbody tr:hover { background: #FAFAFC; }
+.etf-table tbody tr + tr td { border-top: .5px solid var(--private-divider, #ececee); }
+.etf-table tbody td { padding: 13px 12px; text-align: right; white-space: nowrap; color: var(--private-text, #1d1d1f); }
+.etf-table tbody td:first-child { padding-left: 24px; }
+.etf-table tbody td:last-child { padding-right: 24px; }
+.etf-table .et-ticker { text-align: left; font-weight: 700; letter-spacing: .03em; }
+.etf-table .et-name { text-align: left; color: var(--private-muted, #6e6e73); max-width: 360px; overflow: hidden; text-overflow: ellipsis; }
+.et-period { display: none; }
+.et-val.et-pos { color: #0a7d2e; } .et-val.et-neg { color: #dc2626; }
+.et-muted { color: #b0b0b5; }
+body.theme-dark .etf-table thead th { background: #1c1c1e; color:#8e8e93; border-color: rgba(255,255,255,.08); }
+body.theme-dark .etf-table tbody tr:hover { background: rgba(255,255,255,.03); }
+body.theme-dark .etf-table tbody tr + tr td { border-color: rgba(255,255,255,.06); }
+body.theme-dark .etf-table tbody td { color:#f5f5f7; }
+body.theme-dark .etf-table .et-name { color:#aeaeb2; }
+body.theme-dark .et-val.et-pos { color:#30d158; } body.theme-dark .et-val.et-neg { color:#ff453a; }
+
+/* Desktop/tablet largo: garante layout de tabela real (senão linhas colapsam p/ altura 0) */
+@media (min-width: 834px) {
+  .etf-table { display: table; }
+  .etf-table thead { display: table-header-group; }
+  .etf-table tbody { display: table-row-group; }
+  .etf-table tr { display: table-row; }
+  .etf-table th, .etf-table td { display: table-cell; }
+}
+
+/* Mobile: tabela → cards (zero scroll horizontal) */
+@media (max-width: 833px) {
+  .etf-table, .etf-table tbody, .etf-table tr, .etf-table td { display: block; width: 100%; }
+  .etf-table thead { display: none; }
+  .etf-table tbody { display: flex; flex-direction: column; gap: 10px; padding: 12px; }
+  .etf-table tr { border: .5px solid var(--private-border, #e5e5e5); border-radius: 16px; padding: 14px; background:#fff; }
+  .etf-table tbody tr + tr td { border-top: none; }
+  .etf-table td { padding: 0 !important; text-align: left; white-space: normal; }
+  .etf-table .et-ticker { font-size: 16px; }
+  .etf-table .et-name { max-width: none; margin: 2px 0 12px; font-size: 13px; }
+  .etf-table .et-cell, .etf-table .et-mkt { display: inline-flex; flex-direction: column; gap: 2px; width: 33.33%; margin-top: 10px; vertical-align: top; }
+  .etf-table .et-mkt { width: 100%; }
+  .et-period { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--private-muted,#86868b); }
+  body.theme-dark .etf-table tr { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); }
+}
+  </style>
+
+<section class="page-hero" data-private-hero>
+  <p class="eyebrow">ETFs Offshore</p>
+  <h1>ETFs no exterior. <span class="muted">Em um só lugar.</span></h1>
+  <p><span data-total-etfs>—</span> ETFs por classe de ativos e tema. Variação da cota no mês, mês anterior, no ano, 12 e 24 meses. Cota em USD até <span data-ultima-data>—</span>.</p>
+</section>
+
+<div class="inst-switcher-wrap">
+  <div class="inst-switcher" role="tablist" aria-label="Selecione a classe de ativos" data-switcher>
+    <button type="button" class="inst-btn inst-btn-todos is-active" data-classe="todos"><span class="inst-fallback">Todos</span></button>
+  </div>
+</div>
+
+<aside class="class-rail" id="classRail"></aside>
+
+<div class="inst-panel" data-inst-active>
+  <div class="ap-page">
+    <div class="ap-search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Buscar por ticker, nome, tema ou classe" autocomplete="off" data-search>
+      <button class="ap-search-clear" aria-label="Limpar" data-search-clear>×</button>
+      <span class="ap-search-count" data-count>— ETFs</span>
+    </div>
+
+    <div class="ap-toolbar" style="margin:14px 0 4px;">
+      <button class="ap-reset" type="button" data-reset>Limpar filtros</button>
+    </div>
+
+    <h2 class="ap-section-title">Resultados. <span class="muted">Por classe e tema.</span></h2>
+
+    <div data-classes>
+      <p class="dyn-loading">Carregando ETFs</p>
+    </div>
+  </div>
+</div>
+
+  <Fragment slot="scripts">
+    <script is:inline src="/js/app_etfs.js"></script>
+  </Fragment>
+</Layout>

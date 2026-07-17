@@ -1,0 +1,174 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/private-fundos.css';
+import '../styles/private-comparacao.css';
+import '../styles/private-correlacao.css';
+---
+<Layout title="Comparar Fundos · Invest Analysis" footerCrumb="Comparar Fundos">
+  <style is:global>
+    .inst-switcher-wrap { width: 100%; display: flex; justify-content: center; margin: 6px 0 28px 0; padding: 0 32px; box-sizing: border-box; }
+    .inst-switcher { display: inline-flex; gap: 14px; padding: 8px; background: var(--surface, #fff); border: 1px solid var(--border, #e3e6ee); border-radius: 16px; box-shadow: 0 2px 8px rgba(15,23,42,.04); flex-wrap: wrap; align-items: stretch; }
+    .inst-btn { flex: 0 0 auto; min-width: 132px; height: 52px; padding: 8px 22px; border: 2px solid transparent; border-radius: 10px; cursor: pointer; transition: all .18s ease; display: flex; align-items: center; justify-content: center; background: #fff; position: relative; font-family: inherit; text-decoration: none; }
+    .inst-btn:hover { transform: translateY(-1px); }
+    .inst-btn img { max-height: 28px; max-width: 100px; }
+    .inst-btn-todos { background: #f4f5fa; border-color: #d9dde6; }
+    .inst-btn-todos .inst-fallback { color: #002060; font-size: 13px; letter-spacing: .06em; }
+    .inst-btn-itau { background: #002060; border-color: #002060; }
+    .inst-btn:not(.is-active) img { opacity: .55; }
+    .inst-btn:not(.is-active) { filter: grayscale(.25); }
+    .inst-btn.is-active { border-color: #EC7000; box-shadow: 0 4px 12px rgba(236,112,0,.22); }
+    .inst-btn .inst-fallback { font-weight: 700; letter-spacing: .04em; text-transform: uppercase; font-size: 13px; }
+    .inst-btn-itau .inst-fallback { color: #fff; }
+    .inst-btn-btg .inst-fallback, .inst-btn-xp .inst-fallback, .inst-btn-inter .inst-fallback { color: #002060; }
+    @media (max-width: 720px) { .inst-switcher-wrap { padding: 0 14px; } .inst-switcher { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; padding: 8px; } .inst-btn { min-width: 0; width: 100%; height: 48px; padding: 6px 10px; } .inst-btn img { max-height: 22px; max-width: 100%; } .inst-btn .inst-fallback { font-size: 11.5px; } }
+    .dyn-loading { padding: 40px; text-align: center; color: #6e6e73; font-size: 14px; }
+    .dyn-loading::after { content: ''; display: inline-block; width: 14px; height: 14px; border: 2px solid #d2d2d7; border-top-color: #1d1d1f; border-radius: 50%; vertical-align: middle; margin-left: 8px; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Tabela mês a mês (últimos 12 meses) ─────────────────── */
+    .cmp-monthly-wrap { margin-top: 18px; background: var(--surface,#fff); border: .5px solid var(--private-border,#e5e5e5); border-radius: 18px; padding: 18px 18px 10px; }
+    body.theme-dark .cmp-monthly-wrap { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); }
+    .cmp-monthly-head { margin: 0 0 12px; font-size: 18px; font-weight: 600; }
+    .cmp-monthly-head .muted-sub { color: var(--private-muted,#86868b); font-weight: 400; font-size: 14px; }
+    .cmp-monthly-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .cmp-monthly-table { border-collapse: collapse; width: 100%; min-width: 660px; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+    .cmp-monthly-table th, .cmp-monthly-table td { padding: 9px 10px; text-align: right; white-space: nowrap; border-bottom: .5px solid var(--private-divider,#ececee); }
+    .cmp-monthly-table thead th { font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--private-muted,#86868b); font-weight: 600; }
+    .cmp-monthly-table th:first-child, .cmp-monthly-table td:first-child { text-align: left; position: sticky; left: 0; background: var(--surface,#fff); min-width: 180px; max-width: 240px; overflow: hidden; text-overflow: ellipsis; }
+    body.theme-dark .cmp-monthly-table th:first-child, body.theme-dark .cmp-monthly-table td:first-child { background: #1c1c1e; }
+    .cmp-monthly-table tbody tr.is-bench td { color: var(--private-muted,#6e6e73); font-style: italic; }
+    .cmp-monthly-table .pos { color: #0a7d2e; } .cmp-monthly-table .neg { color: #dc2626; }
+    body.theme-dark .cmp-monthly-table .pos { color: #30d158; } body.theme-dark .cmp-monthly-table .neg { color: #ff453a; }
+    .cmp-mr-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 7px; vertical-align: middle; }
+  </style>
+
+<section class="page-hero" data-private-hero>
+  <p class="eyebrow">Comparar Fundos · <span data-inst-label>Todos</span></p>
+  <h1>Compare até 10 fundos. <span class="muted">Em um gráfico.</span></h1>
+  <p>Selecione fundos da plataforma e compare a evolução acumulada contra CDI e Ibovespa.</p>
+</section>
+
+<div class="inst-switcher-wrap">
+  <nav class="inst-switcher" aria-label="Selecione a instituição">
+    <a class="inst-btn inst-btn-todos is-active" href="/comparacao.html"            data-inst="todos"><span class="inst-fallback">Todos</span></a>
+    <a class="inst-btn inst-btn-btg"             href="/comparacao.html#inst=btg"   data-inst="btg"><img src="/shared/assets/inst/btg.png"   alt="BTG"  onerror="this.style.display='none'; this.nextElementSibling.hidden=false;"><span class="inst-fallback" hidden>BTG</span></a>
+    <a class="inst-btn inst-btn-inter"           href="/comparacao.html#inst=inter" data-inst="inter"><img src="/shared/assets/inst/inter.png" alt="Inter" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;"><span class="inst-fallback" hidden>Inter</span></a>
+    <a class="inst-btn inst-btn-itau"            href="/comparacao.html#inst=itau"  data-inst="itau"><img src="/shared/assets/inst/itau.png"  alt="Itaú" onerror="this.style.display='none'; this.nextElementSibling.hidden=false;"><span class="inst-fallback" hidden>Itaú</span></a>
+    <a class="inst-btn inst-btn-xp"              href="/comparacao.html#inst=xp"    data-inst="xp"><img src="/shared/assets/inst/xp.png"    alt="XP"   onerror="this.style.display='none'; this.nextElementSibling.hidden=false;"><span class="inst-fallback" hidden>XP</span></a>
+  </nav>
+</div>
+
+<div class="cmp-page">
+  <aside class="cmp-sidebar">
+    <div class="cmp-section">
+      <h3>Selecionados</h3>
+      <span class="cmp-count" id="cmpCount">0 / 10</span>
+    </div>
+    <div class="cmp-chips" id="cmpChips"></div>
+
+    <div class="cmp-section"><h3>Adicionar fundo</h3></div>
+    <div class="cor-tabs" role="tablist">
+      <button class="cor-tab is-selected" data-tipo="fundo">Fundos 555</button>
+      <button class="cor-tab"              data-tipo="prev">Previdência</button>
+    </div>
+    <div class="cmp-search-input-wrap">
+      <svg class="cmp-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="cmpSearch" class="cmp-search-input" placeholder="Buscar fundo pelo nome ou CNPJ" autocomplete="off">
+    </div>
+    <div class="cor-fund-list" id="cmpResults"></div>
+
+    <div class="cmp-section"><h3>Benchmarks</h3></div>
+    <div class="cmp-toggle-row">
+      <label class="cmp-toggle">
+        <input type="checkbox" id="benchCdi" checked>
+        <span class="cmp-checkbox"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+        <span class="cmp-toggle-dot" style="background:#8E8E93"></span>
+        <span class="cmp-toggle-label">CDI</span>
+      </label>
+      <label class="cmp-toggle">
+        <input type="checkbox" id="benchIbov">
+        <span class="cmp-checkbox"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></span>
+        <span class="cmp-toggle-dot" style="background:#1C1C1E"></span>
+        <span class="cmp-toggle-label">Ibovespa</span>
+      </label>
+    </div>
+
+    <div class="cmp-section"><h3>Janela</h3></div>
+    <div class="cmp-window-row">
+      <div class="ap-segmented" id="cmpWindow">
+        <button data-window="ytd">YTD</button>
+        <button data-window="12m" class="is-selected">12m</button>
+        <button data-window="24m">24m</button>
+        <button data-window="all">Tudo</button>
+      </div>
+    </div>
+
+    <button class="cmp-reset" type="button" id="cmpReset">Limpar seleção</button>
+  </aside>
+
+  <main class="cmp-main">
+    <div class="cmp-chart-card">
+      <div class="cmp-chart-head">
+        <h2>Evolução. <span class="muted-sub">% acumulado a partir do início da janela.</span></h2>
+      </div>
+      <div class="cmp-chart-wrap">
+        <canvas id="cmpChart"></canvas>
+        <div class="cmp-empty-state" id="cmpEmpty">
+          <p class="empty-title">Nenhum fundo selecionado.</p>
+          <p>Use a busca à esquerda pra escolher fundos e gerar o gráfico.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cmp-corr-card" id="cmpCorrWrap" style="display:none">
+      <div class="cmp-corr-head">
+        <h2>Correlação. <span class="muted-sub">Pearson dos retornos diários na janela.</span></h2>
+        <div class="cmp-corr-legend">
+          <span>−1</span>
+          <span class="cmp-corr-legend-bar"></span>
+          <span>+1</span>
+        </div>
+      </div>
+      <div class="cmp-corr-grid" id="cmpCorrGrid"></div>
+    </div>
+
+    <div class="cmp-table-wrap" id="cmpTableWrap" style="display:none">
+      <table class="ap-table cmp-table">
+        <thead>
+          <tr>
+            <th class="left">Fundo</th>
+            <th class="sortable">Mai/26 <span class="arrow">▼</span></th>
+            <th class="sortable">Abr/26 <span class="arrow">▼</span></th>
+            <th class="sortable">2026 <span class="arrow">▼</span></th>
+            <th class="sortable">12 Meses <span class="arrow">▼</span></th>
+            <th class="sortable">24 Meses <span class="arrow">▼</span></th>
+            <th class="sortable">Patrimônio <span class="arrow">▼</span></th>
+          </tr>
+        </thead>
+        <tbody id="cmpTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="cmp-monthly-wrap" id="cmpMonthlyWrap" style="display:none">
+      <h2 class="cmp-monthly-head">Retorno mês a mês. <span class="muted-sub">Últimos 12 meses · fundos e benchmarks.</span></h2>
+      <div class="cmp-monthly-scroll">
+        <table class="cmp-monthly-table">
+          <thead><tr id="cmpMonthlyHead"></tr></thead>
+          <tbody id="cmpMonthlyBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+  <Fragment slot="scripts">
+    <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.js"></script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script is:inline src="/shared/data/cdi_diario.js"></script>
+    <script is:inline src="/shared/data/ibov_diario.js"></script>
+    <script is:inline src="/shared/data/ipca_mensal.js"></script>
+    <script is:inline src="/shared/data/feriados_anbima.js"></script>
+    <script type="module" is:inline src="/js/atb_kpis_loader.js"></script>
+    <script type="module" is:inline src="/js/comparacao_loader.js"></script>
+  </Fragment>
+</Layout>

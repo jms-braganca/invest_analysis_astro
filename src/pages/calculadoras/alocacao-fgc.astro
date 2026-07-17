@@ -1,0 +1,144 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/private-calc.css';
+---
+<Layout
+  title="Alocação FGC · Calculadoras · Invest Analysis"
+  footerCrumb="Calculadoras"
+>
+  <style is:global>
+/* ── Estilos locais: cards de ativos + toggle isento ─────── */
+.al-ativo{background:#FBFBFD;border:0.5px solid var(--private-divider);border-radius:14px;padding:14px 18px;margin-top:12px}
+body.theme-dark .al-ativo{background:#1c1c1e}
+.al-ativo-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.al-ativo-num{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--private-muted)}
+.al-ativo-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+@media(max-width:980px){.al-ativo-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){.al-ativo-grid{grid-template-columns:repeat(2,1fr)}}
+.al-toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.al-toggle input{position:absolute;opacity:0;width:0;height:0}
+.al-toggle-track{width:36px;height:21px;border-radius:11px;background:#d1d1d6;position:relative;transition:background .18s ease;flex:none}
+body.theme-dark .al-toggle-track{background:#39393d}
+.al-toggle-thumb{position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .18s ease}
+.al-toggle input:checked + .al-toggle-track{background:#34C759}
+.al-toggle input:checked + .al-toggle-track .al-toggle-thumb{transform:translateX(15px)}
+.al-toggle-lbl{font-size:12px;color:var(--private-muted);font-weight:500}
+.al-aviso{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.45;margin-top:10px;border-left:3px solid}
+.al-aviso.neg{background:rgba(215,55,63,.07);border-color:#D7373F;color:#D7373F}
+.al-aviso.info{background:rgba(0,51,153,.06);border-color:var(--private-blue);color:var(--private-blue)}
+body.theme-dark .al-aviso.neg{background:rgba(255,69,58,.1);color:#FF6961}
+.al-vazio{text-align:center;color:var(--private-muted);font-size:13px;padding:18px 0}
+#al-tbl tfoot td{font-weight:600;border-top:1.5px solid var(--private-divider);padding:8px 6px;text-align:right;font-variant-numeric:tabular-nums}
+#al-tbl tfoot td:first-child{text-align:left;padding-left:8px}
+  </style>
+
+  <div slot="topbar-sub" class="atb-sub">
+    <div class="atb-sub-pages">
+      <a href="/calculadoras/troca-ativos.html" class="atb-sub-page">Troca de Ativos</a>
+      <a href="/calculadoras/limite-fgc.html" class="atb-sub-page">Limite FGC</a>
+      <a href="/calculadoras/alocacao-fgc.html" class="atb-sub-page is-active">Alocação FGC</a>
+      <a href="/calculadoras/rentabilidade.html" class="atb-sub-page">Rentabilidade</a>
+      <a href="/calculadoras/credito-vs-invest.html" class="atb-sub-page">Crédito vs. Investimentos</a>
+      <a href="/calculadoras/cet.html" class="atb-sub-page">CET</a>
+      <a href="/calculadoras/avista-vs-prazo.html" class="atb-sub-page">À Vista vs Parcelado</a>
+      <a href="/calculadoras/amortizacao.html" class="atb-sub-page">Amortização</a>
+    </div>
+    <div class="atb-kpis" aria-live="polite"><div class="atb-kpi-group is-active" data-kpi="cdi"><span class="atb-kpi-group-label">CDI</span><div class="atb-kpi"><span class="atb-kpi-label" data-month>Mai</span><span class="atb-kpi-value">0,48%</span></div><div class="atb-kpi is-secondary"><span class="atb-kpi-label">Ano</span><span class="atb-kpi-value">5,04%</span></div><div class="atb-kpi is-tertiary"><span class="atb-kpi-label">12m</span><span class="atb-kpi-value">14,83%</span></div></div><div class="atb-kpi-group" data-kpi="ibov"><span class="atb-kpi-group-label">Ibov</span><div class="atb-kpi"><span class="atb-kpi-label" data-month>Mai</span><span class="atb-kpi-value neg">-4,78%</span></div><div class="atb-kpi is-secondary"><span class="atb-kpi-label">Ano</span><span class="atb-kpi-value pos">+10,70%</span></div><div class="atb-kpi is-tertiary"><span class="atb-kpi-label">12m</span><span class="atb-kpi-value pos">+28,86%</span></div></div></div>
+  </div>
+
+
+<section class="page-hero" data-private-hero>
+  <p class="eyebrow">Calculadoras · Alocação FGC</p>
+  <h1>Alocação FGC. <span class="muted">Tabela de sugestão.</span></h1>
+  <p>Monte uma carteira de CDBs, LCIs, LCAs e outros papéis bancários com projeção de valor bruto, IR regressivo, valor líquido e ROI no vencimento — respeitando o limite de R$&nbsp;250.000 do FGC por emissor.</p>
+</section>
+
+<div class="ac-page">
+
+  <div class="ac-toolbar">
+    <nav class="ac-breadcrumb" aria-label="Navegação">
+      <a href="/index.html">Início</a>
+      <span class="ac-breadcrumb-sep">›</span>
+      <span class="ac-breadcrumb-current">Calculadoras</span>
+      <span class="ac-breadcrumb-sep">›</span>
+      <span class="ac-breadcrumb-current">Alocação FGC</span>
+    </nav>
+    <button type="button" class="ac-clear-btn calc-clear-btn" title="Limpar todos os campos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      Limpar tudo
+    </button>
+  </div>
+
+  <!-- ── PREMISSAS MACRO ──────────────────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Premissas. <span class="muted-sub">Cenário macro e tamanho da carteira.</span></h2>
+    </div>
+    <div class="ac-grid-3">
+      <div class="ac-field">
+        <label>CDI estimado a.a. <span class="unit">%</span></label>
+        <input type="text" inputmode="decimal" id="al-cdi" placeholder="0,00">
+      </div>
+      <div class="ac-field">
+        <label>IPCA estimado a.a. <span class="unit">%</span></label>
+        <input type="text" inputmode="decimal" id="al-ipca" placeholder="0,00">
+      </div>
+      <div class="ac-field">
+        <label>Quantidade de ativos <span class="unit">1–12</span></label>
+        <input type="text" inputmode="numeric" id="al-qtd" value="3">
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ATIVOS ───────────────────────────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Ativos. <span class="muted-sub">Configure cada papel da sugestão.</span></h2>
+    </div>
+    <div id="al-ativos"></div>
+  </section>
+
+  <!-- ── TABELA DE SUGESTÃO ──────────────────────────────────── -->
+  <section class="ac-section">
+    <div class="ac-section-head">
+      <h2>Sugestão. <span class="muted-sub">Projeção no vencimento.</span></h2>
+    </div>
+    <div class="ac-tbl-wrap no-scroll">
+      <table class="ac-tbl" id="al-tbl">
+        <thead>
+          <tr>
+            <th>Papel</th><th>Emissor</th><th>Taxa</th><th>Vencimento</th>
+            <th>Aplicação</th><th>Bruto projetado</th><th>IR</th>
+            <th>Líquido projetado</th><th>ROI líq.</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot></tfoot>
+      </table>
+      <div class="al-vazio" id="al-vazio">Preencha taxa, vencimento e aplicação de ao menos um ativo.</div>
+    </div>
+    <div id="al-fgc-avisos"></div>
+  </section>
+
+</div>
+
+<div class="ac-pdf-bar" id="aloc-pdf-bar">
+  <div class="left">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="12" y1="18" x2="12" y2="12"/>
+      <polyline points="9 15 12 12 15 15"/>
+    </svg>
+    <span class="title">Salvar simulação em PDF</span>
+  </div>
+  <button type="button" class="ac-pdf-btn" id="aloc-pdf-btn">Gerar PDF</button>
+</div>
+
+  <Fragment slot="scripts">
+    <script is:inline src="/scripts/data/feriados_anbima.js"></script>
+    <script is:inline src="/scripts/utils.js"></script>
+    <script is:inline src="/scripts/calc-common.js"></script>
+    <script is:inline src="/scripts/calc-aloc-fgc.js"></script>
+  </Fragment>
+</Layout>

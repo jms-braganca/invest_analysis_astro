@@ -1,0 +1,53 @@
+/* ============================================================
+   dashboard-wide.css — ULTRA WIDE
+   Máximo real estate para fundos.html, previdencia.html, correlacao.html
+   ============================================================ */
+
+@media (min-width: 768px) {
+
+  /* Remove qualquer limite e padding lateral exagerado */
+  .app-shell {
+    max-width: none !important;
+    padding: 8px 8px !important;
+    gap: 8px !important;
+  }
+
+  /* Sidebar mais compacta (de 220px pra 200px) */
+  .sidebar {
+    width: 200px !important;
+    flex-shrink: 0;
+  }
+
+  /* Main usa absolutamente todo o resto */
+  .main {
+    max-width: none !important;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* Card branco: padding mínimo, sem max-width */
+  .panel-card {
+    padding: 12px 14px !important;
+    max-width: none !important;
+  }
+
+  /* Permitir crescimento livre dos containers internos */
+  .page-header,
+  .search-bar,
+  .classe-nav,
+  .destaques-section,
+  .classe-bloco,
+  .footer { max-width: none; }
+}
+
+/* ≥ 1280px: padding ainda razoável */
+@media (min-width: 1280px) {
+  .app-shell  { padding: 12px !important; }
+  .panel-card { padding: 14px 16px !important; }
+}
+
+/* ≥ 1600px: respiração */
+@media (min-width: 1600px) {
+  .app-shell  { padding: 16px !important; gap: 12px !important; }
+  .panel-card { padding: 16px 18px !important; }
+}

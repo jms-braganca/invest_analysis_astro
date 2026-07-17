@@ -1,0 +1,95 @@
+---
+// Layout.astro — a casca HTML de toda página.
+import Head from '../components/Head.astro';
+import Ticker from '../components/Ticker.astro';
+import Topbar from '../components/Topbar.astro';
+import Footer from '../components/Footer.astro';
+
+// CSS global, na ordem do site atual (tema base -> dark -> topbar).
+// Importado aqui -> Vite bundla e versiona por hash automaticamente.
+import '../styles/theme.css';
+import '../styles/theme-dark.css';
+import '../styles/private-topbar.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  bodyClass?: string;
+  footerCrumb?: string;
+  /** Protege a página com o gate AES (só fundosipb e apple-care). */
+  gated?: boolean;
+  /** Arquivo .enc do portão (default: o gate compartilhado). */
+  gateEnc?: string;
+  /**
+   * Quando gated: injeta o script que chama gatePrompt e revela (.gate-ok).
+   * false = a PRÓPRIA página revela (ex.: fundosipb, cujo app_fundosipb.js
+   * faz o gate + decripta os dados). Aí o Layout só põe robots + hide-style.
+   */
+  gateReveal?: boolean;
+  /** Vira o atributo data-pagina no <body> (ex.: "ipb"). */
+  pagina?: string;
+}
+const {
+  title,
+  description,
+  bodyClass = 'private-style',
+  footerCrumb = 'João Bragança',
+  gated = false,
+  gateEnc = '/data/gate_restrito.enc',
+  gateReveal = true,
+  pagina,
+} = Astro.props;
+
+// Script do gate, idêntico em comportamento ao das páginas atuais:
+// pede senha via gatePrompt (crypto_ipb, VERBATIM), e no sucesso revela
+// a página adicionando .gate-ok no <html>. A senha NÃO é cacheada.
+const gateScript = `import { gatePrompt } from '/scripts/crypto_ipb.js';
+try {
+  await gatePrompt(${JSON.stringify(gateEnc)});
+  document.documentElement.classList.add('gate-ok');
+} catch (e) {
+  document.body.innerHTML = '<p style="color:#FF453A;padding:40px;text-align:center;font-family:system-ui">Erro: ' + e.message + '</p>';
+}`;
+---
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <Head title={title} description={description} />
+  {gated && (
+    <>
+      <meta name="robots" content="noindex, nofollow" />
+      {/* Esconde todo filho direto do body (menos o modal do gate e scripts)
+          até o gate resolver e adicionar .gate-ok no <html>. Idêntico ao atual. */}
+      <style is:global>{`html:not(.gate-ok) body > *:not([data-ipb-gate]):not(script) { display: none !important; }`}</style>
+    </>
+  )}
+  <slot name="head" />
+</head>
+<body class={bodyClass} data-pagina={pagina}>
+  <!-- Anti-flash de tema: SYNC, render-blocking, logo após <body>. Igual ao atual. -->
+  <script is:inline>(function(){try{var t=localStorage.getItem("site-theme");if(t!=="light")document.body.classList.add("theme-dark");}catch(e){}})();</script>
+
+  <Ticker />
+
+  <Topbar>
+    <slot name="topbar-sub" slot="sub" />
+  </Topbar>
+
+  <slot />
+
+  <Footer crumb={footerCrumb} />
+
+  <!-- Runtime compartilhado, verbatim, na mesma ordem do site atual. -->
+  <script is:inline src="/scripts/private-topbar.js"></script>
+  <script is:inline src="/scripts/theme-toggle.js"></script>
+  <script is:inline src="/scripts/atb_footer_date.js"></script>
+  <script is:inline src="/scripts/atb_ticker.js"></script>
+
+  <!-- Scripts específicos da página (ex.: calc-*.js). -->
+  <slot name="scripts" />
+
+  <!-- Gate AES (só em páginas gated). Roda por último; a calc já inicializou
+       escondida sob a trava de display do head. -->
+  {gated && gateReveal && <script type="module" is:inline set:html={gateScript} />}
+</body>
+</html>

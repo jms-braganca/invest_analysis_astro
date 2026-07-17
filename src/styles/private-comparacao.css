@@ -1,0 +1,465 @@
+/* ============================================================
+   private-comparacao.css — Estilos da página de Comparação
+   Importado depois de theme.css + private-topbar.css + private-fundos.css.
+   ============================================================ */
+
+/* ── PAGE LAYOUT ───────────────────────────────────────────── */
+.cmp-page {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 22px 80px;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (max-width: 980px) {
+  .cmp-page { grid-template-columns: 1fr; }
+}
+
+/* ── SIDEBAR ───────────────────────────────────────────────── */
+.cmp-sidebar {
+  background: #fff;
+  border-radius: 22px;
+  border: 0.5px solid var(--private-border);
+  box-shadow: var(--private-shadow-sm);
+  padding: 22px 22px;
+  position: sticky;
+  top: 110px;          /* abaixo do topbar + sub */
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
+}
+@media (max-width: 980px) {
+  .cmp-sidebar { position: relative; top: 0; max-height: none; }
+}
+
+.cmp-section {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 18px 0 10px;
+}
+.cmp-section:first-child { margin-top: 0; }
+.cmp-section h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--private-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin: 0;
+}
+.cmp-count {
+  font-size: 11.5px;
+  color: var(--private-muted2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Chips: lista de fundos selecionados */
+.cmp-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.cmp-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  background: #F5F5F7;
+  border-radius: 12px;
+  font-size: 12.5px;
+  color: var(--private-text);
+  line-height: 1.2;
+  transition: background .15s var(--private-ease);
+}
+.cmp-chip:hover { background: #ECECEE; }
+.cmp-chip-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.cmp-chip-name {
+  flex: 1;
+  min-width: 0;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cmp-chip-x {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.06);
+  border: none;
+  color: var(--private-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  line-height: 1;
+  padding: 0;
+  flex-shrink: 0;
+  transition: background .15s var(--private-ease), color .15s var(--private-ease);
+}
+.cmp-chip-x:hover { background: rgba(215,55,63,0.10); color: #D7373F; }
+
+.cmp-empty {
+  padding: 14px;
+  text-align: center;
+  color: var(--private-muted2);
+  font-size: 12.5px;
+  border: 1px dashed var(--private-border);
+  border-radius: 12px;
+}
+
+/* Search dentro da sidebar */
+.cmp-search-wrap,
+.cmp-search-input-wrap {
+  position: relative;
+}
+.cmp-search-input {
+  width: 100%;
+  padding: 9px 12px 9px 32px;
+  background: #F5F5F7;
+  border: 0.5px solid transparent;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--private-text);
+  outline: none;
+  transition: border-color .15s var(--private-ease), background .15s var(--private-ease);
+}
+.cmp-search-input::placeholder { color: var(--private-muted2); }
+.cmp-search-input:focus {
+  background: #fff;
+  border-color: var(--private-blue);
+  box-shadow: 0 0 0 3px rgba(0,113,227,0.12);
+}
+.cmp-search-icon {
+  position: absolute;
+  left: 10px; top: 50%;
+  transform: translateY(-50%);
+  width: 14px; height: 14px;
+  color: var(--private-muted2);
+  pointer-events: none;
+}
+.cmp-search-results {
+  max-height: 280px;
+  overflow-y: auto;
+  margin-top: 6px;
+  border-radius: 12px;
+  background: #fff;
+  display: none;
+}
+.cmp-search-results.is-open { display: block; }
+.cmp-result {
+  padding: 9px 12px;
+  font-size: 12.5px;
+  color: var(--private-text);
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: background .12s var(--private-ease);
+}
+.cmp-result:hover { background: rgba(0,113,227,0.06); }
+.cmp-result.is-disabled { opacity: 0.4; cursor: not-allowed; }
+.cmp-result-nome { font-weight: 500; }
+.cmp-result-meta { font-size: 10.5px; color: var(--private-muted2); }
+
+/* Toggles benchmark */
+.cmp-toggle-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cmp-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  background: #F5F5F7;
+  border-radius: 12px;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s var(--private-ease);
+}
+.cmp-toggle:hover { background: #ECECEE; }
+.cmp-toggle input { display: none; }
+.cmp-toggle .cmp-checkbox {
+  width: 18px; height: 18px;
+  border-radius: 6px;
+  border: 1.5px solid var(--private-border);
+  background: #fff;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s var(--private-ease);
+}
+.cmp-toggle .cmp-checkbox svg {
+  width: 10px; height: 10px;
+  color: #fff;
+  opacity: 0;
+  transition: opacity .15s var(--private-ease);
+}
+.cmp-toggle input:checked + .cmp-checkbox {
+  background: var(--private-blue);
+  border-color: var(--private-blue);
+}
+.cmp-toggle input:checked + .cmp-checkbox svg { opacity: 1; }
+.cmp-toggle-label { flex: 1; }
+.cmp-toggle-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+}
+
+/* Segmented de janela (reaproveita .ap-segmented com modificação) */
+.cmp-window-row { margin-top: 4px; }
+.cmp-window-row .ap-segmented { width: 100%; padding: 3px; }
+.cmp-window-row .ap-segmented button {
+  flex: 1; padding: 7px 8px;
+  font-size: 12px;
+}
+
+/* Reset button */
+.cmp-reset {
+  width: 100%;
+  margin-top: 18px;
+  padding: 9px 12px;
+  background: none;
+  border: 0.5px solid var(--private-border);
+  border-radius: 12px;
+  color: var(--private-muted);
+  font-family: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: all .15s var(--private-ease);
+}
+.cmp-reset:hover { color: var(--private-text); border-color: rgba(0,0,0,0.18); }
+
+/* ── MAIN AREA ─────────────────────────────────────────────── */
+.cmp-main { min-width: 0; }
+
+.cmp-chart-card {
+  background: #fff;
+  border-radius: 22px;
+  border: 0.5px solid var(--private-border);
+  box-shadow: var(--private-shadow-sm);
+  padding: 28px 30px 22px;
+  margin-bottom: 24px;
+}
+.cmp-chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.cmp-chart-head h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  margin: 0;
+}
+.cmp-chart-head .muted-sub {
+  font-size: 13px;
+  color: var(--private-muted);
+}
+.cmp-chart-wrap {
+  position: relative;
+  height: 420px;
+  margin-top: 10px;
+}
+@media (max-width: 700px) {
+  .cmp-chart-wrap { height: 320px; }
+}
+
+.cmp-empty-state {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--private-muted);
+  font-size: 14px;
+}
+.cmp-empty-state .empty-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--private-text);
+  margin-bottom: 8px;
+  letter-spacing: -0.012em;
+}
+
+/* Tabela de retornos — reusa .ap-table com pequenas adições */
+.cmp-table-wrap {
+  background: #fff;
+  border-radius: 22px;
+  border: 0.5px solid var(--private-border);
+  box-shadow: var(--private-shadow-sm);
+  overflow: hidden;
+}
+.cmp-table .ap-fund-cell {
+  min-width: 220px;
+  max-width: 280px;
+}
+.cmp-table .cmp-color-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Cores das séries — gradiente Private */
+.cmp-c-0  { background: #007AFF; }   /* azul */
+.cmp-c-1  { background: #FF9500; }   /* laranja */
+.cmp-c-2  { background: #AF52DE; }   /* roxo */
+.cmp-c-3  { background: #34C759; }   /* verde */
+.cmp-c-4  { background: #FF2D55; }   /* rosa */
+.cmp-c-5  { background: #5AC8FA; }   /* ciano */
+.cmp-c-6  { background: #FFCC00; }   /* amarelo */
+.cmp-c-7  { background: #FF3B30; }   /* vermelho */
+.cmp-c-8  { background: #5856D6; }   /* indigo */
+.cmp-c-9  { background: #00C7BE; }   /* teal */
+.cmp-c-cdi  { background: #8E8E93; }  /* cinza CDI */
+.cmp-c-ibov { background: #1C1C1E; }  /* preto Ibov */
+
+/* ── MATRIZ DE CORRELAÇÃO ──────────────────────────────────── */
+.cmp-corr-card {
+  background: #fff;
+  border-radius: 22px;
+  border: 0.5px solid var(--private-border);
+  box-shadow: var(--private-shadow-sm);
+  padding: 28px 30px 26px;
+  margin-bottom: 24px;
+}
+.cmp-corr-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.cmp-corr-head h2 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  margin: 0;
+}
+.cmp-corr-head .muted-sub {
+  font-size: 13px;
+  color: var(--private-muted);
+}
+.cmp-corr-legend {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 11px;
+  color: var(--private-muted);
+}
+.cmp-corr-legend-bar {
+  width: 120px; height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right,
+    rgba(255,59,48,0.85),
+    rgba(255,59,48,0.18),
+    #F5F5F7,
+    rgba(0,113,227,0.18),
+    rgba(0,113,227,0.85));
+}
+.cmp-corr-grid {
+  display: grid;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+  align-items: stretch;
+  font-size: 12px;
+}
+.cmp-corr-corner {
+  /* canto vazio top-left da matriz */
+}
+.cmp-corr-col-label,
+.cmp-corr-row-label {
+  font-size: 11px;
+  color: var(--private-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+}
+.cmp-corr-col-label {
+  justify-content: center;
+  padding: 4px 6px;
+  text-align: center;
+}
+.cmp-corr-row-label {
+  justify-content: flex-start;
+  padding-right: 10px;
+  gap: 6px;
+}
+.cmp-corr-row-label .cmp-color-dot {
+  flex-shrink: 0;
+}
+.cmp-corr-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  min-height: 44px;
+  transition: transform .12s var(--private-ease);
+  cursor: default;
+}
+.cmp-corr-cell:hover {
+  transform: scale(1.04);
+  z-index: 1;
+}
+.cmp-corr-cell.diag {
+  background: #F5F5F7;
+  color: var(--private-muted);
+}
+.cmp-corr-cell.empty {
+  background: #FAFAFA;
+  color: var(--private-muted2);
+  font-size: 11px;
+}
+
+/* Mobile */
+@media (max-width: 980px) {
+  .cmp-page { padding: 0 16px 56px; }
+  .cmp-chart-card,
+  .cmp-corr-card { padding: 20px 18px 16px; }
+  .cmp-chart-head h2,
+  .cmp-corr-head h2 { font-size: 18px; }
+  .cmp-table-wrap { overflow-x: auto; }
+  .cmp-corr-grid { font-size: 11px; }
+  .cmp-corr-cell { min-height: 28px; }
+  .cmp-corr-col-label,
+  .cmp-corr-row-label { font-size: 10px; }
+
+  /* Em mobile, a matriz fica APENAS visual (pílulas coloridas).
+     Os números só aparecem em devices com mouse ao passar o cursor;
+     em touch, long-press abre o tooltip nativo via cell.title.
+     Esconder via font-size:0 — não conflita com o color inline que o JS
+     seta em cada célula, então ao remover o font-size:0 no hover o
+     número aparece com a cor original. */
+  .cmp-corr-cell,
+  .cmp-corr-cell.diag,
+  .cmp-corr-cell.empty {
+    font-size: 0;
+  }
+  /* No hover (apenas em devices com pointer fino — desktop com mouse),
+     o número volta. Touchscreens não disparam :hover, então a matriz
+     continua puramente visual ali. */
+  .cmp-corr-cell:hover,
+  .cmp-corr-cell.diag:hover,
+  .cmp-corr-cell.empty:hover {
+    font-size: 11px;
+  }
+}

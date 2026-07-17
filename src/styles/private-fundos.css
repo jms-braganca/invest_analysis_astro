@@ -1,0 +1,1274 @@
+/* ============================================================
+   private-fundos.css — Estilos específicos da página de fundos
+   Importado depois de theme.css + private-topbar.css.
+   Tokens herdados: --private-bg, --private-text, --private-blue, etc.
+   ============================================================ */
+
+/* ── HERO INTERNO (mais compacto que o landing) ─────────────── */
+body.private-style .page-hero {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 56px 22px 28px;
+  text-align: center;
+}
+body.private-style .page-hero .eyebrow {
+  font-size: 13px;
+  color: var(--private-blue);
+  font-weight: 500;
+  margin-bottom: 8px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+body.private-style .page-hero h1 {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  font-size: 48px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.07;
+  color: var(--private-text);
+  margin: 0 0 8px;
+}
+body.private-style .page-hero h1 .muted {
+  color: var(--private-muted);
+  font-weight: 600;
+}
+body.private-style .page-hero p {
+  font-size: 18px;
+  color: var(--private-muted);
+  max-width: 600px;
+  margin: 6px auto 0;
+  line-height: 1.4;
+}
+
+/* ── CONTAINER GERAL DA PÁGINA ───────────────────────────────── */
+.ap-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 22px 80px;
+}
+
+/* ── SECTION HEADERS no estilo "Model. Which is best for you?" ─ */
+.ap-section-title {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.18;
+  color: var(--private-text);
+  margin: 48px 0 18px;
+}
+.ap-section-title .muted {
+  color: var(--private-muted);
+  font-weight: 600;
+}
+
+/* ── SEARCH BAR pílula grande estilo iOS ─────────────────────── */
+.ap-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 0.5px solid var(--private-border);
+  border-radius: 980px;
+  padding: 10px 18px;
+  margin: 28px auto 0;
+  max-width: 720px;
+  box-shadow: var(--private-shadow-sm);
+  transition: border-color .2s var(--private-ease), box-shadow .2s var(--private-ease);
+}
+.ap-search:focus-within {
+  border-color: var(--private-blue);
+  box-shadow: 0 0 0 4px rgba(0,113,227,0.12);
+}
+.ap-search svg { width: 16px; height: 16px; color: var(--private-muted); flex-shrink: 0; }
+.ap-search input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--private-text);
+  outline: none;
+  min-width: 0;
+}
+.ap-search input::placeholder { color: var(--private-muted2); }
+.ap-search-clear {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--private-divider);
+  border: none;
+  color: var(--private-text);
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  line-height: 1;
+}
+.ap-search.has-value .ap-search-clear { display: inline-flex; }
+.ap-search-count {
+  font-size: 12px;
+  color: var(--private-muted2);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ── PRODUCT-LIKE CHOICE CARDS (filtros de classe) ───────────── */
+/* Inspirado no print de configurador Private "Which is best for you?" */
+.ap-choice-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 720px) {
+  .ap-choice-grid.two   { grid-template-columns: 1fr 1fr; }
+  .ap-choice-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+}
+.ap-choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #fff;
+  border: 1px solid var(--private-border);
+  border-radius: 18px;
+  padding: 22px 26px;
+  cursor: pointer;
+  transition: border-color .18s var(--private-ease),
+              transform .18s var(--private-ease),
+              background .18s var(--private-ease);
+  user-select: none;
+}
+.ap-choice:hover { border-color: rgba(0,0,0,0.18); }
+.ap-choice.is-selected {
+  border: 2px solid var(--private-blue);
+  padding: 21px 25px;          /* compensa o +1px de borda pra não pular */
+  background: rgba(0,113,227,0.02);
+}
+.ap-choice-main { min-width: 0; }
+.ap-choice-title {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  color: var(--private-text);
+  margin: 0;
+  line-height: 1.2;
+}
+.ap-choice-sub {
+  font-size: 13px;
+  color: var(--private-muted);
+  margin: 4px 0 0;
+  line-height: 1.35;
+}
+.ap-choice-meta {
+  text-align: right;
+  font-size: 13px;
+  color: var(--private-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.ap-choice-meta .strong {
+  display: block;
+  font-size: 14px;
+  color: var(--private-text);
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.ap-choice-meta .pos { color: #009E5C; }
+.ap-choice-meta .neg { color: #D7373F; }
+
+/* checkbox visual no canto */
+.ap-choice-check {
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--private-border);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s var(--private-ease);
+}
+.ap-choice.is-selected .ap-choice-check {
+  border-color: var(--private-blue);
+  background: var(--private-blue);
+}
+.ap-choice-check svg {
+  width: 10px; height: 10px;
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: all .18s var(--private-ease);
+}
+.ap-choice.is-selected .ap-choice-check svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── SEGMENTED CONTROL (janela) ──────────────────────────────── */
+.ap-segmented {
+  display: inline-flex;
+  background: #ECECEE;
+  padding: 3px;
+  border-radius: 980px;
+  gap: 0;
+}
+.ap-segmented button {
+  appearance: none;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--private-muted);
+  padding: 8px 18px;
+  border-radius: 980px;
+  cursor: pointer;
+  transition: color .18s var(--private-ease), background .18s var(--private-ease), box-shadow .18s var(--private-ease);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+}
+.ap-segmented button:hover { color: var(--private-text); }
+.ap-segmented button.is-selected {
+  background: #fff;
+  color: var(--private-text);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08), 0 1px 1px rgba(0,0,0,0.04);
+}
+
+/* ── SLIDER Private theme ──────────────────────────────────────── */
+.ap-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #fff;
+  border: 0.5px solid var(--private-border);
+  border-radius: 18px;
+  padding: 20px 26px 22px;
+}
+.ap-slider-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.ap-slider-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--private-text);
+  letter-spacing: -0.005em;
+}
+.ap-slider-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--private-blue);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.ap-slider input[type=range] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--private-divider);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  margin: 0;
+}
+/* fill (gradient via JS) */
+.ap-slider input[type=range]::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 2px;
+}
+.ap-slider input[type=range]::-moz-range-track {
+  height: 4px; border-radius: 2px; background: var(--private-divider);
+}
+.ap-slider input[type=range]::-moz-range-progress {
+  height: 4px; border-radius: 2px; background: var(--private-blue);
+}
+.ap-slider input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18), 0 0 0 0.5px rgba(0,0,0,0.04);
+  cursor: grab;
+  margin-top: -9px;
+  transition: transform .15s var(--private-ease), box-shadow .15s var(--private-ease);
+}
+.ap-slider input[type=range]::-moz-range-thumb {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.05);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+  cursor: grab;
+}
+.ap-slider input[type=range]:active::-webkit-slider-thumb {
+  transform: scale(1.1);
+  cursor: grabbing;
+}
+.ap-slider-ticks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--private-muted2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Layout em 2 colunas pra 2 sliders lado-a-lado */
+.ap-sliders-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 720px) {
+  .ap-sliders-row { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── Toggle Apple-style (Apenas fundos abertos) ─────────────────────── */
+.ap-toggle-row {
+  margin-top: 16px;
+}
+.ap-toggle {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  background: #FAFAFC;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: background .18s ease, border-color .18s ease;
+}
+.ap-toggle:hover { background: #F4F5F8; border-color: rgba(0,0,0,0.12); }
+.ap-toggle-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.ap-toggle-label {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #1d1d1f;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+.ap-toggle-sub {
+  font-size: 12.5px;
+  color: #86868b;
+  font-weight: 400;
+  line-height: 1.3;
+}
+/* O switch é um wrapper posicionado que esconde o checkbox real e
+   exibe a pista + knob via ::before / ::after. */
+.ap-toggle-switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 51px;
+  height: 31px;
+  display: inline-block;
+}
+.ap-toggle-switch input[type="checkbox"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.ap-toggle-switch::before {
+  /* Pista */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #e9e9eb;
+  border-radius: 31px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04);
+  transition: background .22s cubic-bezier(.32,.72,0,1);
+}
+.ap-toggle-switch::after {
+  /* Knob */
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15), 0 3px 1px rgba(0,0,0,0.06);
+  transition: transform .22s cubic-bezier(.32,.72,0,1);
+}
+.ap-toggle-switch:has(input:checked)::before {
+  background: var(--private-blue, #0071e3);
+}
+.ap-toggle-switch:has(input:checked)::after {
+  transform: translateX(20px);
+}
+.ap-toggle-switch:has(input:focus-visible)::before {
+  outline: 2px solid var(--private-blue, #0071e3);
+  outline-offset: 2px;
+}
+
+/* ── FILTER ROW (segmented + reset) ──────────────────────────── */
+.ap-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.ap-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.ap-reset {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--private-blue);
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: opacity .15s var(--private-ease);
+}
+.ap-reset:hover { opacity: 0.7; }
+
+/* ── TABELA Private theme ──────────────────────────────────────── */
+.ap-table-wrap {
+  background: #fff;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 0.5px solid var(--private-border);
+  box-shadow: var(--private-shadow-sm);
+}
+.ap-table-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 26px 4px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ap-table-head h3 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.014em;
+  color: var(--private-text);
+  margin: 0;
+}
+.ap-table-head .count {
+  font-size: 12px;
+  color: var(--private-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ap-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+}
+.ap-table thead th {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--private-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: right;
+  padding: 16px 14px;
+  border-bottom: 0.5px solid var(--private-divider);
+  background: #FBFBFD;
+  white-space: nowrap;
+  user-select: none;
+}
+.ap-table thead th:first-child { text-align: left; padding-left: 26px; }
+.ap-table thead th:last-child  { padding-right: 26px; }
+.ap-table thead th.left        { text-align: left; padding-left: 14px; }
+.ap-table thead th.center      { text-align: center; }
+
+/* Coluna Data — pequena, centralizada, cinza */
+.ap-data-cell {
+  text-align: center;
+  color: var(--private-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  padding: 14px 14px;
+  letter-spacing: 0;
+}
+.ap-table thead th.sortable { cursor: pointer; transition: color .15s var(--private-ease); }
+.ap-table thead th.sortable:hover { color: var(--private-text); }
+.ap-table thead th.sortable .arrow {
+  display: inline-block;
+  width: 10px;
+  margin-left: 4px;
+  opacity: 0.4;
+  transition: opacity .15s, transform .15s;
+}
+.ap-table thead th.sortable.is-active .arrow {
+  opacity: 1;
+  color: var(--private-blue);
+}
+.ap-table thead th.sortable.is-asc  .arrow { transform: rotate(180deg); }
+
+.ap-table tbody tr {
+  transition: background .12s var(--private-ease);
+}
+.ap-table tbody tr:hover { background: #FAFAFC; }
+.ap-table tbody tr + tr td { border-top: 0.5px solid var(--private-divider); }
+.ap-table tbody td {
+  padding: 16px 14px;
+  text-align: right;
+  color: var(--private-text);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.ap-table tbody td:first-child { text-align: left; padding-left: 26px; }
+.ap-table tbody td:last-child  { padding-right: 26px; }
+
+.ap-fundo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.ap-fundo-nome {
+  font-weight: 500;
+  color: var(--private-text);
+  letter-spacing: -0.005em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 300px;
+}
+.ap-fundo-cnpj {
+  font-size: 11px;
+  color: var(--private-muted2);
+  letter-spacing: 0;
+}
+.ap-fundo-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(0,113,227,0.10);
+  color: var(--private-blue);
+  margin-left: 6px;
+  vertical-align: middle;
+  letter-spacing: 0.02em;
+}
+.ap-fundo-tag.high  { background: rgba(0,158,92,0.10);  color: #009E5C; }
+.ap-fundo-tag.warn  { background: rgba(215,55,63,0.10); color: #D7373F; }
+
+.ap-pos { color: #009E5C; }
+.ap-neg { color: #D7373F; }
+.ap-muted { color: var(--private-muted2); }
+
+/* pílula de % CDI */
+.ap-cdi-pill {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--private-divider);
+  color: var(--private-text);
+  font-variant-numeric: tabular-nums;
+}
+.ap-cdi-pill.high { background: rgba(0,158,92,0.12);  color: #009E5C; }
+.ap-cdi-pill.low  { background: rgba(215,55,63,0.10); color: #D7373F; }
+
+/* ── CLASS BLOCKS (acordion estilo Private) ────────────────────── */
+.ap-class-block + .ap-class-block { margin-top: 14px; }
+.ap-class-block .ap-class-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 18px;
+  border: 0.5px solid var(--private-border);
+  padding: 18px 24px;
+  cursor: pointer;
+  transition: background .15s var(--private-ease);
+}
+.ap-class-block .ap-class-head:hover { background: #FAFAFC; }
+.ap-class-block.is-open .ap-class-head {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: none;
+}
+.ap-class-title {
+  display: flex; align-items: center; gap: 14px;
+  min-width: 0;
+}
+.ap-class-title h3 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.014em;
+  color: var(--private-text);
+  margin: 0;
+}
+.ap-class-title .ap-class-count {
+  font-size: 12px;
+  color: var(--private-muted);
+  background: #ECECEE;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+.ap-class-meta {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+  font-size: 12.5px;
+  color: var(--private-muted);
+}
+.ap-class-meta strong { font-weight: 500; color: var(--private-text); }
+.ap-class-caret {
+  width: 10px; height: 10px;
+  border-right: 1.6px solid var(--private-muted);
+  border-bottom: 1.6px solid var(--private-muted);
+  transform: rotate(45deg);
+  transition: transform .25s var(--private-ease);
+  margin-left: 12px;
+}
+.ap-class-block.is-open .ap-class-caret { transform: rotate(-135deg); }
+
+.ap-class-body {
+  display: none;
+  background: #fff;
+  border: 0.5px solid var(--private-border);
+  border-top: none;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+  overflow: hidden;
+}
+.ap-class-block.is-open .ap-class-body { display: block; }
+
+.ap-class-body .ap-table thead th { background: #fff; }
+.ap-class-body .ap-table tbody tr:last-child td { border-bottom: none; }
+
+/* ── "Carregar mais" (paginação da busca, Passo 4) ─────────────────────
+   Renderiza só as primeiras N linhas por classe; este botão traz o resto
+   (também auto-carrega via IntersectionObserver ao rolar). */
+.ap-load-more {
+  display: block;
+  width: 100%;
+  padding: 13px 16px;
+  border: none;
+  border-top: 0.5px solid var(--private-border);
+  background: #fff;
+  color: var(--private-blue);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.ap-load-more:hover { background: #FAFAFC; }
+.ap-load-more-rest { color: #86868b; font-weight: 400; }
+
+/* ── CONTENÇÃO DE LAYOUT/PAINT (otimização de busca) ───────────────
+   content-visibility:auto faz o browser PULAR layout/paint dos blocos de
+   classe fora da viewport. contain-intrinsic-size usa a keyword `auto`, então
+   o browser MEMORIZA a altura real de cada bloco após o 1º render (o 400px é
+   só o palpite inicial, antes de o bloco ter sido pintado uma vez) — isso
+   mantém a barra de rolagem e as âncoras da class-rail (#classe-…) precisas
+   depois da primeira visita a cada bloco.
+   `contain` nas linhas isola recálculo de estilo/layout de uma linha do resto
+   da tabela. */
+.ap-class-block {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 400px;
+}
+.ap-table tbody tr {
+  contain: layout style paint;
+}
+
+/* ── PAINEL COLAPSÁVEL DE FILTROS ────────────────────────────── */
+.ap-filters {
+  margin: 26px 0 8px;
+}
+.ap-filters-toggle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  background: #fff;
+  border: 0.5px solid var(--private-border);
+  border-radius: 999px;
+  padding: 13px 22px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--private-text);
+  cursor: pointer;
+  transition: background .15s var(--private-ease), border-color .15s var(--private-ease);
+  text-align: left;
+}
+.ap-filters-toggle:hover { background: #FAFAFC; border-color: rgba(0,0,0,0.12); }
+.ap-filters-toggle svg.ap-filters-icon {
+  width: 16px; height: 16px;
+  color: var(--private-text);
+  flex-shrink: 0;
+}
+.ap-filters-toggle-label { font-weight: 500; }
+.ap-filters-active-count {
+  margin-left: auto;
+  font-size: 12.5px;
+  color: var(--private-muted);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  max-width: 55%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ap-filters-caret {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-right: 1.6px solid var(--private-muted);
+  border-bottom: 1.6px solid var(--private-muted);
+  transform: rotate(45deg);
+  transition: transform .25s var(--private-ease);
+  margin-bottom: 2px;
+}
+.ap-filters.is-open .ap-filters-caret { transform: rotate(-135deg); }
+
+.ap-filters-body {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 4px;
+  transition: max-height .45s var(--private-ease),
+              opacity .3s var(--private-ease),
+              padding-top .35s var(--private-ease);
+}
+.ap-filters.is-open .ap-filters-body {
+  max-height: 2400px;
+  opacity: 1;
+  padding-top: 18px;
+}
+.ap-filters-body .ap-section-title:first-child { margin-top: 22px; }
+
+/* ── DROPDOWN PÍLULA (% CDI / % Ibov) ────────────────────────── */
+.ap-select-pill {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #ECECEE;
+  border: none;
+  border-radius: 999px;
+  padding: 6px 28px 6px 14px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--private-text);
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%231D1D1F' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'><polyline points='3 5 6 8 9 5'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px 10px;
+  outline: none;
+  transition: background-color .15s var(--private-ease), box-shadow .15s var(--private-ease);
+}
+.ap-select-pill:hover { background-color: #E2E2E5; }
+.ap-select-pill:focus-visible { box-shadow: 0 0 0 3px rgba(0,113,227,0.18); }
+
+.ap-slider-head-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ── CÉLULA Private: retorno em cima + pill % CDI embaixo ─────── */
+/* Span com label do período dentro da célula numérica.
+   Escondido em desktop (a tabela já tem cabeçalho); visível em mobile,
+   onde a tabela vira cards e cada pill precisa do label próprio. */
+.ap-num-period { display: none; }
+
+.ap-num-cell {
+  text-align: right;
+  vertical-align: middle;
+  white-space: nowrap;
+  padding: 14px 14px;
+}
+.ap-num-cell .ap-num {
+  display: block;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.ap-num-cell .ap-cdi-pill {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 10px;
+  padding: 2px 8px;
+  font-weight: 600;
+}
+.ap-num.pos    { color: #009E5C; }
+.ap-num.neg    { color: #D7373F; }
+.ap-num.muted2 { color: var(--private-muted2); }
+
+/* ── ROW SELECT (checkbox circular Private) ────────────────────── */
+.ap-table th.ap-th-select,
+.ap-table td.ap-td-select {
+  width: 50px;
+  padding-left: 18px !important;
+  padding-right: 6px !important;
+}
+.ap-row-select {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border: 1.5px solid rgba(0,0,0,0.18);
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  transition: all .15s var(--private-ease);
+}
+.ap-row-select:hover { border-color: rgba(0,0,0,0.32); }
+.ap-row-select svg {
+  width: 11px; height: 11px;
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: all .18s var(--private-ease);
+}
+.ap-table tbody tr.is-selected .ap-row-select {
+  background: var(--private-blue);
+  border-color: var(--private-blue);
+}
+.ap-table tbody tr.is-selected .ap-row-select svg {
+  opacity: 1; transform: scale(1);
+}
+.ap-table tbody tr.is-selected td { background: rgba(0,113,227,0.04); }
+.ap-table tbody tr.is-selected td:first-child {
+  box-shadow: inset 3px 0 0 var(--private-blue);
+}
+.ap-table tbody tr { cursor: pointer; }
+
+/* ── FLOATING BAR (comparador) ───────────────────────────────── */
+.ap-floating-bar {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translate(-50%, calc(100% + 50px));
+  background: rgba(251,251,253,0.86);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+          backdrop-filter: saturate(180%) blur(24px);
+  border: 0.5px solid rgba(0,0,0,0.08);
+  border-radius: 999px;
+  padding: 6px 6px 6px 22px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+  z-index: 60;
+  transition: transform .42s var(--private-ease), opacity .42s var(--private-ease);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.ap-floating-bar.is-active {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.ap-fb-count {
+  font-size: 13.5px;
+  color: var(--private-text);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  font-variant-numeric: tabular-nums;
+}
+.ap-fb-clear {
+  background: none;
+  border: none;
+  color: var(--private-muted);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: color .15s var(--private-ease);
+}
+.ap-fb-clear:hover { color: var(--private-text); }
+.ap-fb-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 22px;
+  background: var(--private-blue);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background .2s var(--private-ease), transform .2s var(--private-ease);
+}
+.ap-fb-cta:hover { background: var(--private-blue-h); transform: translateY(-1px); }
+.ap-fb-cta svg { width: 12px; height: 12px; }
+
+/* dá espaço pro floating bar não cobrir o último bloco */
+.ap-page.has-floating-room { padding-bottom: 140px; }
+
+/* ── TABELA "PRO" (header agrupado + 3 cols por período) ─────── */
+.ap-page { max-width: 1320px; }
+
+.ap-table-pro thead tr.ap-th-group th {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--private-text);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 14px 8px 4px;
+  text-align: center;
+  background: #FBFBFD;
+  border-bottom: none;
+  white-space: nowrap;
+}
+.ap-table-pro thead tr.ap-th-sub th {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--private-muted2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 8px 12px;
+  background: #FBFBFD;
+  border-bottom: 0.5px solid var(--private-divider);
+  text-align: right;
+  white-space: nowrap;
+  cursor: default;
+}
+.ap-table-pro thead tr.ap-th-sub th.left   { text-align: left; }
+.ap-table-pro thead tr.ap-th-sub th.center { text-align: center; }
+.ap-table-pro thead tr.ap-th-sub th.sortable { cursor: pointer; transition: color .15s var(--private-ease); }
+.ap-table-pro thead tr.ap-th-sub th.sortable:hover { color: var(--private-text); }
+.ap-table-pro thead tr.ap-th-sub th.sortable .arrow {
+  display: inline-block; width: 9px; margin-left: 1px;
+  opacity: 0.4; transition: opacity .15s, transform .15s;
+}
+.ap-table-pro thead tr.ap-th-sub th.sortable.is-active .arrow { opacity: 1; color: var(--private-blue); }
+.ap-table-pro thead tr.ap-th-sub th.sortable.is-asc .arrow { transform: rotate(180deg); }
+
+/* divisores sutis entre grupos de período */
+.ap-table-pro th.period-start,
+.ap-table-pro td.period-start { border-left: 0.5px solid var(--private-divider); }
+
+.ap-table-pro tbody tr {
+  transition: background .12s var(--private-ease);
+  cursor: pointer;
+}
+.ap-table-pro tbody tr:hover { background: #FAFAFC; }
+.ap-table-pro tbody tr + tr td { border-top: 0.5px solid var(--private-divider); }
+
+.ap-table-pro tbody td {
+  padding: 14px 8px;
+  text-align: right;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  font-size: 12.5px;
+  color: var(--private-text);
+}
+.ap-table-pro tbody td.cell-ret { font-weight: 500; letter-spacing: -0.005em; }
+.ap-table-pro tbody td.cell-cdi { color: var(--private-muted2); font-size: 11.5px; }
+.ap-table-pro tbody td.cell-pct { padding: 14px 8px; }
+.ap-table-pro tbody td.cell-pct .ap-cdi-pill { display: inline-block; }
+.ap-table-pro tbody td.cell-pl { color: var(--private-text); font-size: 12px; padding-right: 22px; }
+
+/* row select column */
+.ap-table-pro tbody td.ap-td-select { padding: 14px 6px 14px 18px; width: 38px; }
+.ap-table-pro thead tr.ap-th-sub th.ap-th-select { padding-left: 18px; }
+
+/* ── FUND CELL (alinhado à esquerda, denso) ──────────────────── */
+.ap-fund-cell {
+  text-align: left !important;
+  padding: 14px 14px !important;
+  min-width: 280px;
+  max-width: 320px;
+  vertical-align: top !important;
+  white-space: normal !important;
+  font-size: 13px !important;
+}
+.ap-fund-name-row {
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 2px;
+  flex-wrap: wrap;
+  line-height: 1.25;
+}
+.ap-fund-name {
+  font-weight: 500;
+  color: var(--private-text);
+  letter-spacing: -0.005em;
+  font-size: 13.5px;
+}
+.ap-fund-status {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.ap-fund-status.open    { background: rgba(0,158,92,0.10);  color: #009E5C; }
+.ap-fund-status.closed  { background: rgba(215,55,63,0.10); color: #D7373F; }
+.ap-fund-status.warn    { background: rgba(184,89,14,0.12); color: #B8590E; }
+.ap-fund-status.muted   { background: var(--private-divider); color: var(--private-muted); }
+
+.ap-fund-cnpj {
+  font-size: 10.5px;
+  color: var(--private-muted2);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 5px;
+  letter-spacing: 0;
+}
+.ap-fund-meta {
+  display: flex; gap: 8px;
+  font-size: 10.5px;
+  color: var(--private-muted);
+  align-items: center;
+  flex-wrap: wrap;
+  line-height: 1.3;
+}
+.ap-fund-meta .ap-fund-prazo {
+  font-variant-numeric: tabular-nums;
+}
+.ap-fund-lamina {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 9px;
+  background: #ECECEE;
+  border-radius: 999px;
+  color: var(--private-text);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 10.5px;
+  transition: background .15s var(--private-ease), color .15s var(--private-ease);
+}
+.ap-fund-lamina:hover { background: rgba(0,113,227,0.10); color: var(--private-blue); }
+.ap-fund-lamina svg { width: 9px; height: 9px; }
+
+/* Variantes para previdência */
+.ap-fund-lamina.is-vgbl {
+  background: rgba(0,113,227,0.08);
+  color: var(--private-blue);
+}
+.ap-fund-lamina.is-vgbl:hover { background: rgba(0,113,227,0.16); }
+.ap-fund-lamina.is-pgbl {
+  background: rgba(127,77,221,0.10);
+  color: #7F4DDD;
+}
+.ap-fund-lamina.is-pgbl:hover { background: rgba(127,77,221,0.18); }
+
+/* class body — sem min-width na tabela, então não precisa de scroll horizontal no desktop */
+.ap-class-body { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* mobile: tabela vira lista de cards (apple.com style — sem scroll-x) */
+@media (max-width: 833px) {
+  body.private-style .page-hero { padding: 36px 18px 18px; }
+  body.private-style .page-hero h1 { font-size: 32px; }
+  body.private-style .page-hero p  { font-size: 15px; }
+  .ap-page { padding: 0 16px 56px; }
+  .ap-section-title { font-size: 22px; margin: 36px 0 12px; }
+
+  .ap-toolbar { flex-direction: column; align-items: stretch; }
+  .ap-segmented { width: 100%; justify-content: space-between; }
+  .ap-segmented button { flex: 1; padding: 8px 10px; }
+
+  .ap-class-meta { gap: 12px; font-size: 11.5px; }
+  .ap-class-meta .ap-meta-item.opt { display: none; } /* esconde o menos importante */
+
+  .ap-filters-toggle { padding: 12px 18px; font-size: 13.5px; }
+  .ap-filters-active-count { max-width: 50%; font-size: 11.5px; }
+
+  .ap-floating-bar {
+    left: 16px; right: 16px;
+    bottom: 16px;
+    transform: translateY(calc(100% + 50px));
+    padding: 6px 6px 6px 18px;
+    gap: 12px;
+    width: auto;
+  }
+  .ap-floating-bar.is-active { transform: translateY(0); }
+  .ap-fb-count { font-size: 12.5px; }
+  .ap-fb-cta { padding: 8px 16px; font-size: 12.5px; }
+  .ap-fb-clear { display: none; }
+
+  .ap-page.has-floating-room { padding-bottom: 110px; }
+
+  /* ───────── TABELA → CARDS ──────────────────────────────── */
+  /* Sem scroll horizontal: cada <tr> vira um card empilhado.
+     Os <td> são dispostos via CSS Grid, e o thead some. */
+  .ap-class-body { overflow-x: visible; padding: 12px 12px 16px; }
+  .ap-table { display: block; min-width: 0; width: 100%; }
+  .ap-table thead { display: none; }
+  .ap-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ap-table tr {
+    position: relative;     /* anchor para o checkbox absolute */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    background: #fff;
+    border: 0.5px solid var(--private-border);
+    border-radius: 16px;
+    padding: 14px;
+    transition: transform .2s var(--private-ease), box-shadow .2s var(--private-ease);
+  }
+  .ap-table tr:hover { transform: none; box-shadow: var(--private-shadow-sm); }
+  .ap-table td,
+  .ap-table tbody tr + tr td {
+    display: block;
+    padding: 0;
+    border: none;       /* zera border-top que separa rows na desktop */
+    text-align: left;
+    background: transparent !important;
+    white-space: normal;
+  }
+
+  /* Checkbox de seleção: posicionado À ESQUERDA DO NOME, com o nome
+     começando depois dele. Usa absolute pra não ocupar célula do grid.
+     !important zera o padding do td desktop (18px+6px) que empurraria
+     o <span> filho pra dentro do nome. */
+  .ap-table .ap-td-select {
+    position: absolute;
+    top: 14px;
+    left: 12px;
+    z-index: 1;
+    width: auto !important;
+    padding: 0 !important;
+    margin: 0;
+  }
+  .ap-table .ap-td-select .ap-row-select { width: 18px; height: 18px; }
+
+  /* Nome do fundo: full-width, com padding-left abrindo espaço pro checkbox
+     (12 left + 18 width + 6 gap = 36px). Inclui divisória embaixo separando
+     do bloco de retornos. !important pra ganhar do padding base do desktop. */
+  .ap-table .ap-fund-cell {
+    grid-column: 1 / -1;
+    padding: 0 0 10px 36px !important;
+    min-width: 0 !important;
+    border-bottom: 0.5px solid var(--private-divider);
+  }
+  .ap-table .ap-fund-name { font-size: 14px; }
+  .ap-table .ap-fund-cnpj { font-size: 11px; }
+  .ap-table .ap-fund-meta { gap: 6px; flex-wrap: wrap; }
+  .ap-table .ap-fund-meta .ap-fund-prazo { font-size: 11px; }
+  .ap-table .ap-fund-lamina { font-size: 11px; padding: 3px 8px; }
+
+  /* 5 pills de retorno em grid 2-cols. Dentro de cada pill: label em cima
+     (full width) e na linha de baixo, % CDI/Ibov na frente do retorno. */
+  .ap-table .ap-num-cell {
+    background: var(--private-bg) !important;
+    border-radius: 10px;
+    padding: 8px 10px !important;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "label label"
+      "num   pill";
+    column-gap: 8px;
+    row-gap: 2px;
+    align-items: center;
+  }
+  .ap-table .ap-num-cell .ap-num-period {
+    grid-area: label;
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--private-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.2;
+  }
+  .ap-table .ap-num-cell .ap-cdi-pill {
+    grid-area: pill;
+    margin: 0;
+    justify-self: end;
+    flex-shrink: 0;
+  }
+  .ap-table .ap-num-cell .ap-num {
+    grid-area: num;
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    text-align: left;
+  }
+
+  /* O 5º pill (24 meses, nth-child=8) ocupa toda a linha pra ficar simétrico */
+  .ap-table .ap-num-cell:nth-child(8) {
+    grid-column: 1 / -1;
+  }
+
+  /* Footer do card: cota (data) à esquerda + patrimônio à direita,
+     compartilhando uma única linha com divisória superior.
+     `order` força ambos a virem DEPOIS dos pills no auto-flow do grid
+     (no DOM a data-cell vem antes dos pills, mas visualmente queremos
+     ela junto do patrimônio no rodapé). */
+  .ap-table .ap-data-cell {
+    grid-column: 1 / 2;
+    order: 99;
+    margin-top: -2px;          /* puxa pra perto do último pill */
+    padding-top: 6px;
+    border-top: 0.5px solid var(--private-divider);
+    text-align: left;
+    font-size: 12px;
+    color: var(--private-text);
+    font-weight: 500;
+  }
+  .ap-table .ap-data-cell::before {
+    content: 'Cota: ';
+    color: var(--private-muted2);
+    font-weight: 500;
+  }
+  .ap-table .ap-muted {
+    grid-column: 2 / -1;
+    order: 99;
+    margin-top: -2px;
+    padding-top: 6px;
+    border-top: 0.5px solid var(--private-divider);
+    font-size: 13px;
+    text-align: right;
+    font-weight: 600;
+    color: var(--private-text);
+  }
+  .ap-table .ap-muted::before {
+    content: 'Patrimônio: ';
+    color: var(--private-muted2);
+    font-weight: 500;
+  }
+}

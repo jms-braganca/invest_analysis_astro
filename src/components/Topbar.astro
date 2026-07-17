@@ -1,0 +1,121 @@
+---
+// Topbar.astro — a barra de navegação com mega-menus. Hoje está duplicada em
+// 25/26 páginas; aqui vira um componente só. Comportamento (abrir/fechar mega,
+// hamburger, estado ativo por data-page) em /scripts/private-topbar.js (verbatim).
+// O botão de tema (sol/lua) é INJETADO por /scripts/theme-toggle.js dentro da
+// .atb-nav — por isso não há markup dele aqui.
+//
+// Links são ABSOLUTOS (/...html) pra funcionar igual em qualquer profundidade
+// de página (raiz ou /calculadoras/). As URLs .html são preservadas via
+// build.format:'file' no astro.config.
+//
+// Slot "sub": barra .atb-sub opcional (sub-páginas de uma seção), usada p.ex.
+// nas calculadoras. Fica no fim do <header>, como no HTML original.
+---
+<header class="private-topbar">
+  <div class="atb-main">
+    <nav class="atb-nav">
+      <a href="/index.html" data-page="index.html" class="atb-link">Início</a>
+      <div class="atb-nav-item">
+        <button type="button" class="atb-link-mega"
+                data-mega="investimentos"
+                data-pages="fundos.html previdencia.html comparacao.html correlacao.html etfs.html"
+                aria-haspopup="true" aria-expanded="false">Investimentos</button>
+        <div class="atb-mobile-sub">
+          <a href="/fundos.html"      class="atb-mobile-sub-link">Fundos 555</a>
+          <a href="/previdencia.html" class="atb-mobile-sub-link">Previdência</a>
+          <a href="/comparacao.html"  class="atb-mobile-sub-link">Comparar Fundos</a>
+          <a href="/correlacao.html"  class="atb-mobile-sub-link">Correlação</a>
+          <a href="/etfs.html"        class="atb-mobile-sub-link">ETFs Offshore</a>
+        </div>
+      </div>
+      <div class="atb-nav-item">
+        <button type="button" class="atb-link-mega"
+                data-mega="calculadoras"
+                data-pages="calculadoras/troca-ativos.html calculadoras/limite-fgc.html calculadoras/alocacao-fgc.html calculadoras/rentabilidade.html calculadoras/credito-vs-invest.html calculadoras/cet.html calculadoras/avista-vs-prazo.html troca-ativos.html limite-fgc.html alocacao-fgc.html rentabilidade.html credito-vs-invest.html cet.html avista-vs-prazo.html"
+                aria-haspopup="true" aria-expanded="false">Calculadoras</button>
+        <div class="atb-mobile-sub">
+          <a href="/calculadoras/troca-ativos.html"      class="atb-mobile-sub-link">Troca de Ativos</a>
+          <a href="/calculadoras/limite-fgc.html"        class="atb-mobile-sub-link">Limite FGC</a>
+          <a href="/calculadoras/alocacao-fgc.html"      class="atb-mobile-sub-link">Alocação FGC</a>
+          <a href="/calculadoras/rentabilidade.html"     class="atb-mobile-sub-link">Rentabilidade</a>
+          <a href="/calculadoras/credito-vs-invest.html" class="atb-mobile-sub-link">Crédito vs. Investimentos</a>
+          <a href="/calculadoras/cet.html"               class="atb-mobile-sub-link">CET</a>
+          <a href="/calculadoras/avista-vs-prazo.html"   class="atb-mobile-sub-link">À Vista vs Parcelado</a>
+          <a href="/calculadoras/amortizacao.html" class="atb-mobile-sub-link">Amortização SAC/Price</a>
+        </div>
+      </div>
+      <div class="atb-nav-item">
+        <button type="button" class="atb-link-mega"
+                data-mega="planejamento"
+                data-pages="calculadoras/simular-pgbl.html calculadoras/aposentadoria.html calculadoras/irpfm.html simular-pgbl.html aposentadoria.html irpfm.html calculadoras/come-cotas.html calculadoras/valor-futuro.html calculadoras/sucessao-previdencia.html come-cotas.html valor-futuro.html sucessao-previdencia.html"
+                aria-haspopup="true" aria-expanded="false">Planejamento Financeiro</button>
+        <div class="atb-mobile-sub">
+          <a href="/calculadoras/simular-pgbl.html"   class="atb-mobile-sub-link">PGBL</a>
+          <a href="/calculadoras/aposentadoria.html"  class="atb-mobile-sub-link">Aposentadoria</a>
+          <a href="/calculadoras/irpfm.html"         class="atb-mobile-sub-link">IRPFm 2026</a>
+          <a href="/calculadoras/come-cotas.html"     class="atb-mobile-sub-link">Come-cotas</a>
+          <a href="/calculadoras/valor-futuro.html"   class="atb-mobile-sub-link">Valor Futuro</a>
+          <a href="/calculadoras/sucessao-previdencia.html" class="atb-mobile-sub-link">Sucessão na Previdência</a>
+        </div>
+      </div>
+      <!-- Mobile-only: o "Sobre" do desktop é o .atb-cta no canto direito,
+           mas em mobile ele some — então duplicamos como link normal aqui
+           pro drawer hamburger ter acesso. CSS controla a visibilidade. -->
+      <a href="/sobre.html" data-page="sobre.html" class="atb-link atb-link-mobile-only">Sobre</a>
+    </nav>
+    <a href="/sobre.html" class="atb-cta">Sobre
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+    <button class="atb-hamburger" aria-label="Abrir menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="atb-mega-stage">
+    <div class="atb-mega" data-mega-for="investimentos">
+      <div class="atb-mega-inner single-col">
+        <div class="atb-mega-col">
+          <p class="atb-mega-eyebrow">Explore Investimentos</p>
+          <a href="/fundos.html"      class="atb-mega-link">Fundos 555</a>
+          <a href="/previdencia.html" class="atb-mega-link">Previdência</a>
+          <a href="/comparacao.html"  class="atb-mega-link">Comparar Fundos</a>
+          <a href="/correlacao.html"  class="atb-mega-link">Correlação</a>
+          <a href="/etfs.html"        class="atb-mega-link">ETFs Offshore</a>
+        </div>
+      </div>
+    </div>
+    <div class="atb-mega" data-mega-for="calculadoras">
+      <div class="atb-mega-inner single-col">
+        <div class="atb-mega-col">
+          <p class="atb-mega-eyebrow">Calculadoras</p>
+          <a href="/calculadoras/troca-ativos.html"      class="atb-mega-link">Troca de Ativos</a>
+          <a href="/calculadoras/limite-fgc.html"        class="atb-mega-link">Limite FGC</a>
+          <a href="/calculadoras/alocacao-fgc.html"      class="atb-mega-link">Alocação FGC</a>
+          <a href="/calculadoras/rentabilidade.html"     class="atb-mega-link">Rentabilidade</a>
+          <a href="/calculadoras/credito-vs-invest.html" class="atb-mega-link">Crédito vs. Investimentos</a>
+          <a href="/calculadoras/cet.html"               class="atb-mega-link">CET — Custo Efetivo Total</a>
+          <a href="/calculadoras/avista-vs-prazo.html"   class="atb-mega-link">À Vista vs Parcelado</a>
+          <a href="/calculadoras/amortizacao.html" class="atb-mega-link">Amortização — SAC e Price</a>
+        </div>
+      </div>
+    </div>
+    <div class="atb-mega" data-mega-for="planejamento">
+      <div class="atb-mega-inner single-col">
+        <div class="atb-mega-col">
+          <p class="atb-mega-eyebrow">Planejamento Financeiro</p>
+          <a href="/calculadoras/simular-pgbl.html"  class="atb-mega-link">PGBL</a>
+          <a href="/calculadoras/aposentadoria.html" class="atb-mega-link">Aposentadoria</a>
+          <a href="/calculadoras/irpfm.html"         class="atb-mega-link">IRPFm 2026 — Imposto Mínimo</a>
+          <a href="/calculadoras/come-cotas.html"    class="atb-mega-link">Come-cotas</a>
+          <a href="/calculadoras/valor-futuro.html"  class="atb-mega-link">Valor Futuro</a>
+          <a href="/calculadoras/sucessao-previdencia.html" class="atb-mega-link">Sucessão na Previdência</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <slot name="sub" />
+</header>
