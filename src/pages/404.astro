@@ -5,6 +5,7 @@
 // standalone, 1:1 com a original.
 import '../styles/theme.css';
 import '../styles/private-topbar.css';
+import Analytics from '@vercel/analytics/astro';
 ---
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -202,5 +203,6 @@ import '../styles/private-topbar.css';
 
 <script is:inline src="/scripts/atb_footer_date.js"></script>
 <script is:inline src="/scripts/atb_ticker.js"></script>
+<Analytics />
 </body>
 </html>

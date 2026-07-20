@@ -4,6 +4,7 @@ import Head from '../components/Head.astro';
 import Ticker from '../components/Ticker.astro';
 import Topbar from '../components/Topbar.astro';
 import Footer from '../components/Footer.astro';
+import Analytics from '@vercel/analytics/astro';
 
 // CSS global, na ordem do site atual (tema base -> dark -> topbar).
 // Importado aqui -> Vite bundla e versiona por hash automaticamente.
@@ -83,6 +84,7 @@ try {
   <script is:inline src="/scripts/private-topbar.js"></script>
   <script is:inline src="/scripts/theme-toggle.js"></script>
   <script is:inline src="/scripts/atb_footer_date.js"></script>
+  <script is:inline src="/scripts/atb_kpis.js"></script>
   <script is:inline src="/scripts/atb_ticker.js"></script>
 
   <!-- Scripts específicos da página (ex.: calc-*.js). -->
@@ -91,5 +93,7 @@ try {
   <!-- Gate AES (só em páginas gated). Roda por último; a calc já inicializou
        escondida sob a trava de display do head. -->
   {gated && gateReveal && <script type="module" is:inline set:html={gateScript} />}
+
+  <Analytics />
 </body>
 </html>

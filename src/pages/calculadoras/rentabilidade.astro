@@ -17,7 +17,7 @@ import '../../styles/private-calc.css';
       <a href="/calculadoras/avista-vs-prazo.html" class="atb-sub-page">À Vista vs Parcelado</a>
       <a href="/calculadoras/amortizacao.html" class="atb-sub-page">Amortização</a>
     </div>
-    <div class="atb-kpis" aria-live="polite"><div class="atb-kpi-group is-active" data-kpi="cdi"><span class="atb-kpi-group-label">CDI</span><div class="atb-kpi"><span class="atb-kpi-label" data-month>Mai</span><span class="atb-kpi-value">0,48%</span></div><div class="atb-kpi is-secondary"><span class="atb-kpi-label">Ano</span><span class="atb-kpi-value">5,04%</span></div><div class="atb-kpi is-tertiary"><span class="atb-kpi-label">12m</span><span class="atb-kpi-value">14,83%</span></div></div><div class="atb-kpi-group" data-kpi="ibov"><span class="atb-kpi-group-label">Ibov</span><div class="atb-kpi"><span class="atb-kpi-label" data-month>Mai</span><span class="atb-kpi-value neg">-4,78%</span></div><div class="atb-kpi is-secondary"><span class="atb-kpi-label">Ano</span><span class="atb-kpi-value pos">+10,70%</span></div><div class="atb-kpi is-tertiary"><span class="atb-kpi-label">12m</span><span class="atb-kpi-value pos">+28,86%</span></div></div></div>
+    <div class="atb-kpis" aria-live="polite"><div class="atb-kpi-group is-active" data-kpi="cdi"><span class="atb-kpi-group-label">CDI</span><div class="atb-kpi"><span class="atb-kpi-label" data-month>—</span><span class="atb-kpi-value" data-kpi-val="mes">—</span></div><div class="atb-kpi is-secondary"><span class="atb-kpi-label">Ano</span><span class="atb-kpi-value" data-kpi-val="ano">—</span></div><div class="atb-kpi is-tertiary"><span class="atb-kpi-label">12m</span><span class="atb-kpi-value" data-kpi-val="12m">—</span></div></div><div class="atb-kpi-group" data-kpi="ibov"><span class="atb-kpi-group-label">Ibov</span><div class="atb-kpi"><span class="atb-kpi-label" data-month>—</span><span class="atb-kpi-value" data-kpi-val="mes">—</span></div><div class="atb-kpi is-secondary"><span class="atb-kpi-label">Ano</span><span class="atb-kpi-value" data-kpi-val="ano">—</span></div><div class="atb-kpi is-tertiary"><span class="atb-kpi-label">12m</span><span class="atb-kpi-value" data-kpi-val="12m">—</span></div></div></div>
   </div>
 
 
@@ -125,7 +125,7 @@ import '../../styles/private-calc.css';
       </div>
       <div class="ac-metric">
         <span class="lbl">Dados atualizados em</span>
-        <span class="val sm" style="font-size:14px;color:var(--private-muted)">14/05/2026</span>
+        <span class="val sm" id="r3-upd" style="font-size:14px;color:var(--private-muted)">—</span>
       </div>
     </div>
   </section>
@@ -201,6 +201,23 @@ import '../../styles/private-calc.css';
     <script is:inline src="/scripts/utils.js"></script>
     <script is:inline src="/scripts/calc-common.js"></script>
     <script is:inline src="/scripts/calc-rent.js"></script>
+    <!-- "Dados atualizados em": data dinâmica = última data da série diária de CDI -->
+    <script is:inline>
+(function () {
+  function fmtBR(iso) {
+    var p = String(iso).split('-');
+    return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : iso;
+  }
+  function setUpd() {
+    var el = document.getElementById('r3-upd');
+    if (!el) return;
+    var d = window.CDI_DATA;
+    if (d && d.length) el.textContent = fmtBR(d[d.length - 1][0]);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setUpd);
+  else setUpd();
+})();
+    </script>
     <!-- Formatação condicional pos/neg nas linhas das tabelas (curva/venda) -->
     <script is:inline>
 (function () {

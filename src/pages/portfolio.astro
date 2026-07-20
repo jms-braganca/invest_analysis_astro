@@ -7,6 +7,7 @@
 import '../styles/theme.css';
 import '../styles/theme-dark.css';
 import '../styles/private-topbar.css';
+import Analytics from '@vercel/analytics/astro';
 ---
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -1796,5 +1797,6 @@ mkChart(document.getElementById('rotaChart'),{
 </script>
 
 <script is:inline src="shared/theme-toggle.js"></script>
+<Analytics />
 </body>
 </html>

@@ -13,6 +13,7 @@ import '../../styles/sidebar-sobre.css';
 import '../../styles/dashboard.css';
 import '../../styles/dashboard-wide.css';
 import '../../styles/polish.css';
+import Analytics from '@vercel/analytics/astro';
 ---
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -111,9 +112,6 @@ import '../../styles/polish.css';
     .calc-launcher-hero h1 { font-size: 30px; }
   }
 </style>
-<!-- Cloudflare Web Analytics -->
-<script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "a12338ede7f9426e80e3969dc9188753"}'></script>
-<!-- End Cloudflare Web Analytics -->
 </head>
 <body>
 <script is:inline>(function(){try{var t=localStorage.getItem("site-theme");if(t!=="light")document.body.classList.add("theme-dark");}catch(e){}})();</script>
@@ -404,5 +402,6 @@ import '../../styles/polish.css';
 <script is:inline src="/scripts/theme-toggle.js"></script>
 <script is:inline src="/scripts/atb_footer_date.js"></script>
 <script is:inline src="/scripts/atb_ticker.js"></script>
+<Analytics />
 </body>
 </html>
