@@ -1,6 +1,6 @@
 {
   "_schema": 1,
-  "gerado_em": "2026-07-04T06:05:45-03:00",
+  "gerado_em": "2026-07-20T09:26:11-03:00",
   "instituicoes": [
     {
       "id": "itau",
@@ -21,7 +21,7 @@
       "tem_fundos": true,
       "tem_previdencia": true,
       "tem_cotas": true,
-      "n_fundos": 1151,
+      "n_fundos": 1152,
       "n_prev": 246
     },
     {
@@ -32,7 +32,7 @@
       "tem_fundos": true,
       "tem_previdencia": true,
       "tem_cotas": true,
-      "n_fundos": 643,
+      "n_fundos": 644,
       "n_prev": 318
     },
     {
@@ -43,7 +43,7 @@
       "tem_fundos": true,
       "tem_previdencia": false,
       "tem_cotas": true,
-      "n_fundos": 313,
+      "n_fundos": 314,
       "n_prev": 0
     },
     {
@@ -60,7 +60,7 @@
     }
   ],
   "default_instituicao": "itau",
-  "ultima_data_cota": "2026-07-02",
+  "ultima_data_cota": "2026-07-17",
   "periodos_fundos": [
     "Mês",
     "Mês -1",
@@ -76,17 +76,10 @@
     "24M"
   ],
   "cdi_acumulado": {
-    "Mês": 0.11,
-    "Mês -1": 1.12,
-    "Ano": 6.96,
-    "12M": 14.77,
-    "24M": 28.75
+    "12M": 13.18,
+    "24M": 16.24
   },
   "ibov_acumulado": {
-    "Mês": 0.44,
-    "Mês -1": -1.01,
-    "Ano": 7.24,
-    "12M": 24.26,
-    "24M": 38.47
+    "12M": 8.79
   }
 }
