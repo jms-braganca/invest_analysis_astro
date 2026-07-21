@@ -137,11 +137,13 @@ import '../styles/private-correlacao.css';
         <thead>
           <tr>
             <th class="left">Fundo</th>
-            <th class="sortable">Mai/26 <span class="arrow">▼</span></th>
-            <th class="sortable">Abr/26 <span class="arrow">▼</span></th>
-            <th class="sortable">2026 <span class="arrow">▼</span></th>
-            <th class="sortable">12 Meses <span class="arrow">▼</span></th>
-            <th class="sortable">24 Meses <span class="arrow">▼</span></th>
+            <!-- Labels preenchidos em runtime por comparacao_loader.js a partir
+                 da última cota. O texto abaixo é só placeholder pré-hidratação. -->
+            <th class="sortable" data-period="mes"><span data-period-label>Mês</span> <span class="arrow">▼</span></th>
+            <th class="sortable" data-period="pmes"><span data-period-label>Mês −1</span> <span class="arrow">▼</span></th>
+            <th class="sortable" data-period="ytd"><span data-period-label>Ano</span> <span class="arrow">▼</span></th>
+            <th class="sortable" data-period="12m"><span data-period-label>12 Meses</span> <span class="arrow">▼</span></th>
+            <th class="sortable" data-period="24m"><span data-period-label>24 Meses</span> <span class="arrow">▼</span></th>
             <th class="sortable">Patrimônio <span class="arrow">▼</span></th>
           </tr>
         </thead>

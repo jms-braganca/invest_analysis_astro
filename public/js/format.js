@@ -65,6 +65,35 @@ export function dataBR(isoOrDate) {
   return _fmtDataBR.format(d);
 }
 
+const _MESES_ABREV = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+                      'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+/**
+ * Labels dos períodos de retorno a partir da data da última cota (ISO
+ * 'YYYY-MM-DD'). O mês corrente é o mês dessa data e o anterior é o mês
+ * imediatamente antes — nunca hardcode, senão os headers congelam enquanto
+ * os números continuam andando.
+ *
+ * Devolve null se a data for ausente/inválida, pra o chamador manter o
+ * placeholder genérico em vez de exibir um mês errado.
+ */
+export function labelsPeriodos(dataIso) {
+  if (typeof dataIso !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(dataIso)) return null;
+  const ano = parseInt(dataIso.slice(0, 4), 10);
+  const mes = parseInt(dataIso.slice(5, 7), 10);
+  if (mes < 1 || mes > 12) return null;
+  const mesAnt = mes === 1 ? 12 : mes - 1;
+  const anoAnt = mes === 1 ? ano - 1 : ano;
+  const aa = (y) => String(y % 100).padStart(2, '0');
+  return {
+    mes:   `${_MESES_ABREV[mes - 1]}/${aa(ano)}`,
+    pmes:  `${_MESES_ABREV[mesAnt - 1]}/${aa(anoAnt)}`,
+    ytd:   String(ano),
+    '12m': '12 Meses',
+    '24m': '24 Meses',
+  };
+}
+
 /**
  * Sinal aplicado a uma classe CSS pra colorir retornos.
  *   +ve → 'pos'

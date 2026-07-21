@@ -14,6 +14,7 @@
  */
 
 import { pool } from './data_pool.js';
+import { labelsPeriodos } from './format.js';
 
 function instDaURL() {
   // V2: lê instituição da hash (#inst=btg). Antes lia do path
@@ -190,11 +191,27 @@ async function boot() {
   const bCdi = acumular(window.CDI_DATA);   if (bCdi)  benchmarks.cdi  = bCdi;
   const bIbov = acumular(window.IBOV_DATA); if (bIbov) benchmarks.ibov = bIbov;
 
+  // Labels de período (Jul/26, Jun/26, 2026, ...) derivados da última cota
+  // carregada — nunca fixos, senão os headers descolam dos números quando o
+  // pipeline avança de mês. `meta.ultima_data_cota` é o fallback caso a série
+  // recortada venha vazia.
+  const dataRef = datasGlobais.at(-1) || meta?.ultima_data_cota || null;
+  const labels = labelsPeriodos(dataRef);
+
   window.DADOS = {
     fundos: dadosFundos,
     benchmarks,
     meta: { date_max: datasGlobais.at(-1) },
+    // Consumido por private-comparacao.js pros headers do card mobile.
+    labels: labels || {},
   };
+
+  if (labels) {
+    document.querySelectorAll('th[data-period] [data-period-label]').forEach(el => {
+      const lbl = labels[el.parentElement.dataset.period];
+      if (lbl) el.textContent = lbl;
+    });
+  }
 
   console.log(`[comparacao_loader] ${Object.keys(dadosFundos).length} fundos prontos`);
   } // fim montarDADOS
