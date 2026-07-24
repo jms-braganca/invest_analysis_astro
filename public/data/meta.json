@@ -1,6 +1,6 @@
 {
   "_schema": 1,
-  "gerado_em": "2026-07-23T19:05:22-03:00",
+  "gerado_em": "2026-07-24T06:06:29-03:00",
   "instituicoes": [
     {
       "id": "itau",
@@ -21,7 +21,7 @@
       "tem_fundos": true,
       "tem_previdencia": true,
       "tem_cotas": true,
-      "n_fundos": 1153,
+      "n_fundos": 1154,
       "n_prev": 246
     },
     {
@@ -60,7 +60,7 @@
     }
   ],
   "default_instituicao": "itau",
-  "ultima_data_cota": "2026-07-21",
+  "ultima_data_cota": "2026-07-22",
   "periodos_fundos": [
     "Mês",
     "Mês -1",
@@ -76,17 +76,17 @@
     "24M"
   ],
   "cdi_acumulado": {
-    "Mês": 0.79,
+    "Mês": 0.84,
     "Mês -1": 1.12,
-    "Ano": 7.69,
+    "Ano": 7.75,
     "12M": 14.73,
-    "24M": 28.97
+    "24M": 28.99
   },
   "ibov_acumulado": {
-    "Mês": 0.76,
+    "Mês": 3.21,
     "Mês -1": -1.01,
-    "Ano": 7.57,
-    "12M": 29.19,
-    "24M": 35.82
+    "Ano": 10.19,
+    "12M": 32.46,
+    "24M": 38.86
   }
 }
